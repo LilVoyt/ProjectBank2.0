@@ -10,9 +10,9 @@ namespace ProjectBank.Infrastructure.Services.Customers
 {
     public interface ICustomerService
     {
-        Task<ActionResult<List<CustomerRequestModel>>> Get(string? search, string? sortItem, string? sortOrder);
-        Task<Customer> Post(CustomerRequestModel customer);
-        Task<Customer> Update(Guid id, CustomerRequestModel requestModel);
+        Task<List<Customer>> Get(string? search, string? sortItem, string? sortOrder);
+        Task<Customer> Post(Customer customer);
+        Task<Customer> Update(Guid id, Customer requestModel);
         Task<Customer> Delete(Guid id);
     }
 }

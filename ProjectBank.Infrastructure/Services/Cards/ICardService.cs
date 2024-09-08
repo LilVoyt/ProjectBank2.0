@@ -10,9 +10,9 @@ namespace ProjectBank.Infrastructure.Services.Cards
 {
     public interface ICardService
     {
-        Task<ActionResult<List<CardRequestModel>>> Get(string? search, string? sortItem, string? sortOrder);
-        Task<Card> Post(CardRequestModel card);
-        Task<Card> Update(Guid id, CardRequestModel requestModel);
+        Task<ActionResult<List<Card>>> Get(string? search, string? sortItem, string? sortOrder);
+        Task<Card> Post(Card card);
+        Task<Card> Update(Guid id, Card requestModel);
         Task<Card> Delete(Guid id);
     }
 }

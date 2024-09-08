@@ -10,9 +10,9 @@ namespace ProjectBank.Infrastructure.Services.Transactions
 {
     public interface ITransactionService
     {
-        Task<ActionResult<List<TransactionRequestModel>>> Get(Guid? search, string? sortItem, string? sortOrder);
-        Task<Transaction> Post(TransactionRequestModel transaction);
-        Task<Transaction> Update(Guid id, TransactionRequestModel transaction);
+        Task<ActionResult<List<Transaction>>> Get(Guid? search, string? sortItem, string? sortOrder);
+        Task<Transaction> Post(Transaction transaction);
+        Task<Transaction> Update(Guid id, Transaction transaction);
         Task<Transaction> Delete(Guid id);
     }
 }

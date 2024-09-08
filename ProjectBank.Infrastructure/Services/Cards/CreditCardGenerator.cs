@@ -74,4 +74,3 @@ namespace ProjectBank.Infrastructure.Services.Cards
         }
     }
 }
-}

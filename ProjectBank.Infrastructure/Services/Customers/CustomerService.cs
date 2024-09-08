@@ -15,17 +15,13 @@ namespace ProjectBank.Infrastructure.Services.Customers
     public class CustomerService : ICustomerService
     {
         private readonly DataContext _context;
-        private readonly IValidator<Customer> _validator;
-        private readonly CustomerMapper _customerMapper;
 
-        public CustomerService(DataContext context, IValidator<Customer> validator, CustomerMapper customerMapper)
+        public CustomerService(DataContext context)
         {
             _context = context;
-            _validator = validator;
-            _customerMapper = customerMapper;
         }
 
-        public async Task<ActionResult<List<CustomerRequestModel>>> Get(string? search, string? sortItem, string? sortOrder)
+        public async Task<List<Customer>> Get(string? search, string? sortItem, string? sortOrder)
         {
             IQueryable<Customer> customers = _context.Customer;
 
@@ -50,43 +46,32 @@ namespace ProjectBank.Infrastructure.Services.Customers
 
             List<Customer> customerList = await customers.ToListAsync();
 
-            List<CustomerRequestModel> response = _customerMapper.GetRequestModels(customerList);
-
-            return response;
+            return customerList;
         }
 
-        public async Task<Customer> Post(CustomerRequestModel customer)
+        public async Task<Customer> Post(Customer customer)
         {
-            var res = _customerMapper.GetCustomer(customer);
-
-            var validationResult = await _validator.ValidateAsync(res);
-            if (!validationResult.IsValid)
-            {
-                var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-                throw new ValidationException(errorMessages);
-            }
-
-            await _context.Customer.AddAsync(res);
+            await _context.Customer.AddAsync(customer);
             await _context.SaveChangesAsync();
-            return res;
+            return customer;
         }
 
-        public async Task<Customer> Update(Guid id, CustomerRequestModel requestModel)
+        public async Task<Customer> Update(Guid id, Customer requestModel)
         {
             var account = await _context.Customer.FindAsync(id);
             if (account == null)
             {
                 throw new KeyNotFoundException($"Account with ID {id} not found.");
             }
-            account = _customerMapper.PutRequestModelInCustomer(account, requestModel);
-            var validationResult = await _validator.ValidateAsync(account);
-            if (!validationResult.IsValid)
-            {
-                var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-                throw new ValidationException(errorMessages);
-            }
-            _context.Customer.Update(account);
-            await _context.SaveChangesAsync();
+            //account = _customerMapper.PutRequestModelInCustomer(account, requestModel);
+            //var validationResult = await _validator.ValidateAsync(account);
+            //if (!validationResult.IsValid)
+            //{
+            //    var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+            //    throw new ValidationException(errorMessages);
+            //}
+            //_context.Customer.Update(account);
+            //await _context.SaveChangesAsync();
 
             return account;
         }

@@ -10,9 +10,9 @@ namespace ProjectBank.Infrastructure.Services.Employees
 {
     public interface IEmployeeService
     {
-        Task<ActionResult<List<EmployeeRequestModel>>> Get(string? search, string? sortItem, string? sortOrder);
-        Task<Employee> Post(EmployeeRequestModel customer);
-        Task<Employee> Update(Guid id, EmployeeRequestModel requestModel);
+        Task<ActionResult<List<Employee>>> Get(string? search, string? sortItem, string? sortOrder);
+        Task<Employee> Post(Employee customer);
+        Task<Employee> Update(Guid id, Employee requestModel);
         Task<Employee> Delete(Guid id);
     }
 }
