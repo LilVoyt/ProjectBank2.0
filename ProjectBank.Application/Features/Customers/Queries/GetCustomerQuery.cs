@@ -10,7 +10,7 @@ namespace ProjectBank.Application.Features.Customers.Queries
 {
     public class GetCustomerQuery : IRequest<List<Customer>>
     {
-        public string? Search {  get; set; }
+        public string? Search { get; set; }
         public string? SortItem { get; set; }
         public string? SortOrder { get; set; }
     }

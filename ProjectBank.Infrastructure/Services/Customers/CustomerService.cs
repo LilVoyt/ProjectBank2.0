@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectBank.Infrastructure.Data;
 using ProjectBank.Infrastructure.Entities;
