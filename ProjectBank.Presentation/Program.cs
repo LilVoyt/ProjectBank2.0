@@ -7,6 +7,8 @@ using ProjectBank.Application.Validators.Customers;
 using ProjectBank.Infrastructure.Data;
 using ProjectBank.Infrastructure.Entities;
 using ProjectBank.Infrastructure.Services.Customers;
+using ProjectBank.Presentation.GraphQL.Models;
+using ProjectBank.Presentation.GraphQL.Mutations;
 using ProjectBank.Presentation.GraphQL.Queries;
 
 internal class Program
@@ -28,6 +30,8 @@ internal class Program
         builder.Services.AddScoped<ICustomerValidationService, CustomerValidationService>();
 
         builder.Services.AddTransient<CustomerQuery>();
+        builder.Services.AddTransient<CustomerMutation>();
+
 
 
         builder.Services.AddDbContext<DataContext>(options =>
@@ -37,7 +41,12 @@ internal class Program
 
         builder.Services
             .AddGraphQLServer()
-            .AddQueryType<CustomerQuery>();
+            .AddDefaultTransactionScopeHandler()
+            .AddMutationConventions()
+            .AddQueryType<CustomerQuery>()
+            .AddMutationType<CustomerMutation>()
+            .AddType<CustomerInputType>();
+
 
         builder.Services
             .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCustomerCommand).Assembly));
