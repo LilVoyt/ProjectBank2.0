@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Models
 {
-    public class UserDto
+    public class UserRegisterDto
     {
         public string Name { get; set; }
         public string Login { get; set; }

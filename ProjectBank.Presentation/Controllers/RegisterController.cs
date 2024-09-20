@@ -26,7 +26,7 @@ namespace ProjectBank.Presentation.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post(UserDto user)
+        public async Task<IActionResult> Post(UserRegisterDto user)
         {
             using (var transaction = await _dataContext.Database.BeginTransactionAsync())
             {
@@ -43,8 +43,8 @@ namespace ProjectBank.Presentation.Controllers
                 await _mediator.Send(account);
                 return Ok();
             }
-        }    
+        }
 
-
+        
     }
 }

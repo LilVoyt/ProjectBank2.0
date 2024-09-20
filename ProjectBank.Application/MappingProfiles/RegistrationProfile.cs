@@ -15,7 +15,7 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
     {
         public RegistrationProfile()
         {
-            CreateMap<UserDto, CreateCustomerCommand>()
+            CreateMap<UserRegisterDto, CreateCustomerCommand>()
                 .ForMember(dest => dest.FirstName, opt =>
                 opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt =>
@@ -25,7 +25,7 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Email, opt =>
                 opt.MapFrom(src => src.Email));
 
-            CreateMap<UserDto, CreateAccountCommand>()
+            CreateMap<UserRegisterDto, CreateAccountCommand>()
                 .ForMember(dest => dest.Name, opt =>
                 opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Login, opt =>
