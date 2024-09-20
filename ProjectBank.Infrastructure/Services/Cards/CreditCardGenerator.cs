@@ -1,11 +1,11 @@
-﻿using ProjectBank.Infrastructure.Data;
+﻿using ProjectBank.DataAcces.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Infrastructure.Services.Cards
+namespace ProjectBank.DataAcces.Services.Cards
 {
     public class CreditCardGenerator
     {

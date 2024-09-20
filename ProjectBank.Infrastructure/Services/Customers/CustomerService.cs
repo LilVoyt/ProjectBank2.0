@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using ProjectBank.Infrastructure.Data;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Data;
+using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Infrastructure.Services.Customers
+namespace ProjectBank.DataAcces.Services.Customers
 {
     public class CustomerService : ICustomerService
     {

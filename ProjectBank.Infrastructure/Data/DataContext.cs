@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Infrastructure.Data
+namespace ProjectBank.DataAcces.Data
 {
     public class DataContext : DbContext
     {

@@ -1,12 +1,12 @@
 ﻿using MediatR;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Features.Customers.Queries
+namespace ProjectBank.BusinessLogic.Features.Customers.Queries
 {
     public class GetCustomerQuery : IRequest<List<Customer>>
     {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using ProjectBank.Application.Features.Customers.Queries;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.BusinessLogic.Features.Customers.Queries;
+using ProjectBank.DataAcces.Entities;
 using HotChocolate;
 using System.Collections.Generic;
 using System.Threading.Tasks;

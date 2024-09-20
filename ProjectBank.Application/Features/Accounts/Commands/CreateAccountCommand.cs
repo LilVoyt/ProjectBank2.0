@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

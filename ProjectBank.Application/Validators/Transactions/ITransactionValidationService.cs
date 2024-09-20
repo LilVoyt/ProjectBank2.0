@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Validators.Transactions
+namespace ProjectBank.BusinessLogic.Validators.Transactions
 {
     internal interface ITransactionValidationService
     {

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Infrastructure.Services.Transactions
+namespace ProjectBank.DataAcces.Services.Transactions
 {
     public interface ITransactionService
     {

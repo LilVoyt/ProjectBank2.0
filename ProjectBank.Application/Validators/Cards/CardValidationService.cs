@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectBank.Infrastructure.Data;
+using ProjectBank.DataAcces.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Validators.Cards
+namespace ProjectBank.BusinessLogic.Validators.Cards
 {
     internal class CardValidationService : ICardValidationService
     {

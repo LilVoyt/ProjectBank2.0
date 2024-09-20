@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ProjectBank.Infrastructure.Migrations
+namespace ProjectBank.DataAcces.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

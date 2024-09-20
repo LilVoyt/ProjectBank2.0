@@ -1,5 +1,5 @@
-﻿using ProjectBank.Application.Features.Customers.Commands;
-using ProjectBank.Infrastructure.Entities;
+﻿using ProjectBank.BusinessLogic.Features.Customers.Commands;
+using ProjectBank.DataAcces.Entities;
 
 namespace ProjectBank.Presentation.GraphQL.Models
 {

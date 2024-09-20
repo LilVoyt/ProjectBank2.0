@@ -2,13 +2,14 @@ using FluentValidation;
 using HotChocolate.Utilities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ProjectBank.Application.Features.Customers.Commands;
-using ProjectBank.Application.Validators.Accounts;
-using ProjectBank.Application.Validators.Customers;
-using ProjectBank.Infrastructure.Data;
-using ProjectBank.Infrastructure.Entities;
-using ProjectBank.Infrastructure.Services.Accounts;
-using ProjectBank.Infrastructure.Services.Customers;
+using ProjectBank.BusinessLogic.Features.Customers.Commands;
+using ProjectBank.BusinessLogic.MappingProfiles;
+using ProjectBank.BusinessLogic.Validators.Accounts;
+using ProjectBank.BusinessLogic.Validators.Customers;
+using ProjectBank.DataAcces.Data;
+using ProjectBank.DataAcces.Entities;
+using ProjectBank.DataAcces.Services.Accounts;
+using ProjectBank.DataAcces.Services.Customers;
 using ProjectBank.Presentation.GraphQL.Models;
 using ProjectBank.Presentation.GraphQL.Mutations;
 using ProjectBank.Presentation.GraphQL.Queries;
@@ -27,6 +28,7 @@ namespace ProjectBank.Presentation
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<IMediator, Mediator>();
+            builder.Services.AddAutoMapper(typeof(RegistrationProfile));
 
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddTransient<IValidator<Customer>, CustomerValidator>();

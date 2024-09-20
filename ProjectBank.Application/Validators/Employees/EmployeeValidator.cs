@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Validators.Employees
+namespace ProjectBank.BusinessLogic.Validators.Employees
 {
     internal class EmployeeValidator : AbstractValidator<Employee>
     {

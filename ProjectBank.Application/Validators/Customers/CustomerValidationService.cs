@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectBank.Infrastructure.Data;
+using ProjectBank.DataAcces.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Validators.Customers
+namespace ProjectBank.BusinessLogic.Validators.Customers
 {
     public class CustomerValidationService : ICustomerValidationService
     {

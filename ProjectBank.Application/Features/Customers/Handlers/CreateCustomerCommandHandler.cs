@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
-using ProjectBank.Application.Features.Customers.Commands;
-using ProjectBank.Infrastructure.Entities;
-using ProjectBank.Infrastructure.Services.Customers;
+using ProjectBank.BusinessLogic.Features.Customers.Commands;
+using ProjectBank.DataAcces.Entities;
+using ProjectBank.DataAcces.Services.Customers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +11,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.WebPages;
 
-namespace ProjectBank.Application.Features.Customers.Handlers
+namespace ProjectBank.BusinessLogic.Features.Customers.Handlers
 {
     internal class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, Customer>
     {
         private readonly ICustomerService _customerService;
         private readonly IValidator<Customer> _validator;
+        private readonly IMapper _mapper;
 
-        public CreateCustomerCommandHandler(ICustomerService customerService, IValidator<Customer> validator)
+        public CreateCustomerCommandHandler(ICustomerService customerService, IValidator<Customer> validator, IMapper mapper)
         {
             _customerService = customerService;
             _validator = validator;
+            _mapper = mapper;
         }
 
         public async Task<Customer> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = new Customer
-            {
-                Id = Guid.NewGuid(),
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Country = request.Country,
-                PhoneNumber = request.PhoneNumber,
-                Email = request.Email
-            };
+            var customer = _mapper.Map<Customer>(request);
 
             var validationResult = await _validator.ValidateAsync(customer, cancellationToken);
             if (!validationResult.IsValid)

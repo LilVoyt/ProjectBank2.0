@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Validators.Accounts
+namespace ProjectBank.BusinessLogic.Validators.Accounts
 {
     public class AccountValidator : AbstractValidator<Account>
     {

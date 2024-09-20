@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectBank.Infrastructure.Data;
+using ProjectBank.DataAcces.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Validators.Accounts
+namespace ProjectBank.BusinessLogic.Validators.Accounts
 {
     public class AccountValidationService : IAccountValidationService
     {

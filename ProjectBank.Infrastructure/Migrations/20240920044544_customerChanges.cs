@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace ProjectBank.Infrastructure.Migrations
+namespace ProjectBank.DataAcces.Migrations
 {
     /// <inheritdoc />
     public partial class customerChanges : Migration

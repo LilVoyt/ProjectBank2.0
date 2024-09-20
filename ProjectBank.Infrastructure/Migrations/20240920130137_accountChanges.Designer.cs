@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProjectBank.Infrastructure.Data;
+using ProjectBank.DataAcces.Data;
 
 #nullable disable
 
-namespace ProjectBank.Infrastructure.Migrations
+namespace ProjectBank.DataAcces.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20240920130137_accountChanges")]

@@ -1,9 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ProjectBank.Application.Features.Customers.Commands;
+using ProjectBank.BusinessLogic.Features.Customers.Commands;
 using ProjectBank.BusinessLogic.Features.Accounts.Commands;
 using ProjectBank.BusinessLogic.Models;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Entities;
+using Microsoft.EntityFrameworkCore;
+using ProjectBank.DataAcces.Data;
+using AutoMapper;
 
 namespace ProjectBank.Presentation.Controllers
 {
@@ -12,39 +15,35 @@ namespace ProjectBank.Presentation.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public RegisterController(IMediator mediator)
+        private readonly DataContext _dataContext;
+        private readonly IMapper _mapper;
+        public RegisterController(IMediator mediator, DataContext dataContext, IMapper mapper)
         {
             _mediator = mediator;
+            _dataContext = dataContext;
+            _mapper = mapper;
         }
 
 
         [HttpPost]
         public async Task<IActionResult> Post(UserDto user)
         {
-            CreateCustomerCommand customer = new CreateCustomerCommand()
+            using (var transaction = await _dataContext.Database.BeginTransactionAsync())
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Country = user.Country,
-                PhoneNumber = user.PhoneNumber,
-                Email = user.Email
-            };
 
 
-           var customerRes =  await _mediator.Send(customer);
+                var customer = _mapper.Map<CreateCustomerCommand>(user);
 
-            CreateAccountCommand account = new CreateAccountCommand()
-            {
-                Name = user.Name,
-                Login = user.Login,
-                Password = user.Password,
-                CustomerID = customerRes.Id,
-            };
+                var customerRes = await _mediator.Send(customer);
+
+                var account = _mapper.Map<CreateAccountCommand>(user);
+                account.CustomerID = customerRes.Id;
 
 
-            await _mediator.Send(account);
-            return Ok();
-        }
+                await _mediator.Send(account);
+                return Ok();
+            }
+        }    
 
 
     }

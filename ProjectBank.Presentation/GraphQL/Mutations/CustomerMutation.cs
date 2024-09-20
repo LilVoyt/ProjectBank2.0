@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using ProjectBank.Application.Features.Customers.Commands;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.BusinessLogic.Features.Customers.Commands;
+using ProjectBank.DataAcces.Entities;
 using System.Threading.Tasks;
 
 namespace ProjectBank.Presentation.GraphQL.Mutations

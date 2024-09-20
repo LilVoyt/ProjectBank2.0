@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Validators.Employees
+namespace ProjectBank.BusinessLogic.Validators.Employees
 {
     internal interface IEmployeeValidationService
     {

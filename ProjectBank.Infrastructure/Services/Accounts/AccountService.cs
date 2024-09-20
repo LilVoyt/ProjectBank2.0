@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectBank.Infrastructure.Data;
-using ProjectBank.Infrastructure.Entities;
+using ProjectBank.DataAcces.Data;
+using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Infrastructure.Services.Accounts
+namespace ProjectBank.DataAcces.Services.Accounts
 {
     public class AccountService : IAccountService
     {

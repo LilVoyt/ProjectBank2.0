@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
 using MediatR;
-using ProjectBank.Application.Features.Customers.Queries;
-using ProjectBank.Infrastructure.Entities;
-using ProjectBank.Infrastructure.Services.Customers;
+using ProjectBank.BusinessLogic.Features.Customers.Queries;
+using ProjectBank.DataAcces.Entities;
+using ProjectBank.DataAcces.Services.Customers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.Application.Features.Customers.Handlers
+namespace ProjectBank.BusinessLogic.Features.Customers.Handlers
 {
     internal class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, List<Customer>>
     {
