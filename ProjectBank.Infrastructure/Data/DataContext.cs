@@ -27,15 +27,15 @@ namespace ProjectBank.Infrastructure.Data
                 entity.Property(b => b.CustomerID)
                   .IsRequired();
 
-                //entity.Property(b => b.EmployeeID)
-                //.IsRequired();
-
                 entity.HasOne(b => b.Customer)
                 .WithOne(a => a.Account)
                 .HasForeignKey<Account>(b => b.CustomerID);
 
                 entity.HasMany(b => b.Employees)
                 .WithMany(a => a.Accounts);
+
+                entity.HasIndex(b => b.Login)
+                .IsUnique();
             });
 
             modelBuilder.Entity<Card>(entity =>

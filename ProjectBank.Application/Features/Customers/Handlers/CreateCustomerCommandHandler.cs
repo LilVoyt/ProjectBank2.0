@@ -28,10 +28,10 @@ namespace ProjectBank.Application.Features.Customers.Handlers
             var customer = new Customer
             {
                 Id = Guid.NewGuid(),
-                Name = request.Name,
+                FirstName = request.FirstName,
                 LastName = request.LastName,
                 Country = request.Country,
-                Phone = request.Phone,
+                PhoneNumber = request.PhoneNumber,
                 Email = request.Email
             };
 

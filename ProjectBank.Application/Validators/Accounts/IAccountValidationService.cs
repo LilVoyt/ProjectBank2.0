@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.Application.Validators.Accounts
 {
-    internal interface IAccountValidationService
+    public interface IAccountValidationService
     {
         Task<bool> IsCustomerExists(Guid customerID, CancellationToken cancellationToken);
         Task<bool> IsEmployeeExistsOrNull(Guid? employeeID, CancellationToken cancellationToken);

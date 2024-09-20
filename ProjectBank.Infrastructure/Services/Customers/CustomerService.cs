@@ -26,17 +26,17 @@ namespace ProjectBank.Infrastructure.Services.Customers
 
             if (!string.IsNullOrEmpty(search))
             {
-                customers = customers.Where(n => n.Name.ToLower().Contains(search.ToLower()));
+                customers = customers.Where(n => n.FirstName.ToLower().Contains(search.ToLower()));
             }
 
             Expression<Func<Customer, object>> selectorKey = sortItem?.ToLower() switch
             {
-                "name" => customer => customer.Name,
+                "name" => customer => customer.FirstName,
                 "lastname" => customer => customer.LastName,
                 "country" => customer => customer.Country,
-                "phone" => customer => customer.Phone,
+                "phone" => customer => customer.PhoneNumber,
                 "email" => customer => customer.Email,
-                _ => customers => customers.Name
+                _ => customers => customers.FirstName
             };
 
             customers = sortOrder?.ToLower() == "desc"

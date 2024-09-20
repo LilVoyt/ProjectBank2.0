@@ -8,12 +8,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.Presentation", 
 		{213CDFE3-55B7-439B-AD02-F42E75011D9A} = {213CDFE3-55B7-439B-AD02-F42E75011D9A}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.Application", "ProjectBank.Application\ProjectBank.Application.csproj", "{213CDFE3-55B7-439B-AD02-F42E75011D9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.BusinessLogic", "ProjectBank.Application\ProjectBank.BusinessLogic.csproj", "{213CDFE3-55B7-439B-AD02-F42E75011D9A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E083EECC-B58D-421F-802B-5995209762A6} = {E083EECC-B58D-421F-802B-5995209762A6}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.Infrastructure", "ProjectBank.Infrastructure\ProjectBank.Infrastructure.csproj", "{E083EECC-B58D-421F-802B-5995209762A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.DataAcces", "ProjectBank.Infrastructure\ProjectBank.DataAcces.csproj", "{E083EECC-B58D-421F-802B-5995209762A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

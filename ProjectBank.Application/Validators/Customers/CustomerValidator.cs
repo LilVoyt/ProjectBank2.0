@@ -16,7 +16,7 @@ namespace ProjectBank.Application.Validators.Customers
         {
             _validationService = validationService;
 
-            RuleFor(c => c.Name)
+            RuleFor(c => c.FirstName)
                 .NotEmpty()
                 .WithMessage("Name cannot be empty.")
                 .MaximumLength(20)
@@ -36,7 +36,7 @@ namespace ProjectBank.Application.Validators.Customers
                 .MustAsync(_validationService.Is_Email_Not_In_DB)
                 .WithMessage("Email is already registered!");
 
-            RuleFor(c => c.Phone)
+            RuleFor(c => c.PhoneNumber)
                 .NotEmpty()
                 .WithMessage("Phone number cannot be empty.")
                 .MustAsync(_validationService.Is_PhoneNumber_Valid)

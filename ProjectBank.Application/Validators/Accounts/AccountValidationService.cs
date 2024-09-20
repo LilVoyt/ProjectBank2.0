@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.Application.Validators.Accounts
 {
-    internal class AccountValidationService : IAccountValidationService
+    public class AccountValidationService : IAccountValidationService
     {
         private readonly DataContext _context;
 

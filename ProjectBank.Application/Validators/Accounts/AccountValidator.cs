@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.Application.Validators.Accounts
 {
-    internal class AccountValidator : AbstractValidator<Account>
+    public class AccountValidator : AbstractValidator<Account>
     {
         private readonly IAccountValidationService _validationService;
 
-        internal AccountValidator(IAccountValidationService validationService)
+        public AccountValidator(IAccountValidationService validationService)
         {
             _validationService = validationService;
 
