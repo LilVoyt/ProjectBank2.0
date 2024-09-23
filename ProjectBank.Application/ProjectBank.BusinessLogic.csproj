@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Accounts\Queries\" />
     <Folder Include="Features\Cards\Commands\" />
     <Folder Include="Features\Cards\Handlers\" />
     <Folder Include="Features\Cards\Queries\" />

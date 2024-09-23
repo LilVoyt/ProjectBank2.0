@@ -48,6 +48,22 @@ namespace ProjectBank.DataAcces.Services.Accounts
             return accountList;
         }
 
+        public Account GetByLogin(string login)
+        {
+            Account? account =  _context.Account.SingleOrDefault(a => a.Login == login);
+
+            account.Customer =  _context.Customer.Single(c => c.Id == account.CustomerID);
+
+            account.Cards =  _context.Card.Where(c => c.AccountID == account.Id).ToList();
+
+            //var account = await _context.Accounts
+            //    .Include(a => a.Customer)
+            //    .Include(a => a.Cards)
+            //    .SingleOrDefaultAsync(a => a.Login == login);
+
+            return account;
+        }
+
         public async Task<Account> Post(Account account)
         {
             var validationResult = await _validator.ValidateAsync(account);

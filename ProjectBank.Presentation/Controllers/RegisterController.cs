@@ -44,7 +44,6 @@ namespace ProjectBank.Presentation.Controllers
                 return Ok();
             }
         }
-
         
     }
 }
