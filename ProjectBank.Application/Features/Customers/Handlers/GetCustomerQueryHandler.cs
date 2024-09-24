@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Customers.Handlers
 {
-    internal class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, List<Customer>>
+    public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, List<Customer>>
     {
         private readonly ICustomerService _customerService;
 

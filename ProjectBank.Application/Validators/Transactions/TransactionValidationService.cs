@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Validators.Transactions
 {
-    internal class TransactionValidationService : ITransactionValidationService
+    public class TransactionValidationService : ITransactionValidationService
     {
     }
 }

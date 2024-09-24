@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Validators.Transactions
 {
-    internal class TransactionValidator : AbstractValidator<Transaction>
+    public class TransactionValidator : AbstractValidator<Transaction>
     {
         private readonly ITransactionValidationService _validationService;
 

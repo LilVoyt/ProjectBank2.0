@@ -6,10 +6,13 @@ using ProjectBank.BusinessLogic.Features.Customers.Commands;
 using ProjectBank.BusinessLogic.MappingProfiles;
 using ProjectBank.BusinessLogic.Validators.Accounts;
 using ProjectBank.BusinessLogic.Validators.Customers;
+using ProjectBank.BusinessLogic.Validators.Transactions;
 using ProjectBank.DataAcces.Data;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Accounts;
 using ProjectBank.DataAcces.Services.Customers;
+using ProjectBank.DataAcces.Services.Transactions;
+using ProjectBank.Infrastructure.Services.Transactions;
 using ProjectBank.Presentation.GraphQL.Models;
 using ProjectBank.Presentation.GraphQL.Mutations;
 using ProjectBank.Presentation.GraphQL.Queries;
@@ -39,6 +42,11 @@ namespace ProjectBank.Presentation
             builder.Services.AddTransient<IValidator<Account>, AccountValidator>();
             builder.Services.AddScoped<AbstractValidator<Account>, AccountValidator>();
             builder.Services.AddScoped<IAccountValidationService, AccountValidationService>();
+
+            builder.Services.AddScoped<ITransactionService, TransactionService>();
+            builder.Services.AddTransient<IValidator<Transaction>, TransactionValidator>();
+            builder.Services.AddScoped<AbstractValidator<Transaction>, TransactionValidator>();
+            builder.Services.AddScoped<ITransactionValidationService, TransactionValidationService>();
 
             builder.Services.AddTransient<CustomerQuery>();
             builder.Services.AddTransient<CustomerMutation>();

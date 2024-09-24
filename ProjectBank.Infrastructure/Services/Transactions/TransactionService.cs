@@ -1,107 +1,98 @@
-﻿//using FluentValidation;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using ProjectBank.Infrastructure.Data;
-//using ProjectBank.Infrastructure.Entities;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Linq.Expressions;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProjectBank.DataAcces.Data;
+using ProjectBank.DataAcces.Entities;
+using ProjectBank.DataAcces.Services.Transactions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
 
-//namespace ProjectBank.Infrastructure.Services.Transactions
-//{
-//    public class TransactionService : ITransactionService
-//    {
-//        private readonly DataContext _context;
-//        private readonly TransactionMapper _mapper;
-//        private readonly IValidator<Transaction> _validator;
+namespace ProjectBank.Infrastructure.Services.Transactions
+{
+    public class TransactionService : ITransactionService
+    {
+        private readonly DataContext _context;
 
-//        public TransactionService(DataContext context, TransactionMapper mapper, IValidator<Transaction> validator)
-//        {
-//            _context = context;
-//            _mapper = mapper;
-//            _validator = validator;
-//        }
+        public TransactionService(DataContext context)
+        {
+            _context = context;
+        }
 
-//        public async Task<ActionResult<List<TransactionRequestModel>>> Get(Guid? search, string? sortItem, string? sortOrder)
-//        {
-//            IQueryable<Transaction> transactions = _context.Transaction;
+        public async Task<List<Transaction>> Get(Guid? sender, Guid? receiver, string? sortItem, string? sortOrder)
+        {
+            IQueryable<Transaction> transactions = _context.Transaction;
 
-//            if (search.HasValue)
-//            {
-//                transactions = transactions.Where(t => t.CardSenderID == search);
-//            }
+            if (sender.HasValue)
+            {
+                transactions = transactions.Where(t => t.CardSenderID == sender);
+            }
 
-//            Expression<Func<Transaction, object>> selectorKey = sortItem?.ToLower() switch
-//            {
-//                "date" => transactions => transactions.TransactionDate,
-//                "sum" => transactions => transactions.Sum,
-//                _ => transactions => transactions.TransactionDate
-//            };
+            if (receiver.HasValue)
+            {
+                transactions = transactions.Where(t => t.CardReceiverID == receiver);
+            }
 
-//            transactions = sortOrder?.ToLower() == "desc"
-//                ? transactions.OrderByDescending(selectorKey)
-//                : transactions.OrderBy(selectorKey);
-//            List<Transaction> transactionsList = await transactions.ToListAsync();
+            Expression<Func<Transaction, object>> selectorKey = sortItem?.ToLower() switch
+            {
+                "date" => transactions => transactions.TransactionDate,
+                "sum" => transactions => transactions.Sum,
+                _ => transactions => transactions.TransactionDate
+            };
 
-//            List<TransactionRequestModel> response = _mapper.GetRequestModels(transactionsList);
+            transactions = sortOrder?.ToLower() == "desc"
+                ? transactions.OrderByDescending(selectorKey)
+                : transactions.OrderBy(selectorKey);
+            List<Transaction> transactionsList = await transactions.ToListAsync();
 
-//            return response;
-//        }
+            return transactionsList;
+        }
 
-//        public async Task<Transaction> Post(TransactionRequestModel transaction)
-//        {
-//            var res = _mapper.GetTransaction(transaction);
+        public async Task<Transaction> Post(Transaction transaction)
+        {
+            await _context.Transaction.AddAsync(transaction);
+            await _context.SaveChangesAsync();
 
-//            var validationResult = await _validator.ValidateAsync(res);
-//            if (!validationResult.IsValid)
-//            {
-//                var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-//                throw new ValidationException(errorMessages);
-//            }
+            return transaction;
+        }
 
-//            await _context.Transaction.AddAsync(res);
-//            await _context.SaveChangesAsync();
+        public async Task<Transaction> Update(Guid id, Transaction requestModel)
+        {
+            //var transaction = await _context.Transaction.FindAsync(id);
+            //if (transaction == null)
+            //{
+            //    throw new KeyNotFoundException($"Account with ID {id} not found.");
+            //}
+            //transaction = _mapper.PutRequestModelInTransaction(transaction, requestModel);
+            //var validationResult = await _validator.ValidateAsync(transaction);
+            //if (!validationResult.IsValid)
+            //{
+            //    var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+            //    throw new ValidationException(errorMessages);
+            //}
+            //_context.Transaction.Update(transaction);
+            //await _context.SaveChangesAsync();
 
-//            return res;
-//        }
+            return requestModel;
+        }
 
-//        public async Task<Transaction> Update(Guid id, TransactionRequestModel requestModel)
-//        {
-//            var transaction = await _context.Transaction.FindAsync(id);
-//            if (transaction == null)
-//            {
-//                throw new KeyNotFoundException($"Account with ID {id} not found.");
-//            }
-//            transaction = _mapper.PutRequestModelInTransaction(transaction, requestModel);
-//            var validationResult = await _validator.ValidateAsync(transaction);
-//            if (!validationResult.IsValid)
-//            {
-//                var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-//                throw new ValidationException(errorMessages);
-//            }
-//            _context.Transaction.Update(transaction);
-//            await _context.SaveChangesAsync();
+        public async Task<Transaction> Delete(Guid id)
+        {
+            var transaction = await _context.Transaction.FindAsync(id);
+            if (transaction == null)
+            {
+                throw new KeyNotFoundException($"Account with ID {id} not found.");
+            }
 
-//            return transaction;
-//        }
+            transaction.CardSenderID = Guid.Empty;
+            transaction.CardReceiverID = Guid.Empty;
+            _context.Transaction.Remove(transaction);
+            await _context.SaveChangesAsync();
 
-//        public async Task<Transaction> Delete(Guid id)
-//        {
-//            var transaction = await _context.Transaction.FindAsync(id);
-//            if (transaction == null)
-//            {
-//                throw new KeyNotFoundException($"Account with ID {id} not found.");
-//            }
-
-//            transaction.CardSenderID = Guid.Empty;
-//            transaction.CardReceiverID = Guid.Empty;
-//            _context.Transaction.Remove(transaction);
-//            await _context.SaveChangesAsync();
-
-//            return transaction;
-//        }
-//    }
-//}
+            return transaction;
+        }
+    }
+}
