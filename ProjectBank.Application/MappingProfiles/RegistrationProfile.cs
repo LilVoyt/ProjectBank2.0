@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProjectBank.BusinessLogic.Features.Accounts.Commands;
 using ProjectBank.BusinessLogic.Features.Customers.Commands;
+using ProjectBank.BusinessLogic.Features.Register_Login.Commands;
 using ProjectBank.BusinessLogic.Models;
 using ProjectBank.DataAcces.Entities;
 using System;
@@ -33,7 +34,7 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Password, opt =>
                 opt.MapFrom(src => src.Password));
 
-            CreateMap<CreateCustomerCommand, Customer>()
+            CreateMap<CreateNewUserCommand, Customer>()
                 .ForMember(dest => dest.Id, opt =>
                 opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.FirstName, opt =>
@@ -47,15 +48,25 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Country, opt =>
                 opt.MapFrom(src => src.Country));
 
-            CreateMap<CreateAccountCommand, Account>()
+            CreateMap<CreateNewUserCommand, Account>()
+                .ForMember(dest => dest.Id, opt =>
+                opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.Name, opt =>
                 opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.CustomerID, opt =>
-                opt.MapFrom(src => src.CustomerID))
+                //.ForMember(dest => dest.CustomerID, opt =>
+                //opt.MapFrom(src => src.CustomerID))
                 .ForMember(dest => dest.Login, opt =>
                 opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Password, opt =>
                 opt.MapFrom(src => src.Password));
+
+            CreateMap<UserLoginDto, LoginIntoAccountCommand>()
+                .ForMember(dest => dest.Login, opt =>
+                opt.MapFrom(src => src.Login))
+                .ForMember(dest => dest.Password, opt =>
+                opt.MapFrom(src => src.Password));
+
+
         }
     }
 }

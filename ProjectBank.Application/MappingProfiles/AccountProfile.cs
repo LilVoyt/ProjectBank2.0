@@ -9,6 +9,8 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
         public AccountProfile()
         {
             CreateMap<Account, AccountDto>()
+                .ForMember(dest => dest.Id, opt =>
+                opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt =>
                     opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Customer, opt =>
@@ -17,6 +19,8 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                     opt.MapFrom(src => src.Cards));
 
             CreateMap<Customer, CustomerDto>()
+                .ForMember(dest => dest.Id, opt =>
+                    opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.FirstName, opt =>
                     opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt =>
@@ -29,6 +33,8 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                     opt.MapFrom(src => src.Email));
 
             CreateMap<Card, CardDto>()
+                .ForMember(dest => dest.Id, opt =>
+                    opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.NumberCard, opt =>
                     opt.MapFrom(src => src.NumberCard))
                 .ForMember(dest => dest.CardName, opt =>

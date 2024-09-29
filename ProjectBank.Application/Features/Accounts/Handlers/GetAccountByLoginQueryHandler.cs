@@ -29,19 +29,15 @@ namespace ProjectBank.BusinessLogic.Features.Accounts.Handlers
 
         public async Task<AccountDto> Handle(GetAccountByLoginQuery request, CancellationToken cancellationToken)
         {
-            // Очікуємо завершення асинхронної операції
             var account = _accountService.GetByLogin(request.Login);
 
-            // Перевірка на null
             if (account == null)
             {
                 throw new KeyNotFoundException("Account not found.");
             }
 
-            // Мапимо Account на AccountDto
             var accountDto = _mapper.Map<AccountDto>(account);
 
-            // Якщо потрібно мапити додаткові властивості
             if (account.Customer != null)
             {
                 accountDto.Customer = _mapper.Map<CustomerDto>(account.Customer);
@@ -51,7 +47,6 @@ namespace ProjectBank.BusinessLogic.Features.Accounts.Handlers
                 accountDto.Cards = _mapper.Map<List<CardDto>>(account.Cards);
             }
 
-            Console.WriteLine($"{accountDto.Customer.LastName}");
             return accountDto;
         }
 

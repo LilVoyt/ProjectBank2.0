@@ -28,7 +28,7 @@
     <Folder Include="Features\Employees\Commands\" />
     <Folder Include="Features\Employees\Handlers\" />
     <Folder Include="Features\Employees\Queries\" />
-    <Folder Include="Features\Register\Handlers\" />
+    <Folder Include="Features\Register&amp;Login\Queries\" />
     <Folder Include="Features\Transactions\Commands\" />
   </ItemGroup>
 

@@ -7,10 +7,12 @@ using ProjectBank.DataAcces.Entities;
 using Microsoft.EntityFrameworkCore;
 using ProjectBank.DataAcces.Data;
 using AutoMapper;
+using ProjectBank.BusinessLogic.Features.Register_Login.Commands;
+using GreenDonut;
 
 namespace ProjectBank.Presentation.Controllers
 {
-    [Route("api/register")]
+    [Route("api/regandlog")]
     [ApiController]
     public class RegisterController : ControllerBase
     {
@@ -25,25 +27,32 @@ namespace ProjectBank.Presentation.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Post(UserRegisterDto user)
+        [HttpPost("/register")]
+        public async Task<IActionResult> Post(CreateNewUserCommand user)
         {
-            using (var transaction = await _dataContext.Database.BeginTransactionAsync())
+
+            var result = await _mediator.Send(user);
+
+            if (result != null)
             {
-
-
-                var customer = _mapper.Map<CreateCustomerCommand>(user);
-
-                var customerRes = await _mediator.Send(customer);
-
-                var account = _mapper.Map<CreateAccountCommand>(user);
-                account.CustomerID = customerRes.Id;
-
-
-                await _mediator.Send(account);
-                return Ok();
+                return Ok(true);
             }
+
+            return Unauthorized();
         }
-        
+
+        [HttpPost("/login")]
+        public async Task<IActionResult> Login(LoginIntoAccountCommand userLogin)
+        {
+            var result = _mediator.Send(userLogin);
+
+            if (result.IsCompleted)
+            {
+                return Ok(true);
+            }
+
+            return Unauthorized(false);
+        }
+
     }
 }

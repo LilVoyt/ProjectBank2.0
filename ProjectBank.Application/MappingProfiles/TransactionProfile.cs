@@ -22,10 +22,10 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 opt.MapFrom(src => src.TransactionDate))
                 .ForMember(dest => dest.Sum, opt =>
                 opt.MapFrom(src => src.Sum))
-                .ForMember(dest => dest.CardSenderID, opt =>
-                opt.MapFrom(src => src.CardSenderID))
-                .ForMember(dest => dest.CardReceiverID, opt =>
-                opt.MapFrom(src => src.CardReceiverID));
+                .ForMember(dest => dest.CardSender, opt =>
+                opt.MapFrom(src => src.CardSender))
+                .ForMember(dest => dest.CardReceiver, opt =>
+                opt.MapFrom(src => src.CardReceiver));
         }
 
     }

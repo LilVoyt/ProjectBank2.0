@@ -56,22 +56,28 @@ namespace ProjectBank.DataAcces.Services.Accounts
 
             account.Cards =  _context.Card.Where(c => c.AccountID == account.Id).ToList();
 
-            //var account = await _context.Accounts
-            //    .Include(a => a.Customer)
-            //    .Include(a => a.Cards)
-            //    .SingleOrDefaultAsync(a => a.Login == login);
+            foreach (var card in account.Cards)
+            {
+                card.SentTransactions = _context.Transaction.Where(x => x.CardSenderID == card.Id).ToList();
+                card.ReceivedTransactions = _context.Transaction.Where(x => x.CardReceiverID == card.Id).ToList();
+            }
 
             return account;
         }
 
+        public Account? GetByLoginAndPassword(string login, string password)
+        {
+            return _context.Account.SingleOrDefault(a => a.Login == login && a.Password == password);
+        }
+
         public async Task<Account> Post(Account account)
         {
-            var validationResult = await _validator.ValidateAsync(account);
-            if (!validationResult.IsValid)
-            {
-                var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-                throw new ValidationException(errorMessages);
-            }
+            //var validationResult = await _validator.ValidateAsync(account);
+            //if (!validationResult.IsValid)
+            //{
+            //    var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+            //    throw new ValidationException(errorMessages);
+            //}
 
             await _context.Account.AddAsync(account);
             await _context.SaveChangesAsync();
