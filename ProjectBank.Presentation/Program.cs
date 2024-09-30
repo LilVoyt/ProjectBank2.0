@@ -1,7 +1,9 @@
 using FluentValidation;
 using HotChocolate.Utilities;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ProjectBank.BusinessLogic.Features.Customers.Commands;
 using ProjectBank.BusinessLogic.MappingProfiles;
 using ProjectBank.BusinessLogic.Validators.Accounts;
@@ -16,6 +18,7 @@ using ProjectBank.Infrastructure.Services.Transactions;
 using ProjectBank.Presentation.GraphQL.Models;
 using ProjectBank.Presentation.GraphQL.Mutations;
 using ProjectBank.Presentation.GraphQL.Queries;
+using System.Text;
 
 namespace ProjectBank.Presentation
 {
@@ -81,6 +84,25 @@ namespace ProjectBank.Presentation
                     });
             });
 
+
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(option =>
+            {
+                option.RequireHttpsMetadata = false;
+                option.SaveToken = true;
+                option.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("myHardSecret7asdasdasdasd7777777777")),
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                };
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -90,6 +112,8 @@ namespace ProjectBank.Presentation
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

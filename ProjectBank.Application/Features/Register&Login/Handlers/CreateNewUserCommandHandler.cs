@@ -50,6 +50,7 @@ namespace ProjectBank.BusinessLogic.Features.Register_Login.Handlers
 
             var account = _mapper.Map<Account>(request);
             account.CustomerID = customer.Id;
+            account.Token = CreateJwt.Handle(account);
 
             await _accountService.Post(account);
             return account;

@@ -30,6 +30,7 @@ namespace ProjectBank.BusinessLogic.Features.Register_Login.Handlers
         public async Task<Account> Handle(LoginIntoAccountCommand request, CancellationToken cancellationToken)
         {
             var account = _accountService.GetByLoginAndPassword(request.Login, request.Password);
+            account.Token = CreateJwt.Handle(account);
             if (account == null)
             {
                 throw new KeyNotFoundException();

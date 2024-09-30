@@ -9,6 +9,10 @@ using ProjectBank.DataAcces.Data;
 using AutoMapper;
 using ProjectBank.BusinessLogic.Features.Register_Login.Commands;
 using GreenDonut;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ProjectBank.Presentation.Controllers
 {
@@ -31,28 +35,35 @@ namespace ProjectBank.Presentation.Controllers
         public async Task<IActionResult> Post(CreateNewUserCommand user)
         {
 
-            var result = await _mediator.Send(user);
+            var account = _mediator.Send(user);
 
-            if (result != null)
+            if (account != null)
             {
-                return Ok(true);
-            }
-
-            return Unauthorized();
-        }
-
-        [HttpPost("/login")]
-        public async Task<IActionResult> Login(LoginIntoAccountCommand userLogin)
-        {
-            var result = _mediator.Send(userLogin);
-
-            if (result.IsCompleted)
-            {
-                return Ok(true);
+                return Ok(new
+                {
+                    Token = account.Result.Token,
+                    Message = "Register succes"
+                });
             }
 
             return Unauthorized(false);
         }
 
+        [HttpPost("/login")]
+        public async Task<IActionResult> Login(LoginIntoAccountCommand userLogin)
+        {
+            var account = _mediator.Send(userLogin);
+
+            if (account.IsCompleted)
+            {
+                return Ok(new
+                {
+                    Token = account.Result.Token,
+                    Message = "Login succes"
+                });
+            }
+
+            return Unauthorized(false);
+        }
     }
 }
