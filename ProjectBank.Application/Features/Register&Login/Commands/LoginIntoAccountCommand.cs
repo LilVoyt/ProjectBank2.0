@@ -10,7 +10,7 @@ namespace ProjectBank.BusinessLogic.Features.Register_Login.Commands
 {
     public class LoginIntoAccountCommand : IRequest<Account>
     {
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public string Login { get; set; } = String.Empty;
+        public string Password { get; set; } = String.Empty;
     }
 }

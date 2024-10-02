@@ -48,37 +48,41 @@ namespace ProjectBank.DataAcces.Services.Accounts
             return accountList;
         }
 
-        public Account GetByLogin(string login)
+        public async Task<Account> GetByLogin(string login)
         {
-            Account? account =  _context.Account.SingleOrDefault(a => a.Login == login);
+            //Account? account =  await _context.Account.SingleOrDefaultAsync(a => a.Login == login);
 
-            account.Customer =  _context.Customer.Single(c => c.Id == account.CustomerID);
+            //account.Customer =  await _context.Customer.SingleAsync(c => c.Id == account.CustomerID);
 
-            account.Cards =  _context.Card.Where(c => c.AccountID == account.Id).ToList();
+            //account.Cards =  await _context.Card.Where(c => c.AccountID == account.Id).ToListAsync();
 
-            foreach (var card in account.Cards)
+            var account = await _context.Account
+                .Include(a => a.Customer)
+                .Include(a => a.Cards)
+                //.ThenInclude(c => c.SentTransactions)
+                //.Include(a => a.Cards)
+                //.ThenInclude(c => c.ReceivedTransactions)
+                .SingleOrDefaultAsync(a => a.Login == login);
+
+            if (account.Cards.Count > 0)
             {
-                card.SentTransactions = _context.Transaction.Where(x => x.CardSenderID == card.Id).ToList();
-                card.ReceivedTransactions = _context.Transaction.Where(x => x.CardReceiverID == card.Id).ToList();
+                foreach (var card in account.Cards)
+                {
+                    card.SentTransactions = await _context.Transaction.Where(x => x.CardSenderID == card.Id).ToListAsync();
+                    card.ReceivedTransactions = await _context.Transaction.Where(x => x.CardReceiverID == card.Id).ToListAsync();
+                }
             }
 
             return account;
         }
 
-        public Account? GetByLoginAndPassword(string login, string password)
+        public async Task<Account?> GetByLoginAndPassword(string login, string password)
         {
-            return _context.Account.SingleOrDefault(a => a.Login == login && a.Password == password);
+            return await _context.Account.SingleOrDefaultAsync(a => a.Login == login && a.Password == password);
         }
 
         public async Task<Account> Post(Account account)
         {
-            //var validationResult = await _validator.ValidateAsync(account);
-            //if (!validationResult.IsValid)
-            //{
-            //    var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-            //    throw new ValidationException(errorMessages);
-            //}
-
             await _context.Account.AddAsync(account);
             await _context.SaveChangesAsync();
             return account;

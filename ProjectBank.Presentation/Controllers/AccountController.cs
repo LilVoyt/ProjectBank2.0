@@ -19,8 +19,8 @@ namespace ProjectBank.Presentation.Controllers
         public async Task<IActionResult> GetByLogin(string login)
         {
             GetAccountByLoginQuery loginQuery = new GetAccountByLoginQuery() { Login = login };
-            var result = _mediator.Send(loginQuery);
-            return Ok(result.Result);
+            var result = await _mediator.Send(loginQuery);
+            return Ok(result);
         }
     }
 }

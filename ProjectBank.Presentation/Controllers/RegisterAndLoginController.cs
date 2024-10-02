@@ -1,18 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ProjectBank.BusinessLogic.Features.Customers.Commands;
-using ProjectBank.BusinessLogic.Features.Accounts.Commands;
-using ProjectBank.BusinessLogic.Models;
-using ProjectBank.DataAcces.Entities;
-using Microsoft.EntityFrameworkCore;
-using ProjectBank.DataAcces.Data;
-using AutoMapper;
 using ProjectBank.BusinessLogic.Features.Register_Login.Commands;
-using GreenDonut;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ProjectBank.Presentation.Controllers
 {
@@ -21,13 +9,9 @@ namespace ProjectBank.Presentation.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly DataContext _dataContext;
-        private readonly IMapper _mapper;
-        public RegisterController(IMediator mediator, DataContext dataContext, IMapper mapper)
+        public RegisterController(IMediator mediator)
         {
             _mediator = mediator;
-            _dataContext = dataContext;
-            _mapper = mapper;
         }
 
 
@@ -35,35 +19,46 @@ namespace ProjectBank.Presentation.Controllers
         public async Task<IActionResult> Post(CreateNewUserCommand user)
         {
 
-            var account = _mediator.Send(user);
-
-            if (account != null)
+            try
             {
+                var account = await _mediator.Send(user);
                 return Ok(new
                 {
-                    Token = account.Result.Token,
-                    Message = "Register succes"
+                    Token = account.Token,
+                    Message = "Login success"
                 });
             }
-
-            return Unauthorized(false);
+            catch (KeyNotFoundException)
+            {
+                return Unauthorized(new { Message = "Invalid login or password." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred.", Details = ex.Message });
+            }
         }
 
         [HttpPost("/login")]
         public async Task<IActionResult> Login(LoginIntoAccountCommand userLogin)
         {
-            var account = _mediator.Send(userLogin);
-
-            if (account.IsCompleted)
+            try
             {
+                var account = await _mediator.Send(userLogin);
                 return Ok(new
                 {
-                    Token = account.Result.Token,
-                    Message = "Login succes"
+                    Token = account.Token,
+                    Message = "Login success"
                 });
             }
-
-            return Unauthorized(false);
+            catch (KeyNotFoundException)
+            {
+                return Unauthorized(new { Message = "Invalid login or password." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred.", Details = ex.Message });
+            }
         }
+
     }
 }

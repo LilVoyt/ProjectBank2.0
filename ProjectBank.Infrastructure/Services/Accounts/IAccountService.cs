@@ -10,9 +10,9 @@ namespace ProjectBank.DataAcces.Services.Accounts
 {
     public interface IAccountService
     {
-        Task<ActionResult<List<Account>>> Get(string? Search, string? SortItem, string? SortOrder);
-        Account GetByLogin(string login);
-        Account? GetByLoginAndPassword(string login, string password);
+        Task<ActionResult<List<Account>>> Get(string? search, string? sortItem, string? sortOrder);
+        Task<Account> GetByLogin(string login);
+        Task<Account?> GetByLoginAndPassword(string login, string password);
         Task<Account> Post(Account account);
         Task<Account> Update(Guid id, Account account);
         Task<Account> Delete(Guid id);

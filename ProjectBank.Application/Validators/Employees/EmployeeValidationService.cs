@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectBank.DataAcces.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Validators.Employees
 {

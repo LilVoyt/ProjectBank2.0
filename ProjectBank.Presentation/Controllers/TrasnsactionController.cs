@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ProjectBank.BusinessLogic.Features.Customers.Queries;
 using ProjectBank.BusinessLogic.Features.Transactions.Queries;
 
 namespace ProjectBank.Presentation.Controllers

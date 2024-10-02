@@ -29,7 +29,7 @@ namespace ProjectBank.BusinessLogic.Features.Accounts.Handlers
 
         public async Task<AccountDto> Handle(GetAccountByLoginQuery request, CancellationToken cancellationToken)
         {
-            var account = _accountService.GetByLogin(request.Login);
+            var account = await _accountService.GetByLogin(request.Login);
 
             if (account == null)
             {
