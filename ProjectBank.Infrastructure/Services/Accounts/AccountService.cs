@@ -50,31 +50,31 @@ namespace ProjectBank.DataAcces.Services.Accounts
 
         public async Task<Account> GetByLogin(string login)
         {
-            //Account? account =  await _context.Account.SingleOrDefaultAsync(a => a.Login == login);
-
-            //account.Customer =  await _context.Customer.SingleAsync(c => c.Id == account.CustomerID);
-
-            //account.Cards =  await _context.Card.Where(c => c.AccountID == account.Id).ToListAsync();
-
-            var account = await _context.Account
+             var account = await _context.Account
                 .Include(a => a.Customer)
                 .Include(a => a.Cards)
-                //.ThenInclude(c => c.SentTransactions)
-                //.Include(a => a.Cards)
-                //.ThenInclude(c => c.ReceivedTransactions)
+                    .ThenInclude(c => c.SentTransactions)
+                .Include(a => a.Cards)
+                    .ThenInclude(c => c.ReceivedTransactions)
                 .SingleOrDefaultAsync(a => a.Login == login);
 
-            if (account.Cards.Count > 0)
+            if (account != null && account.Cards.Any())
             {
                 foreach (var card in account.Cards)
                 {
-                    card.SentTransactions = await _context.Transaction.Where(x => x.CardSenderID == card.Id).ToListAsync();
-                    card.ReceivedTransactions = await _context.Transaction.Where(x => x.CardReceiverID == card.Id).ToListAsync();
+                    card.SentTransactions = await _context.Transaction
+                        .Where(x => x.CardSenderID == card.Id)
+                        .ToListAsync();
+
+                    card.ReceivedTransactions = await _context.Transaction
+                        .Where(x => x.CardReceiverID == card.Id)
+                        .ToListAsync();
                 }
             }
 
             return account;
         }
+
 
         public async Task<Account?> GetByLoginAndPassword(string login, string password)
         {
@@ -123,3 +123,5 @@ namespace ProjectBank.DataAcces.Services.Accounts
         }
     }
 }
+
+

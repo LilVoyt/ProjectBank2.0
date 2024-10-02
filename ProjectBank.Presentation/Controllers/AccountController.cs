@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectBank.BusinessLogic.Features.Accounts.Queries;
 
@@ -15,7 +16,9 @@ namespace ProjectBank.Presentation.Controllers
             _mediator = mediator;
         }
 
+
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetByLogin(string login)
         {
             GetAccountByLoginQuery loginQuery = new GetAccountByLoginQuery() { Login = login };

@@ -115,6 +115,8 @@ namespace ProjectBank.Presentation
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("AllowAllOrigins");
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
