@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.DataAcces.Services.Cards
+namespace ProjectBank.BusinessLogic.Features.Cards
 {
     public class CreditCardGenerator
     {

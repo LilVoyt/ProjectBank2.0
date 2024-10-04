@@ -19,7 +19,7 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Id, opt =>
                 opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.TransactionDate, opt =>
-                opt.MapFrom(src => src.TransactionDate))
+                opt.MapFrom(src => src.Date))
                 .ForMember(dest => dest.Sum, opt =>
                 opt.MapFrom(src => src.Sum))
                 .ForMember(dest => dest.CardSender, opt =>

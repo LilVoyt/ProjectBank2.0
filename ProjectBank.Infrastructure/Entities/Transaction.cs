@@ -9,7 +9,7 @@ namespace ProjectBank.DataAcces.Entities
     public class Transaction
     {
         public Guid Id { get; set; }
-        public DateTime TransactionDate { get; set; }
+        public DateTime Date { get; set; }
         public double Sum { get; set; }
         public Guid CardSenderID { get; set; } = Guid.Empty;
         public Guid CardReceiverID { get; set; } = Guid.Empty;

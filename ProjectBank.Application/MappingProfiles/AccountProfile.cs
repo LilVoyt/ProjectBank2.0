@@ -42,7 +42,7 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Pincode, opt =>
                     opt.MapFrom(src => src.Pincode))
                 .ForMember(dest => dest.Data, opt =>
-                    opt.MapFrom(src => src.Data))
+                    opt.MapFrom(src => src.Date))
                 .ForMember(dest => dest.CVV, opt =>
                     opt.MapFrom(src => src.CVV))
                 .ForMember(dest => dest.Balance, opt =>

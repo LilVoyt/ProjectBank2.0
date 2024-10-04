@@ -38,9 +38,9 @@ namespace ProjectBank.Infrastructure.Services.Transactions
 
             Expression<Func<Transaction, object>> selectorKey = sortItem?.ToLower() switch
             {
-                "date" => transactions => transactions.TransactionDate,
+                "date" => transactions => transactions.Date,
                 "sum" => transactions => transactions.Sum,
-                _ => transactions => transactions.TransactionDate
+                _ => transactions => transactions.Date
             };
 
             transactions = sortOrder?.ToLower() == "desc"
