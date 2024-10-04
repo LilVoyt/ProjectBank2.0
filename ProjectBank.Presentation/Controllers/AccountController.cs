@@ -18,7 +18,7 @@ namespace ProjectBank.Presentation.Controllers
 
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> GetByLogin(string login)
         {
             GetAccountByLoginQuery loginQuery = new GetAccountByLoginQuery() { Login = login };

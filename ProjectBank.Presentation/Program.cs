@@ -107,6 +107,12 @@ namespace ProjectBank.Presentation
                 };
             });
 
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy => policy.RequireRole(UserRole.Admin.ToString()));
+                options.AddPolicy("UserPolicy", policy => policy.RequireRole(UserRole.User.ToString()));
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
