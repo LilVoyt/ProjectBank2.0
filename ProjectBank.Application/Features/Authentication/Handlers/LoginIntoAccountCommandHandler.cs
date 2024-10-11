@@ -2,7 +2,7 @@
 using FluentValidation;
 using MediatR;
 using ProjectBank.BusinessLogic.Features.Accounts.Queries;
-using ProjectBank.BusinessLogic.Features.Register_Login.Commands;
+using ProjectBank.BusinessLogic.Features.Authentication.Commands;
 using ProjectBank.BusinessLogic.Models;
 using ProjectBank.BusinessLogic.Security;
 using ProjectBank.DataAcces.Data;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Features.Register_Login.Handlers
+namespace ProjectBank.BusinessLogic.Features.Authentication.Handlers
 {
     public class LoginCommandHandler
         (IAccountService accountService, IValidator<Account> validator, IMapper mapper, IPasswordHasher passwordHasher, CreateJwt jwt)

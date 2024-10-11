@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Features.Register_Login.Commands
+namespace ProjectBank.BusinessLogic.Features.Authentication.Commands
 {
     public class RegisterCommand : IRequest<Account>
     {

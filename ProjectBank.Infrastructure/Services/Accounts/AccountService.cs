@@ -12,24 +12,15 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.DataAcces.Services.Accounts
 {
-    public class AccountService : IAccountService
+    public class AccountService(DataContext context, IValidator<Account> validator) : IAccountService
     {
-        private readonly DataContext _context;
-        private readonly IValidator<Account> _validator;
-
-        public AccountService(DataContext context, IValidator<Account> validator)
-        {
-            _context = context;
-            _validator = validator;
-        }
-
         public async Task<ActionResult<List<Account>>> Get(string? search, string? sortItem, string? sortOrder)
         {
-            IQueryable<Account> accounts = _context.Account;
+            IQueryable<Account> accounts = context.Account;
 
             if (!string.IsNullOrEmpty(search))
             {
-                accounts = accounts.Where(n => n.Name.ToLower().Contains(search.ToLower()));
+                accounts = accounts.Where(n => n.Name.Contains(search, StringComparison.CurrentCultureIgnoreCase));
             }
 
             Expression<Func<Account, object>> selectorKey = sortItem?.ToLower() switch
@@ -50,7 +41,7 @@ namespace ProjectBank.DataAcces.Services.Accounts
 
         public async Task<Account> GetByLogin(string login)
         {
-             var account = await _context.Account
+             var account = await context.Account
                 .Include(a => a.Customer)
                 .Include(a => a.Cards)
                     .ThenInclude(c => c.SentTransactions)
@@ -62,11 +53,11 @@ namespace ProjectBank.DataAcces.Services.Accounts
             {
                 foreach (var card in account.Cards)
                 {
-                    card.SentTransactions = await _context.Transaction
+                    card.SentTransactions = await context.Transaction
                         .Where(x => x.CardSenderID == card.Id)
                         .ToListAsync();
 
-                    card.ReceivedTransactions = await _context.Transaction
+                    card.ReceivedTransactions = await context.Transaction
                         .Where(x => x.CardReceiverID == card.Id)
                         .ToListAsync();
                 }
@@ -78,47 +69,37 @@ namespace ProjectBank.DataAcces.Services.Accounts
 
         public async Task<Account?> GetByLoginAndPassword(string login)
         {
-            return await _context.Account.SingleOrDefaultAsync(a => a.Login == login);
+            return await context.Account.SingleOrDefaultAsync(a => a.Login == login);
         }
 
         public async Task<Account> Post(Account account)
         {
-            await _context.Account.AddAsync(account);
-            await _context.SaveChangesAsync();
+            await context.Account.AddAsync(account);
+            await context.SaveChangesAsync();
             return account;
         }
 
         public async Task<Account> Update(Guid id, Account accoun)
         {
-            var account = await _context.Account.FindAsync(id);
-            if (account == null)
-            {
-                throw new KeyNotFoundException($"Account with ID {id} not found.");
-            }
-
-            var validationResult = await _validator.ValidateAsync(account);
+            var account = await context.Account.FindAsync(id) ?? throw new KeyNotFoundException($"Account with ID {id} not found.");
+            var validationResult = await validator.ValidateAsync(account);
             if (!validationResult.IsValid)
             {
                 var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
                 throw new ValidationException(errorMessages);
             }
-            _context.Account.Update(account);
-            await _context.SaveChangesAsync();
+            context.Account.Update(account);
+            await context.SaveChangesAsync();
             return account;
         }
 
         public async Task<Account> Delete(Guid id)
         {
-            var account = await _context.Account.FindAsync(id);
-            if (account == null)
-            {
-                throw new KeyNotFoundException($"Account with ID {id} not found.");
-            }
-
+            var account = await context.Account.FindAsync(id) ?? throw new KeyNotFoundException($"Account with ID {id} not found.");
             account.EmployeeID = Guid.Empty;
             account.CustomerID = Guid.Empty;
-            _context.Account.Remove(account);
-            await _context.SaveChangesAsync();
+            context.Account.Remove(account);
+            await context.SaveChangesAsync();
             return account;
         }
     }

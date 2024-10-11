@@ -1,4 +1,4 @@
-﻿namespace ProjectBank.BusinessLogic.Validators.Transactions
+﻿namespace ProjectBank.BusinessLogic.Features.Transactions.Transactions
 {
     public class TransactionValidationService : ITransactionValidationService
     {

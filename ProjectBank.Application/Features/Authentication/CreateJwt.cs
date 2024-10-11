@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Features.Register_Login
+namespace ProjectBank.BusinessLogic.Features.Authentication
 {
     public class CreateJwt(IConfiguration configuration)
     {

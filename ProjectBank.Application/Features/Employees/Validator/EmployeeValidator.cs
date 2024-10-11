@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using ProjectBank.DataAcces.Entities;
 
-namespace ProjectBank.BusinessLogic.Validators.Employees
+namespace ProjectBank.BusinessLogic.Features.Employees.Employees
 {
     internal class EmployeeValidator : AbstractValidator<Employee>
     {

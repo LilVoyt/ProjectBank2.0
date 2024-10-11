@@ -2,7 +2,7 @@
 using ProjectBank.DataAcces.Data;
 using System.Text.RegularExpressions;
 
-namespace ProjectBank.BusinessLogic.Validators.Employees
+namespace ProjectBank.BusinessLogic.Features.Employees.Employees
 {
     internal class EmployeeValidationService : IEmployeeValidationService
     {

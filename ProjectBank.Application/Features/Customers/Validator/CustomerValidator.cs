@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using ProjectBank.DataAcces.Entities;
 
-namespace ProjectBank.BusinessLogic.Validators.Customers
+namespace ProjectBank.BusinessLogic.Features.Customers.Customers
 {
     public class CustomerValidator : AbstractValidator<Customer>
     {

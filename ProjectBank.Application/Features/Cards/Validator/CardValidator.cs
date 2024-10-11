@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Validators.Cards
+namespace ProjectBank.BusinessLogic.Features.Cards.Cards
 {
     internal class CardValidator : AbstractValidator<Card>
     {

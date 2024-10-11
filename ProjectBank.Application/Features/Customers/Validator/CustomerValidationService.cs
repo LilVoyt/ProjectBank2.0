@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Validators.Customers
+namespace ProjectBank.BusinessLogic.Features.Customers.Customers
 {
     public class CustomerValidationService : ICustomerValidationService
     {

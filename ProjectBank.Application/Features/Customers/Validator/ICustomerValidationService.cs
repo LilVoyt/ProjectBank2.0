@@ -1,6 +1,6 @@
-﻿namespace ProjectBank.BusinessLogic.Validators.Employees
+﻿namespace ProjectBank.BusinessLogic.Features.Customers.Customers
 {
-    internal interface IEmployeeValidationService
+    public interface ICustomerValidationService
     {
         Task<bool> Is_PhoneNumber_Valid(string number, CancellationToken cancellationToken);
         Task<bool> Is_PhoneNumber_Not_In_DB(string number, CancellationToken cancellationToken);

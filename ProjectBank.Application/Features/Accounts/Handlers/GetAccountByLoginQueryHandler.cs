@@ -14,37 +14,21 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Accounts.Handlers
 {
-    public class GetAccountByLoginQueryHandler : IRequestHandler<GetAccountByLoginQuery, AccountDto>
+    public class GetAccountByLoginQueryHandler(IAccountService accountService, IValidator<Account> validator, IMapper mapper) 
+        : IRequestHandler<GetAccountByLoginQuery, AccountDto>
     {
-        private readonly IAccountService _accountService;
-        private readonly IValidator<Account> _validator;
-        private readonly IMapper _mapper;
-
-        public GetAccountByLoginQueryHandler(IAccountService accountService, IValidator<Account> validator, IMapper mapper)
-        {
-            _accountService = accountService;
-            _validator = validator;
-            _mapper = mapper;
-        }
-
         public async Task<AccountDto> Handle(GetAccountByLoginQuery request, CancellationToken cancellationToken)
         {
-            var account = await _accountService.GetByLogin(request.Login);
-
-            if (account == null)
-            {
-                throw new KeyNotFoundException("Account not found.");
-            }
-
-            var accountDto = _mapper.Map<AccountDto>(account);
+            var account = await accountService.GetByLogin(request.Login) ?? throw new KeyNotFoundException("Account not found.");
+            var accountDto = mapper.Map<AccountDto>(account);
 
             if (account.Customer != null)
             {
-                accountDto.Customer = _mapper.Map<CustomerDto>(account.Customer);
+                accountDto.Customer = mapper.Map<CustomerDto>(account.Customer);
             }
             if (account.Cards != null && account.Cards.Any())
             {
-                accountDto.Cards = _mapper.Map<List<CardDto>>(account.Cards);
+                accountDto.Cards = mapper.Map<List<CardDto>>(account.Cards);
             }
 
             return accountDto;

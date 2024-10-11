@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Authentication\Queries\**" />
+    <EmbeddedResource Remove="Features\Authentication\Queries\**" />
+    <None Remove="Features\Authentication\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.9.2" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.9.12" />
@@ -29,7 +35,6 @@
     <Folder Include="Features\Employees\Commands\" />
     <Folder Include="Features\Employees\Handlers\" />
     <Folder Include="Features\Employees\Queries\" />
-    <Folder Include="Features\Authentication\Queries\" />
     <Folder Include="Features\Transactions\Commands\" />
   </ItemGroup>
 
