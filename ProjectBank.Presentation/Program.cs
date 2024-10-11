@@ -1,10 +1,13 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectBank.BusinessLogic.Features.Customers.Commands;
+using ProjectBank.BusinessLogic.Features.Register_Login;
 using ProjectBank.BusinessLogic.MappingProfiles;
+using ProjectBank.BusinessLogic.Security;
 using ProjectBank.BusinessLogic.Validators.Accounts;
 using ProjectBank.BusinessLogic.Validators.Customers;
 using ProjectBank.BusinessLogic.Validators.Transactions;
@@ -27,39 +30,49 @@ namespace ProjectBank.Presentation
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-                options.JsonSerializerOptions.WriteIndented = true;
-            });
+            builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IMediator, Mediator>();
-            builder.Services.AddAutoMapper(typeof(RegistrationProfile));
 
+            //Mediator
+            builder.Services.AddScoped<IMediator, Mediator>();
+            builder.Services.AddTransient<CustomerQuery>();
+            builder.Services.AddTransient<CustomerMutation>();
+
+            builder.Services
+                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCustomerCommand).Assembly));
+
+
+            //Automapper
+            builder.Services.AddAutoMapper(typeof(AuthenticationProfile));
+
+
+            //Services and validators for each entity
+            //Customer
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddTransient<IValidator<Customer>, CustomerValidator>();
             builder.Services.AddScoped<AbstractValidator<Customer>, CustomerValidator>();
             builder.Services.AddScoped<ICustomerValidationService, CustomerValidationService>();
 
+            //Account
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddTransient<IValidator<Account>, AccountValidator>();
             builder.Services.AddScoped<AbstractValidator<Account>, AccountValidator>();
             builder.Services.AddScoped<IAccountValidationService, AccountValidationService>();
 
+            //Transaction
             builder.Services.AddScoped<ITransactionService, TransactionService>();
             builder.Services.AddTransient<IValidator<Transaction>, TransactionValidator>();
             builder.Services.AddScoped<AbstractValidator<Transaction>, TransactionValidator>();
             builder.Services.AddScoped<ITransactionValidationService, TransactionValidationService>();
 
-            builder.Services.AddTransient<CustomerQuery>();
-            builder.Services.AddTransient<CustomerMutation>();
+
+            //Secure service
+            builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
 
-
+            //Sql and dbContext
             builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -74,9 +87,7 @@ namespace ProjectBank.Presentation
                 .AddType<CustomerInputType>();
 
 
-            builder.Services
-                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCustomerCommand).Assembly));
-
+            //Cors
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",
@@ -88,6 +99,9 @@ namespace ProjectBank.Presentation
                     });
             });
 
+
+            //Authentication and jwt
+            builder.Services.AddTransient<CreateJwt>();
 
 
             builder.Services.AddAuthentication(options =>
@@ -107,32 +121,38 @@ namespace ProjectBank.Presentation
                 };
             });
 
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminPolicy", policy => policy.RequireRole(UserRole.Admin.ToString()));
-                options.AddPolicy("UserPolicy", policy => policy.RequireRole(UserRole.User.ToString()));
-            });
 
+            //Authorization and policy
+            builder.Services.AddAuthorizationBuilder()
+                .AddPolicy("AdminPolicy", policy => policy.RequireRole(UserRole.Admin.ToString()))
+                .AddPolicy("UserPolicy", policy => policy.RequireRole(UserRole.User.ToString()));
+
+
+            //Building
             var app = builder.Build();
 
+
+            //Swagger
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
+
+            //Cors
             app.UseCors("AllowAllOrigins");
 
             app.UseHttpsRedirection();
 
+            //Authentication
             app.UseAuthentication();
 
+            //Authorization
             app.UseAuthorization();
 
-            app.UseCors("AllowAllOrigins");
-
+            //Use Controllers
             app.MapControllers();
-            //app.MapGraphQL("/graphql");
 
             app.Run();
         }

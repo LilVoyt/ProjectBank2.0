@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Register_Login
 {
-    public static class CreateJwt
+    public class CreateJwt(IConfiguration configuration)
     {
-        public static string Handle(Account account)
+        public string Handle(Account account)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("myHardSecret7asdasdasdasd7777777777");
-            var identity = new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.Role, account.Role.ToString()),
+            var key = Encoding.ASCII.GetBytes(configuration["JwtSettings:Secret"] ?? string.Empty);
+            var identity = new ClaimsIdentity(
+            [
+                new Claim(ClaimTypes.Role, account.Role.ToString() ?? string.Empty),
                 new Claim(ClaimTypes.Name, account.Name),
-            });
+            ]);
 
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
 

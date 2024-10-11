@@ -12,7 +12,7 @@ namespace ProjectBank.DataAcces.Services.Accounts
     {
         Task<ActionResult<List<Account>>> Get(string? search, string? sortItem, string? sortOrder);
         Task<Account> GetByLogin(string login);
-        Task<Account?> GetByLoginAndPassword(string login, string password);
+        Task<Account?> GetByLoginAndPassword(string login);
         Task<Account> Post(Account account);
         Task<Account> Update(Guid id, Account account);
         Task<Account> Delete(Guid id);

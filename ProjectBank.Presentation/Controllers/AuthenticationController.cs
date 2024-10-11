@@ -6,17 +6,17 @@ namespace ProjectBank.Presentation.Controllers
 {
     [Route("api/regandlog")]
     [ApiController]
-    public class RegisterController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public RegisterController(IMediator mediator)
+        public AuthenticationController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
 
         [HttpPost("/register")]
-        public async Task<IActionResult> Post(CreateNewUserCommand user)
+        public async Task<IActionResult> Post(RegisterCommand user)
         {
 
             try
@@ -39,7 +39,7 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpPost("/login")]
-        public async Task<IActionResult> Login(LoginIntoAccountCommand userLogin)
+        public async Task<IActionResult> Login(LoginCommand userLogin)
         {
             try
             {

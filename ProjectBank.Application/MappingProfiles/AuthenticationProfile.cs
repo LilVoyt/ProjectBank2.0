@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.MappingProfiles
 {
-    public class RegistrationProfile : Profile
+    public class AuthenticationProfile : Profile
     {
-        public RegistrationProfile()
+        public AuthenticationProfile()
         {
             CreateMap<UserRegisterDto, CreateCustomerCommand>()
                 .ForMember(dest => dest.FirstName, opt =>
@@ -34,7 +34,7 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Password, opt =>
                 opt.MapFrom(src => src.Password));
 
-            CreateMap<CreateNewUserCommand, Customer>()
+            CreateMap<RegisterCommand, Customer>()
                 .ForMember(dest => dest.Id, opt =>
                 opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.FirstName, opt =>
@@ -48,7 +48,7 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Country, opt =>
                 opt.MapFrom(src => src.Country));
 
-            CreateMap<CreateNewUserCommand, Account>()
+            CreateMap<RegisterCommand, Account>()
                 .ForMember(dest => dest.Id, opt =>
                 opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.Name, opt =>
@@ -60,7 +60,7 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Password, opt =>
                 opt.MapFrom(src => src.Password));
 
-            CreateMap<UserLoginDto, LoginIntoAccountCommand>()
+            CreateMap<UserLoginDto, LoginCommand>()
                 .ForMember(dest => dest.Login, opt =>
                 opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Password, opt =>

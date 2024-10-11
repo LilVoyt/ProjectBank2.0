@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Register_Login.Commands
 {
-    public class LoginIntoAccountCommand : IRequest<Account>
+    public class LoginCommand : IRequest<Account>
     {
         public string Login { get; set; } = String.Empty;
         public string Password { get; set; } = String.Empty;

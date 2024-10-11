@@ -76,9 +76,9 @@ namespace ProjectBank.DataAcces.Services.Accounts
         }
 
 
-        public async Task<Account?> GetByLoginAndPassword(string login, string password)
+        public async Task<Account?> GetByLoginAndPassword(string login)
         {
-            return await _context.Account.SingleOrDefaultAsync(a => a.Login == login && a.Password == password);
+            return await _context.Account.SingleOrDefaultAsync(a => a.Login == login);
         }
 
         public async Task<Account> Post(Account account)
