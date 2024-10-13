@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Cards.Cards
 {
-    internal interface ICardValidationService
+    public interface ICardValidationService
     {
     }
 }

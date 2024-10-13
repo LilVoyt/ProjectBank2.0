@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProjectBank.BusinessLogic.Features.Accounts.Commands;
 using ProjectBank.BusinessLogic.Features.Customers.Commands;
+using ProjectBank.BusinessLogic.Features.Transactions.Commands;
 using ProjectBank.BusinessLogic.Models;
 using ProjectBank.DataAcces.Entities;
 using System;
@@ -26,6 +27,12 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 opt.MapFrom(src => src.CardSender))
                 .ForMember(dest => dest.CardReceiver, opt =>
                 opt.MapFrom(src => src.CardReceiver));
+
+            CreateMap<CreateTransactionCommand, Transaction>()
+                .ForMember(dest => dest.Id, opt =>
+                opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.Date, opt =>
+                opt.MapFrom(src => DateTime.UtcNow));
         }
 
     }

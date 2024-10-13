@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Cards.Cards
 {
-    internal class CardValidator : AbstractValidator<Card>
+    public class CardValidator : AbstractValidator<Card>
     {
         private readonly ICardValidationService _validationService;
 

@@ -35,7 +35,6 @@
     <Folder Include="Features\Employees\Commands\" />
     <Folder Include="Features\Employees\Handlers\" />
     <Folder Include="Features\Employees\Queries\" />
-    <Folder Include="Features\Transactions\Commands\" />
   </ItemGroup>
 
   <ItemGroup>

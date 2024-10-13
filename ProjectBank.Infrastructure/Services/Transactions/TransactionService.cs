@@ -26,14 +26,9 @@ namespace ProjectBank.Infrastructure.Services.Transactions
         {
             IQueryable<Transaction> transactions = _context.Transaction;
 
-            if (sender.HasValue)
+            if (sender.HasValue && receiver.HasValue)
             {
-                transactions = transactions.Where(t => t.CardSenderID == sender);
-            }
-
-            if (receiver.HasValue)
-            {
-                transactions = transactions.Where(t => t.CardReceiverID == receiver);
+                transactions = transactions.Where(t => t.CardSenderID == sender || t.CardReceiverID == receiver);
             }
 
             Expression<Func<Transaction, object>> selectorKey = sortItem?.ToLower() switch
@@ -46,7 +41,14 @@ namespace ProjectBank.Infrastructure.Services.Transactions
             transactions = sortOrder?.ToLower() == "desc"
                 ? transactions.OrderByDescending(selectorKey)
                 : transactions.OrderBy(selectorKey);
+
             List<Transaction> transactionsList = await transactions.ToListAsync();
+
+            foreach (var transaction in transactionsList)
+            {
+                transaction.CardSender = await _context.Card.SingleAsync(card => card.Id == transaction.CardSenderID);
+                transaction.CardReceiver = await _context.Card.SingleAsync(card => card.Id == transaction.CardReceiverID);
+            }
 
             return transactionsList;
         }

@@ -9,7 +9,5 @@
         public DateTime Data { get; set; }
         public int CVV { get; set; }
         public double Balance { get; set; }
-        public ICollection<TransactionDto> SentTransactions { get; set; }
-        public ICollection<TransactionDto> ReceivedTransactions { get; set; }
     }
 }

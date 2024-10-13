@@ -1,7 +1,6 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectBank.BusinessLogic.Features.Customers.Commands;
@@ -21,6 +20,10 @@ using ProjectBank.Presentation.GraphQL.Models;
 using ProjectBank.Presentation.GraphQL.Mutations;
 using ProjectBank.Presentation.GraphQL.Queries;
 using System.Text;
+using System.Text.Json.Serialization;
+using ProjectBank.Infrastructure.Services.Cards;
+using ProjectBank.DataAcces.Services.Cards;
+using ProjectBank.BusinessLogic.Features.Cards.Cards;
 
 namespace ProjectBank.Presentation
 {
@@ -31,6 +34,7 @@ namespace ProjectBank.Presentation
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -49,6 +53,12 @@ namespace ProjectBank.Presentation
 
 
             //Services and validators for each entity
+            //Card
+            builder.Services.AddScoped<ICardService, CardService>();
+            builder.Services.AddTransient<IValidator<Card>, CardValidator>();
+            builder.Services.AddScoped<AbstractValidator<Card>, CardValidator>();
+            builder.Services.AddScoped<ICardValidationService, CardValidationService>();
+
             //Customer
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddTransient<IValidator<Customer>, CustomerValidator>();

@@ -12,7 +12,7 @@ namespace ProjectBank.BusinessLogic.Models
         public Guid Id { get; set; }
         public DateTime TransactionDate { get; set; }
         public double Sum { get; set; }
-        public virtual Card CardSender { get; set; }
-        public virtual Card CardReceiver { get; set; }
+        public virtual CardDto CardSender { get; set; }
+        public virtual CardDto CardReceiver { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectBank.BusinessLogic.Features.Transactions.Commands;
 using ProjectBank.BusinessLogic.Features.Transactions.Queries;
 
 namespace ProjectBank.Presentation.Controllers
@@ -16,6 +18,7 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> Get(Guid? sender, Guid? receiver, string? sortItem, string? sortOrder)
         {
 
@@ -23,6 +26,14 @@ namespace ProjectBank.Presentation.Controllers
             var result = await _mediator.Send(response);
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        //[Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> Post(CreateTransactionCommand transactionCommand)
+        {
+            var result = await _mediator.Send(transactionCommand);
+            return Ok();
         }
     }
 }

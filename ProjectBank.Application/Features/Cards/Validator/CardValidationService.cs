@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Cards.Cards
 {
-    internal class CardValidationService : ICardValidationService
+    public class CardValidationService : ICardValidationService
     {
         private readonly DataContext _context;
 
