@@ -9,12 +9,7 @@ using ProjectBank.BusinessLogic.Security;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Accounts;
 using ProjectBank.DataAcces.Services.Customers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace ProjectBank.Tests.Authentication

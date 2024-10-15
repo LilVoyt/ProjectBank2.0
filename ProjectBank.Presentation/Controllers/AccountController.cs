@@ -10,7 +10,7 @@ namespace ProjectBank.Presentation.Controllers
     public class AccountController(IMediator mediator) : ControllerBase
     {
         [HttpGet]
-        [Authorize(Policy = "UserPolicy")]
+        //[Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> GetByLogin(string login)
         {
             GetAccountByLoginQuery loginQuery = new GetAccountByLoginQuery() { Login = login };
