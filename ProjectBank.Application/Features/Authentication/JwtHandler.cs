@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Authentication
 {
-    public class CreateJwt(IConfiguration configuration)
+    public class JwtHandler(IConfiguration configuration) : IJwtHandler
     {
         public string Handle(Account account)
         {

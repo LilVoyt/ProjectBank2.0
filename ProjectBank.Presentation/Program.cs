@@ -81,6 +81,8 @@ namespace ProjectBank.Presentation
             //Secure service
             builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
+            builder.Services.AddSingleton<IJwtHandler, JwtHandler>();
+
 
             //Sql and dbContext
             builder.Services.AddDbContext<DataContext>(options =>
@@ -111,7 +113,7 @@ namespace ProjectBank.Presentation
 
 
             //Authentication and jwt
-            builder.Services.AddTransient<CreateJwt>();
+            builder.Services.AddTransient<JwtHandler>();
 
 
             builder.Services.AddAuthentication(options =>

@@ -17,7 +17,8 @@ using System.Threading.Tasks;
 namespace ProjectBank.BusinessLogic.Features.Authentication.Handlers
 {
     public class LoginCommandHandler
-        (IAccountService accountService, IValidator<Account> validator, IMapper mapper, IPasswordHasher passwordHasher, CreateJwt jwt)
+        (IAccountService accountService, IValidator<Account> validator, IMapper mapper, IPasswordHasher passwordHasher, 
+        IJwtHandler jwt)
         : IRequestHandler<LoginCommand, Account>
     {
         public async Task<Account> Handle(LoginCommand request, CancellationToken cancellationToken)

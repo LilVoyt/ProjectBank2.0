@@ -12,7 +12,7 @@ namespace ProjectBank.BusinessLogic.Features.Authentication.Handlers
 {
     public class RegisterCommandHandler(IMapper mapper, IValidator<Account> accountValidator,
         IAccountService accountService, ICustomerService customerService,
-        IValidator<Customer> customerValidator, IPasswordHasher passwordHasher, CreateJwt jwt)
+        IValidator<Customer> customerValidator, IPasswordHasher passwordHasher, IJwtHandler jwt)
         : IRequestHandler<RegisterCommand, Account>
     {
         public async Task<Account> Handle(RegisterCommand request, CancellationToken cancellationToken)
