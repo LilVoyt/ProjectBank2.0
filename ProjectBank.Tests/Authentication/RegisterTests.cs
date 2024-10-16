@@ -2,10 +2,10 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Moq;
-using ProjectBank.BusinessLogic.Features.Authentication;
 using ProjectBank.BusinessLogic.Features.Authentication.Commands;
 using ProjectBank.BusinessLogic.Features.Authentication.Handlers;
-using ProjectBank.BusinessLogic.Security;
+using ProjectBank.BusinessLogic.Security.Jwt;
+using ProjectBank.BusinessLogic.Security.Password;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Accounts;
 using ProjectBank.DataAcces.Services.Customers;

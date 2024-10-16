@@ -29,8 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Cards\Commands\" />
-    <Folder Include="Features\Cards\Handlers\" />
     <Folder Include="Features\Cards\Queries\" />
     <Folder Include="Features\Employees\Commands\" />
     <Folder Include="Features\Employees\Handlers\" />

@@ -12,7 +12,7 @@ namespace ProjectBank.DataAcces.Entities
         public string NumberCard { get; set; }
         public string CardName { get; set; }
         public string Pincode { get; set; } //!!!!
-        public DateTime Date { get; set; }
+        public DateTime ExpirationDate { get; set; }
         public string CVV { get; set; } //!!!!
         public double Balance { get; set; }
         public Guid AccountID { get; set; }

@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Features.Authentication
+namespace ProjectBank.BusinessLogic.Security.Jwt
 {
     public class JwtHandler(IConfiguration configuration) : IJwtHandler
     {

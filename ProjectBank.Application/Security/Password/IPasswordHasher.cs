@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Security
+namespace ProjectBank.BusinessLogic.Security.Password
 {
     public interface IPasswordHasher
     {

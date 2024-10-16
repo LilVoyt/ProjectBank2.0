@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectBank.BusinessLogic.Features.Customers.Commands;
 using ProjectBank.BusinessLogic.Features.Customers.Customers;
-using ProjectBank.BusinessLogic.Features.Authentication;
 using ProjectBank.BusinessLogic.Features.Transactions.Transactions;
 using ProjectBank.BusinessLogic.MappingProfiles;
-using ProjectBank.BusinessLogic.Security;
 using ProjectBank.BusinessLogic.Validators.Accounts;
 using ProjectBank.DataAcces.Data;
 using ProjectBank.DataAcces.Entities;
@@ -24,6 +22,10 @@ using System.Text.Json.Serialization;
 using ProjectBank.Infrastructure.Services.Cards;
 using ProjectBank.DataAcces.Services.Cards;
 using ProjectBank.BusinessLogic.Features.Cards.Cards;
+using ProjectBank.BusinessLogic.Security.Jwt;
+using ProjectBank.BusinessLogic.Security.Password;
+using ProjectBank.BusinessLogic.Security.Card;
+using ProjectBank.BusinessLogic.Security.CVV;
 
 namespace ProjectBank.Presentation
 {
@@ -83,6 +85,9 @@ namespace ProjectBank.Presentation
 
             builder.Services.AddSingleton<IJwtHandler, JwtHandler>();
 
+            builder.Services.AddScoped<ICreditCardGenerator, CreditCardGenerator>();
+
+            builder.Services.AddSingleton<ICVVGenerator, CVVGenerator>();
 
             //Sql and dbContext
             builder.Services.AddDbContext<DataContext>(options =>

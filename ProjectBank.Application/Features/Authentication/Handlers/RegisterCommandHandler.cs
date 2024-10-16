@@ -2,7 +2,8 @@
 using FluentValidation;
 using MediatR;
 using ProjectBank.BusinessLogic.Features.Authentication.Commands;
-using ProjectBank.BusinessLogic.Security;
+using ProjectBank.BusinessLogic.Security.Jwt;
+using ProjectBank.BusinessLogic.Security.Password;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Accounts;
 using ProjectBank.DataAcces.Services.Customers;

@@ -67,6 +67,7 @@ namespace ProjectBank.Infrastructure.Services.Cards
             return card;
         }
 
+
         public async Task<Card> Update(Card card)
         {
             context.Card.Update(card);

@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Security
+namespace ProjectBank.BusinessLogic.Security.Password
 {
     public class PasswordHasher : IPasswordHasher
     {

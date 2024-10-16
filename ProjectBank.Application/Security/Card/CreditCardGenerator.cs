@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Features.Cards
+namespace ProjectBank.BusinessLogic.Security.Card
 {
-    public class CreditCardGenerator
+    public class CreditCardGenerator : ICreditCardGenerator
     {
         private readonly Random random = new Random();
         private readonly DataContext _context;
@@ -32,7 +32,7 @@ namespace ProjectBank.BusinessLogic.Features.Cards
         {
             string cardNumber = prefix;
 
-            while (cardNumber.Length < (length - 1))
+            while (cardNumber.Length < length - 1)
             {
                 cardNumber += random.Next(0, 10).ToString();
             }
