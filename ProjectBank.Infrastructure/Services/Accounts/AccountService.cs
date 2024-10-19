@@ -39,7 +39,7 @@ namespace ProjectBank.DataAcces.Services.Accounts
             return accountList;
         }
 
-        public async Task<Account> GetByLogin(string login)
+        public async Task<Account> Get(Guid Id)
         {
              var account = await context.Account
                 .Include(a => a.Customer)
@@ -47,7 +47,7 @@ namespace ProjectBank.DataAcces.Services.Accounts
                     .ThenInclude(c => c.SentTransactions)
                 .Include(a => a.Cards)
                     .ThenInclude(c => c.ReceivedTransactions)
-                .SingleOrDefaultAsync(a => a.Login == login);
+                .SingleOrDefaultAsync(a => a.Id == Id);
 
             if (account != null && account.Cards.Any())
             {
@@ -70,6 +70,11 @@ namespace ProjectBank.DataAcces.Services.Accounts
         public async Task<Account?> GetByLoginAndPassword(string login)
         {
             return await context.Account.SingleOrDefaultAsync(a => a.Login == login);
+        }
+
+        public async Task<Account?> GetById(Guid Id)
+        {
+            return await context.Account.SingleOrDefaultAsync(a => a.Id == Id);
         }
 
         public async Task<Account> Post(Account account)

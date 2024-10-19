@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Accounts.Queries
 {
-    public class GetAccountByLoginQuery : IRequest<AccountDto>
+    public class GetByIdQuery : IRequest<AccountDto>
     {
-        public string Login { get; set; }
+        public Guid Id { get; set; }
     }
 }

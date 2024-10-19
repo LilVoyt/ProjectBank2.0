@@ -18,7 +18,7 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "UserPolicy")]
+        //[Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> Get(Guid? sender, Guid? receiver, string? sortItem, string? sortOrder)
         {
 
