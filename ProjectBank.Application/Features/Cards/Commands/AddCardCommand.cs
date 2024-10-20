@@ -12,7 +12,6 @@ namespace ProjectBank.BusinessLogic.Features.Cards.Commands
     {
         public string Pincode { get; set; }
         public string CardName { get; set; }
-        public DateTime ExpirationDate { get; set; }
         public Guid AccountID { get; set; }
     }
 }

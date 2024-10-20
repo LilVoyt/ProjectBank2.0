@@ -46,6 +46,12 @@ namespace ProjectBank.Infrastructure.Services.Cards
             return accountList;
         }
 
+        public async Task<List<Card>> Get(Guid accountId)
+        {
+            var cards = context.Card.Where(card => card.AccountID == accountId).ToListAsync();
+            return await cards;
+        }
+
         public async Task<Card> Post(Card card)
         {
 

@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProjectBank.BusinessLogic.Features.Cards.Commands;
+using ProjectBank.BusinessLogic.Features.Cards.Handlers;
+using ProjectBank.BusinessLogic.Features.Cards.Queries;
 using ProjectBank.BusinessLogic.Features.Currency;
 
 namespace ProjectBank.Presentation.Controllers
@@ -15,11 +17,19 @@ namespace ProjectBank.Presentation.Controllers
             var res = await mediator.Send(cardCommand);
             return Ok(res);
         }
+        //[HttpGet]
+        //public string Get()
+        //{
+        //    var res = newestCurrency.GetFromApi();
+        //    return res;
+        //}
+
         [HttpGet]
-        public string Get()
+        public async Task<IActionResult> Get(Guid accountId)
         {
-            var res = newestCurrency.GetFromApi();
-            return res;
+            GetByAccountIdQuerry getByAccountId = new GetByAccountIdQuerry() { AccountId = accountId };
+            var res = await mediator.Send(getByAccountId);
+            return Ok(res);
         }
     }
 }
