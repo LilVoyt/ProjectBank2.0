@@ -26,6 +26,7 @@ using ProjectBank.BusinessLogic.Security.Jwt;
 using ProjectBank.BusinessLogic.Security.Password;
 using ProjectBank.BusinessLogic.Security.Card;
 using ProjectBank.BusinessLogic.Security.CVV;
+using ProjectBank.BusinessLogic.Features.Currency;
 
 namespace ProjectBank.Presentation
 {
@@ -88,6 +89,8 @@ namespace ProjectBank.Presentation
             builder.Services.AddScoped<ICreditCardGenerator, CreditCardGenerator>();
 
             builder.Services.AddSingleton<ICVVGenerator, CVVGenerator>();
+
+            builder.Services.AddSingleton<IGetNewestCurrency, GetNewestCurrency>();
 
             //Sql and dbContext
             builder.Services.AddDbContext<DataContext>(options =>

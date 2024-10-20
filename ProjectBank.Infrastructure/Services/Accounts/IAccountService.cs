@@ -11,7 +11,7 @@ namespace ProjectBank.DataAcces.Services.Accounts
     public interface IAccountService
     {
         Task<ActionResult<List<Account>>> Get(string? search, string? sortItem, string? sortOrder);
-        Task<Account> GetByLogin(string login);
+        Task<Account> Get(Guid Id);
         Task<Account?> GetByLoginAndPassword(string login);
         Task<Account> Post(Account account);
         Task<Account> Update(Guid id, Account account);

@@ -7,6 +7,7 @@ namespace ProjectBank.DataAcces.Services.Cards
     {
         Task<Card> GetByNumber(string cardNumber);
         Task<ActionResult<List<Card>>> Get(string? search, string? sortItem, string? sortOrder);
+        Task<List<Card>> Get(Guid accountId);
         Task<Card> Post(Card card);
         Task<Card> Update(Guid id, Card requestModel);
         Task<Card> Update(Card card);

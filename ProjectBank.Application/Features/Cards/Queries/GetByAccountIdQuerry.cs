@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBank.BusinessLogic.Features.Accounts.Queries
+namespace ProjectBank.BusinessLogic.Features.Cards.Queries
 {
-    public class GetAccountByLoginQuery : IRequest<AccountDto>
+    public class GetByAccountIdQuerry : IRequest<List<CardDto>>
     {
-        public string Login { get; set; }
+        public Guid AccountId { get; set; }
     }
 }
