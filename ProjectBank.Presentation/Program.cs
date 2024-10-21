@@ -27,6 +27,9 @@ using ProjectBank.BusinessLogic.Security.Password;
 using ProjectBank.BusinessLogic.Security.Card;
 using ProjectBank.BusinessLogic.Security.CVV;
 using ProjectBank.BusinessLogic.Features.Currency;
+using ProjectBank.BusinessLogic.Features.Authentication.Commands;
+using ProjectBank.BusinessLogic.Features.Authentication.Handlers;
+using ProjectBank.BusinessLogic.Security.Validation;
 
 namespace ProjectBank.Presentation
 {
@@ -48,7 +51,11 @@ namespace ProjectBank.Presentation
             builder.Services.AddTransient<CustomerMutation>();
 
             builder.Services
-                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCustomerCommand).Assembly));
+                .AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssemblyContaining<RegisterCommandHandler>()
+                    .AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>))
+                    .AddOpenBehavior(typeof(ValidationBehavior<Account, LoginCommand>))
+                );
 
 
             //Automapper

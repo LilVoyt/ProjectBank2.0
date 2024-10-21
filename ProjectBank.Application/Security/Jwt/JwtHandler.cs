@@ -19,7 +19,8 @@ namespace ProjectBank.BusinessLogic.Security.Jwt
             var key = Encoding.ASCII.GetBytes(configuration["JwtSettings:Secret"] ?? string.Empty);
             var identity = new ClaimsIdentity(
             [
-                new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
+                new Claim(ClaimTypes.SerialNumber, account.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, account.Login),
                 new Claim(ClaimTypes.Role, account.Role.ToString() ?? string.Empty),
                 new Claim(ClaimTypes.Name, account.Name),
             ]);

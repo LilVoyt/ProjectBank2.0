@@ -6,6 +6,7 @@ using ProjectBank.BusinessLogic.Features.Authentication.Commands;
 using ProjectBank.BusinessLogic.Models;
 using ProjectBank.BusinessLogic.Security.Jwt;
 using ProjectBank.BusinessLogic.Security.Password;
+using ProjectBank.BusinessLogic.Validators.Accounts;
 using ProjectBank.DataAcces.Data;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Accounts;
@@ -35,6 +36,18 @@ namespace ProjectBank.BusinessLogic.Features.Authentication.Handlers
             account.Token = jwt.Handle(account);
 
             return account;
+        }
+    }
+    public class LoginValidator : AbstractValidator<LoginCommand>
+    {
+
+        public LoginValidator()
+        {
+            RuleFor(a => a.Login)
+                .NotEmpty()
+                .WithMessage("Name cannot be empty.")
+                .MaximumLength(20)
+                .WithMessage($"Name is too long!");
         }
     }
 }
