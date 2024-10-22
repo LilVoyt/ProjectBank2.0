@@ -21,8 +21,8 @@ namespace ProjectBank.BusinessLogic.Security.Validation
             logger.LogInformation("Handling request {CorrelationID}: {Request}", correlationId, requestJson);
 
             var response = await next();
-            var responseJson = JsonSerializer.Serialize(response);
-            logger.LogInformation("Response for {Correlation}: {Response}", correlationId, responseJson);
+            //var responseJson = JsonSerializer.Serialize(response);
+            //logger.LogInformation("Response for {Correlation}: {Response}", correlationId, responseJson);
 
             // Return response
             return response;

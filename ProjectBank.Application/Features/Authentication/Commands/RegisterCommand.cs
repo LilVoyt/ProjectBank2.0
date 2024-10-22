@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ProjectBank.DataAcces.Data;
 using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,6 @@ namespace ProjectBank.BusinessLogic.Features.Authentication.Commands
         public string Country { get; set; } = String.Empty;
         public string PhoneNumber { get; set; } = String.Empty;
         public string Email { get; set; } = String.Empty;
+        public UserRole Role { get; set; }
     }
 }

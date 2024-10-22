@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ProjectBank.BusinessLogic.Features.Accounts.Commands;
 using ProjectBank.BusinessLogic.Features.Customers.Commands;
 using ProjectBank.BusinessLogic.Features.Transactions.Commands;
 using ProjectBank.BusinessLogic.Models;
