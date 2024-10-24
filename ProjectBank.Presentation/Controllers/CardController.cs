@@ -15,7 +15,7 @@ namespace ProjectBank.Presentation.Controllers
         public async Task<IActionResult> Post(AddCardCommand cardCommand)
         {
             var res = await mediator.Send(cardCommand);
-            return Ok(res);
+            return Ok();
         }
         //[HttpGet]
         //public string Get()

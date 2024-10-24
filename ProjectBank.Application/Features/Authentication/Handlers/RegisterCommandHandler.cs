@@ -13,9 +13,9 @@ using ProjectBank.DataAcces.Services.Customers;
 namespace ProjectBank.BusinessLogic.Features.Authentication.Handlers
 {
     public class RegisterCommandHandler(IAuthenticationService authenticationService)
-        : IRequestHandler<RegisterCommand, Account>
+        : IRequestHandler<RegisterCommand, string>
     {
-        public async Task<Account> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             return await authenticationService.RegisterAsync(request);
         }

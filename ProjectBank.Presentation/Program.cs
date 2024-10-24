@@ -39,6 +39,11 @@ using ProjectBank.BusinessLogic.Models;
 using ProjectBank.BusinessLogic.Features.Accounts.Service;
 using ProjectBank.BusinessLogic.Features.Cards.Commands;
 using ProjectBank.BusinessLogic.Features.Cards.Service;
+using ProjectBank.BusinessLogic.Features.Transactions.Commands;
+using ProjectBank.BusinessLogic.Features.Transactions.Service;
+using ProjectBank.BusinessLogic.Features.Transactions.Queries;
+using ProjectBank.BusinessLogic.Features.Transactions.Validator;
+using ProjectBank.DataAcces.Services.Currencies;
 
 namespace ProjectBank.Presentation
 {
@@ -65,9 +70,10 @@ namespace ProjectBank.Presentation
                     .AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>)) 
             );
 
-            builder.Services.AddTransient<IPipelineBehavior<LoginCommand, Account>, ValidationBehavior<LoginCommand, Account>>();
-            builder.Services.AddTransient<IPipelineBehavior<RegisterCommand, Account>, ValidationBehavior<RegisterCommand, Account>>();
+            builder.Services.AddTransient<IPipelineBehavior<LoginCommand, string>, ValidationBehavior<LoginCommand, string>>();
+            builder.Services.AddTransient<IPipelineBehavior<RegisterCommand, string>, ValidationBehavior<RegisterCommand, string>>();
             builder.Services.AddTransient<IPipelineBehavior<GetByIdQuery, AccountDto>,  ValidationBehavior<GetByIdQuery, AccountDto>>();
+            builder.Services.AddTransient<IPipelineBehavior<CreateTransactionCommand, Guid>, ValidationBehavior<CreateTransactionCommand, Guid>>();
 
 
             //Automapper
@@ -78,6 +84,10 @@ namespace ProjectBank.Presentation
             //Card
             builder.Services.AddScoped<ICardService, CardService>();
             builder.Services.AddTransient<ICardLogicService, CardLogicService>();
+
+            //Currency
+            builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
 
 
             //Customer
@@ -92,9 +102,11 @@ namespace ProjectBank.Presentation
 
             //Transaction
             builder.Services.AddScoped<ITransactionService, TransactionService>();
-            builder.Services.AddTransient<IValidator<Transaction>, TransactionValidator>();
-            builder.Services.AddScoped<AbstractValidator<Transaction>, TransactionValidator>();
-            builder.Services.AddScoped<ITransactionValidationService, TransactionValidationService>();
+            builder.Services.AddTransient<IValidator<CreateTransactionCommand>, CreateTransactionValidator>();
+
+            builder.Services.AddTransient<ITransactionLogicService,  TransactionLogicService>();
+            builder.Services.AddTransient<IValidator<GetTransactionQuery>, GetTransactionValidator>();
+
 
             //Authentication
 

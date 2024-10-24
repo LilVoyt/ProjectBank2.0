@@ -11,7 +11,7 @@ namespace ProjectBank.BusinessLogic.Models
     {
         public Guid Id { get; set; }
         public DateTime TransactionDate { get; set; }
-        public double Sum { get; set; }
+        public decimal Sum { get; set; }
         public virtual CardDto CardSender { get; set; }
         public virtual CardDto CardReceiver { get; set; }
     }

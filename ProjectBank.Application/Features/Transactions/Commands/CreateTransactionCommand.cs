@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Transactions.Commands
 {
-    public class CreateTransactionCommand : IRequest<Transaction>
+    public class CreateTransactionCommand : IRequest<Guid>
     {
         public string SenderNumber { get; set; } = string.Empty;
         public string ReceiverNumber { get; set; } = string.Empty;
-        public double Sum {  get; set; }
+        public decimal Sum {  get; set; }
     }
 }

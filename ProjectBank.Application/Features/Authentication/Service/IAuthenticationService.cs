@@ -5,7 +5,7 @@ namespace ProjectBank.BusinessLogic.Services
 {
     public interface IAuthenticationService
     {
-        Task<Account> AuthenticateAsync(string login, string password);
-        Task<Account> RegisterAsync(RegisterCommand request);
+        Task<string> AuthenticateAsync(string login, string password);
+        Task<string> RegisterAsync(RegisterCommand request);
     }
 }

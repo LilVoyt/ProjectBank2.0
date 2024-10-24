@@ -31,6 +31,19 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Id, opt =>
                 opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.Date, opt =>
+                opt.MapFrom(src => DateTime.UtcNow))
+                .ForMember(dest => dest.Sum, opt =>
+                opt.MapFrom(src => src.Sum))
+                .ForMember(dest => dest.CardSender, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (string)context.Items["CardSenderID"]))
+                .ForMember(dest => dest.CardReceiver, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (string)context.Items["CardReceiverID"]));
+
+
+            CreateMap<CreateTransactionCommand, Transaction>()
+                .ForMember(dest => dest.Id, opt =>
+                opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.Date, opt =>
                 opt.MapFrom(src => DateTime.UtcNow));
         }
 

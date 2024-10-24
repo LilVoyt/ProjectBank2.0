@@ -19,7 +19,7 @@ namespace ProjectBank.BusinessLogic.Services
         IPasswordHasher passwordHasher,
         IJwtHandler jwtHandler) : IAuthenticationService
     {
-        public async Task<Account> AuthenticateAsync(string login, string password)
+        public async Task<string> AuthenticateAsync(string login, string password)
         {
             var account = await accountService.GetAsync(login) ?? throw new KeyNotFoundException();
 
@@ -28,12 +28,12 @@ namespace ProjectBank.BusinessLogic.Services
             {
                 throw new KeyNotFoundException();
             }
-            account.Token = jwtHandler.Handle(account);
+            string Jwt = jwtHandler.Handle(account);
 
-            return account;
+            return Jwt;
         }
 
-        public async Task<Account> RegisterAsync(RegisterCommand request)
+        public async Task<string> RegisterAsync(RegisterCommand request)
         {
             var customer = mapper.Map<Customer>(request);
 
@@ -44,10 +44,10 @@ namespace ProjectBank.BusinessLogic.Services
                 opt.Items["CustomerId"] = customer.Id;
                 opt.Items["HashedPassword"] = passwordHasher.Hash(request.Password);
             });
-            account.Token = jwtHandler.Handle(account);
+            string Jwt = jwtHandler.Handle(account);
 
             await accountService.Post(account);
-            return account;
+            return Jwt;
         }
     }
 }

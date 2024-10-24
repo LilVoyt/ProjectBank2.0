@@ -25,6 +25,8 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 opt.MapFrom(src => src.Pincode))
                 .ForMember(dest => dest.ExpirationDate, opt =>
                 opt.MapFrom((src, dest, destMember, context) => (DateTime)context.Items["expirationDate"]))
+                .ForMember(dest => dest.CurrencyID, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (Guid)context.Items["currencyId"]))
                 .ForMember(dest => dest.Balance, opt =>
                 opt.MapFrom(src => 0))
                 .ForMember(dest => dest.AccountID, opt =>

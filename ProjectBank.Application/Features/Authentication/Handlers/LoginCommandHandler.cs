@@ -20,13 +20,13 @@ namespace ProjectBank.BusinessLogic.Features.Authentication.Handlers
 {
     public class LoginCommandHandler
         (IAuthenticationService authenticationService)
-        : IRequestHandler<LoginCommand, Account>
+        : IRequestHandler<LoginCommand, string>
     {
-        public async Task<Account> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            Account account = await authenticationService.AuthenticateAsync(request.Login, request.Password);
+            string jwt = await authenticationService.AuthenticateAsync(request.Login, request.Password);
 
-            return account;
+            return jwt;
         }
     }
 }

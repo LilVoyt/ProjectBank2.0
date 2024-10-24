@@ -11,13 +11,16 @@ namespace ProjectBank.DataAcces.Entities
         public Guid Id { get; set; }
         public string NumberCard { get; set; }
         public string CardName { get; set; }
-        public string Pincode { get; set; } //!!!!
+        public string Pincode { get; set; }
         public DateTime ExpirationDate { get; set; }
-        public string CVV { get; set; } //!!!!
-        public double Balance { get; set; }
+        public string CVV { get; set; } 
+        public decimal Balance { get; set; } //here canges
+        public Guid CurrencyID { get; set; } //currency added
         public Guid AccountID { get; set; }
         public virtual Account Account { get; set; }
+        public virtual Currency Currency { get; set; }
         public virtual ICollection<Transaction> SentTransactions { get; set; }
         public virtual ICollection<Transaction> ReceivedTransactions { get; set; }
+        public virtual ICollection<Credit> Credits { get; set; } 
     }
 }

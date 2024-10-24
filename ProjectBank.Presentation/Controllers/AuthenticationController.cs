@@ -11,10 +11,10 @@ namespace ProjectBank.Presentation.Controllers
         [HttpPost("/register")]
         public async Task<IActionResult> Post(RegisterCommand user)
         {
-            var account = await mediator.Send(user);
+            string Jwt = await mediator.Send(user);
             return Ok(new
             {
-                Token = account.Token,
+                Token = Jwt,
                 Message = "Login success"
             });
         }
@@ -22,10 +22,10 @@ namespace ProjectBank.Presentation.Controllers
         [HttpPost("/login")]
         public async Task<IActionResult> Login(LoginCommand userLogin)
         {
-            var account = await mediator.Send(userLogin);
+            var jwt = await mediator.Send(userLogin);
             return Ok(new
             {
-                Token = account.Token,
+                Token = jwt,
                 Message = "Login success"
             });
         }

@@ -12,8 +12,8 @@ using ProjectBank.DataAcces.Data;
 namespace ProjectBank.DataAcces.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241016181453_expirationDateChanged")]
-    partial class expirationDateChanged
+    [Migration("20241024160156_initialCannotToDelete")]
+    partial class initialCannotToDelete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,17 +64,8 @@ namespace ProjectBank.DataAcces.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("Role")
                         .HasColumnType("int");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -96,8 +87,9 @@ namespace ProjectBank.DataAcces.Migrations
                     b.Property<Guid>("AccountID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Balance")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Balance")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<string>("CVV")
                         .IsRequired()
@@ -106,6 +98,9 @@ namespace ProjectBank.DataAcces.Migrations
                     b.Property<string>("CardName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CurrencyID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -122,7 +117,100 @@ namespace ProjectBank.DataAcces.Migrations
 
                     b.HasIndex("AccountID");
 
+                    b.HasIndex("CurrencyID");
+
                     b.ToTable("Card");
+                });
+
+            modelBuilder.Entity("ProjectBank.DataAcces.Entities.Credit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AnnualInterestRate")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<Guid>("CardId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CurrencyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPaidOff")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("MonthlyPayment")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Principal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("Credit");
+                });
+
+            modelBuilder.Entity("ProjectBank.DataAcces.Entities.Currency", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AnnualInterestRate")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CurrencyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyCode")
+                        .IsUnique();
+
+                    b.ToTable("Currency");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("feb2a842-00cf-486a-8e49-29100afaa4f8"),
+                            AnnualInterestRate = 1.5m,
+                            CurrencyCode = "USD",
+                            CurrencyName = "US Dollar"
+                        },
+                        new
+                        {
+                            Id = new Guid("36edbee9-69ca-438e-ac86-126f3f8229b6"),
+                            AnnualInterestRate = 1.2m,
+                            CurrencyCode = "EUR",
+                            CurrencyName = "Euro"
+                        },
+                        new
+                        {
+                            Id = new Guid("5ea82a84-1cd2-4f30-b4d1-6166ac53c2bf"),
+                            AnnualInterestRate = 2.0m,
+                            CurrencyCode = "UAH",
+                            CurrencyName = "Ukrainian Hryvnia"
+                        });
                 });
 
             modelBuilder.Entity("ProjectBank.DataAcces.Entities.Customer", b =>
@@ -199,17 +287,23 @@ namespace ProjectBank.DataAcces.Migrations
                     b.Property<Guid>("CardSenderID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CurrencyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Sum")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Sum")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CardReceiverID");
 
                     b.HasIndex("CardSenderID");
+
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Transaction");
                 });
@@ -245,10 +339,37 @@ namespace ProjectBank.DataAcces.Migrations
                     b.HasOne("ProjectBank.DataAcces.Entities.Account", "Account")
                         .WithMany("Cards")
                         .HasForeignKey("AccountID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjectBank.DataAcces.Entities.Currency", "Currency")
+                        .WithMany("Cards")
+                        .HasForeignKey("CurrencyID")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Account");
+
+                    b.Navigation("Currency");
+                });
+
+            modelBuilder.Entity("ProjectBank.DataAcces.Entities.Credit", b =>
+                {
+                    b.HasOne("ProjectBank.DataAcces.Entities.Card", "Card")
+                        .WithMany("Credits")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjectBank.DataAcces.Entities.Currency", "Currency")
+                        .WithMany("Credits")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Card");
+
+                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ProjectBank.DataAcces.Entities.Transaction", b =>
@@ -256,18 +377,26 @@ namespace ProjectBank.DataAcces.Migrations
                     b.HasOne("ProjectBank.DataAcces.Entities.Card", "CardReceiver")
                         .WithMany("ReceivedTransactions")
                         .HasForeignKey("CardReceiverID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ProjectBank.DataAcces.Entities.Card", "CardSender")
                         .WithMany("SentTransactions")
                         .HasForeignKey("CardSenderID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjectBank.DataAcces.Entities.Currency", "Currency")
+                        .WithMany("Transactions")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CardReceiver");
 
                     b.Navigation("CardSender");
+
+                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ProjectBank.DataAcces.Entities.Account", b =>
@@ -277,9 +406,20 @@ namespace ProjectBank.DataAcces.Migrations
 
             modelBuilder.Entity("ProjectBank.DataAcces.Entities.Card", b =>
                 {
+                    b.Navigation("Credits");
+
                     b.Navigation("ReceivedTransactions");
 
                     b.Navigation("SentTransactions");
+                });
+
+            modelBuilder.Entity("ProjectBank.DataAcces.Entities.Currency", b =>
+                {
+                    b.Navigation("Cards");
+
+                    b.Navigation("Credits");
+
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("ProjectBank.DataAcces.Entities.Customer", b =>

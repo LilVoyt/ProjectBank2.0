@@ -15,10 +15,7 @@ namespace ProjectBank.DataAcces.Entities
         public Guid CustomerID { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public UserRole? Role { get; set; } //need to be not null
-        public string? Token { get; set; }
-        public string? RefreshToken { get; set; }
-        public DateTime RefreshTokenExpiryTime { get; set; }
+        public UserRole? Role { get; set; } 
         public virtual Customer Customer { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
