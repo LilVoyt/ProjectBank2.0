@@ -2,6 +2,8 @@
 using Azure.Core;
 using MediatR;
 using ProjectBank.BusinessLogic.Features.Cards.Commands;
+using ProjectBank.BusinessLogic.Features.Cards.Queries;
+using ProjectBank.BusinessLogic.Models;
 using ProjectBank.BusinessLogic.Security.Card;
 using ProjectBank.BusinessLogic.Security.CVV;
 using ProjectBank.BusinessLogic.Security.Jwt;
@@ -32,6 +34,17 @@ namespace ProjectBank.BusinessLogic.Features.Cards.Service
             await cardService.Post(card);
 
             return card;
+        }
+
+        public async Task<List<CardDto>> GetCardDtos(GetByAccountIdQuerry request)
+        {
+            List<Card> cards = await cardService.Get(request.AccountId);
+            List<CardDto> cardsDto = cards.Select(card => 
+            mapper.Map<CardDto>(card, opt =>
+            {
+                opt.Items["currencyCode"] = currencyService.GetById(card.CurrencyID).Result.CurrencyCode;
+            })).ToList();
+            return cardsDto;
         }
     }
 }

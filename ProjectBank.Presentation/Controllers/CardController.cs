@@ -9,7 +9,7 @@ namespace ProjectBank.Presentation.Controllers
 {
     [Route("api/card")]
     [ApiController]
-    public class CardController(IMediator mediator, IGetNewestCurrency newestCurrency) : ControllerBase
+    public class CardController(IMediator mediator, ICurrencyHandler newestCurrency) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Post(AddCardCommand cardCommand)

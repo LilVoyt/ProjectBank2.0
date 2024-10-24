@@ -130,7 +130,7 @@ namespace ProjectBank.Presentation
 
             builder.Services.AddSingleton<ICVVGenerator, CVVGenerator>();
 
-            builder.Services.AddSingleton<IGetNewestCurrency, GetNewestCurrency>();
+            builder.Services.AddSingleton<ICurrencyHandler, CurrencyHandler>();
 
 
             //Sql and dbContext

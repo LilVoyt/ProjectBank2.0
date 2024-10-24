@@ -12,6 +12,7 @@ namespace ProjectBank.BusinessLogic.Features.Transactions.Commands
     {
         public string SenderNumber { get; set; } = string.Empty;
         public string ReceiverNumber { get; set; } = string.Empty;
+        public string CurrencyCode { get; set; } = string.Empty;
         public decimal Sum {  get; set; }
     }
 }

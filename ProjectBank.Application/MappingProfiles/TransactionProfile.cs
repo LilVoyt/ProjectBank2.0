@@ -34,17 +34,14 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.Sum, opt =>
                 opt.MapFrom(src => src.Sum))
-                .ForMember(dest => dest.CardSender, opt =>
-                opt.MapFrom((src, dest, destMember, context) => (string)context.Items["CardSenderID"]))
-                .ForMember(dest => dest.CardReceiver, opt =>
-                opt.MapFrom((src, dest, destMember, context) => (string)context.Items["CardReceiverID"]));
-
-
-            CreateMap<CreateTransactionCommand, Transaction>()
-                .ForMember(dest => dest.Id, opt =>
-                opt.MapFrom(src => Guid.NewGuid()))
-                .ForMember(dest => dest.Date, opt =>
-                opt.MapFrom(src => DateTime.UtcNow));
+                 .ForMember(dest => dest.Sum, opt =>
+                opt.MapFrom(src => src.Sum))
+                .ForMember(dest => dest.CardSenderID, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (Guid)context.Items["CardSenderId"]))
+                .ForMember(dest => dest.CardReceiverID, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (Guid)context.Items["CardReceiverId"]))
+                .ForMember(dest => dest.CurrencyId, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (Guid)context.Items["CurrencyId"]));
         }
 
     }

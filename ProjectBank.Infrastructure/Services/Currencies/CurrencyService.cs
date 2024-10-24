@@ -15,5 +15,10 @@ namespace ProjectBank.DataAcces.Services.Currencies
         {
             return await dataContext.Currency.SingleOrDefaultAsync(c => c.CurrencyCode == code);
         }
+
+        public async Task<Currency?> GetById(Guid Id)
+        {
+            return await dataContext.Currency.SingleOrDefaultAsync(c => c.Id == Id);
+        }
     }
 }
