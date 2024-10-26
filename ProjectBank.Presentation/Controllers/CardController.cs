@@ -9,13 +9,13 @@ namespace ProjectBank.Presentation.Controllers
 {
     [Route("api/card")]
     [ApiController]
-    public class CardController(IMediator mediator, IGetNewestCurrency newestCurrency) : ControllerBase
+    public class CardController(IMediator mediator, ICurrencyHandler newestCurrency) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Post(AddCardCommand cardCommand)
         {
             var res = await mediator.Send(cardCommand);
-            return Ok(res);
+            return Ok();
         }
         //[HttpGet]
         //public string Get()

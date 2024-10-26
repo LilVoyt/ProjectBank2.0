@@ -14,9 +14,9 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Name, opt =>
                     opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Customer, opt =>
-                    opt.MapFrom(src => src.Customer))
+                    opt.MapFrom(src => new List<CustomerDto>()))
                 .ForMember(dest => dest.Cards, opt =>
-                    opt.MapFrom(src => src.Cards));
+                    opt.MapFrom(src => new CardDto()));
 
             CreateMap<Customer, CustomerDto>()
                 .ForMember(dest => dest.Id, opt =>
@@ -31,22 +31,6 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                     opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(dest => dest.Email, opt =>
                     opt.MapFrom(src => src.Email));
-
-            CreateMap<Card, CardDto>()
-                .ForMember(dest => dest.Id, opt =>
-                    opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.NumberCard, opt =>
-                    opt.MapFrom(src => src.NumberCard))
-                .ForMember(dest => dest.CardName, opt =>
-                    opt.MapFrom(src => src.CardName))
-                .ForMember(dest => dest.Pincode, opt =>
-                    opt.MapFrom(src => src.Pincode))
-                .ForMember(dest => dest.Data, opt =>
-                    opt.MapFrom(src => src.ExpirationDate))
-                .ForMember(dest => dest.CVV, opt =>
-                    opt.MapFrom(src => src.CVV))
-                .ForMember(dest => dest.Balance, opt =>
-                    opt.MapFrom(src => src.Balance));
         }
     }
 }

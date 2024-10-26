@@ -27,6 +27,23 @@ using ProjectBank.BusinessLogic.Security.Password;
 using ProjectBank.BusinessLogic.Security.Card;
 using ProjectBank.BusinessLogic.Security.CVV;
 using ProjectBank.BusinessLogic.Features.Currency;
+using ProjectBank.BusinessLogic.Features.Authentication.Commands;
+using ProjectBank.BusinessLogic.Features.Authentication.Handlers;
+using ProjectBank.BusinessLogic.Security.Validation;
+using ProjectBank.BusinessLogic.Services;
+using ProjectBank.BusinessLogic.Features.Authentication.Validator.Login;
+using ProjectBank.BusinessLogic.Features.Authentication.Validators;
+using ProjectBank.Presentation.ExceptionHandling;
+using ProjectBank.BusinessLogic.Features.Accounts.Queries;
+using ProjectBank.BusinessLogic.Models;
+using ProjectBank.BusinessLogic.Features.Accounts.Service;
+using ProjectBank.BusinessLogic.Features.Cards.Commands;
+using ProjectBank.BusinessLogic.Features.Cards.Service;
+using ProjectBank.BusinessLogic.Features.Transactions.Commands;
+using ProjectBank.BusinessLogic.Features.Transactions.Service;
+using ProjectBank.BusinessLogic.Features.Transactions.Queries;
+using ProjectBank.BusinessLogic.Features.Transactions.Validator;
+using ProjectBank.DataAcces.Services.Currencies;
 
 namespace ProjectBank.Presentation
 {
@@ -39,7 +56,7 @@ namespace ProjectBank.Presentation
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen();   
 
 
             //Mediator
@@ -48,7 +65,15 @@ namespace ProjectBank.Presentation
             builder.Services.AddTransient<CustomerMutation>();
 
             builder.Services
-                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCustomerCommand).Assembly));
+                .AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssemblyContaining<RegisterCommandHandler>()
+                    .AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>)) 
+            );
+
+            builder.Services.AddTransient<IPipelineBehavior<LoginCommand, string>, ValidationBehavior<LoginCommand, string>>();
+            builder.Services.AddTransient<IPipelineBehavior<RegisterCommand, string>, ValidationBehavior<RegisterCommand, string>>();
+            builder.Services.AddTransient<IPipelineBehavior<GetByIdQuery, AccountDto>,  ValidationBehavior<GetByIdQuery, AccountDto>>();
+            builder.Services.AddTransient<IPipelineBehavior<CreateTransactionCommand, Guid>, ValidationBehavior<CreateTransactionCommand, Guid>>();
 
 
             //Automapper
@@ -58,9 +83,12 @@ namespace ProjectBank.Presentation
             //Services and validators for each entity
             //Card
             builder.Services.AddScoped<ICardService, CardService>();
-            builder.Services.AddTransient<IValidator<Card>, CardValidator>();
-            builder.Services.AddScoped<AbstractValidator<Card>, CardValidator>();
-            builder.Services.AddScoped<ICardValidationService, CardValidationService>();
+            builder.Services.AddTransient<ICardLogicService, CardLogicService>();
+
+            //Currency
+            builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
+
 
             //Customer
             builder.Services.AddScoped<ICustomerService, CustomerService>();
@@ -70,15 +98,27 @@ namespace ProjectBank.Presentation
 
             //Account
             builder.Services.AddScoped<IAccountService, AccountService>();
-            builder.Services.AddTransient<IValidator<Account>, AccountValidator>();
-            builder.Services.AddScoped<AbstractValidator<Account>, AccountValidator>();
-            builder.Services.AddScoped<IAccountValidationService, AccountValidationService>();
+            builder.Services.AddTransient<IAccountLogicService, AccountLogicService>();
 
             //Transaction
             builder.Services.AddScoped<ITransactionService, TransactionService>();
-            builder.Services.AddTransient<IValidator<Transaction>, TransactionValidator>();
-            builder.Services.AddScoped<AbstractValidator<Transaction>, TransactionValidator>();
-            builder.Services.AddScoped<ITransactionValidationService, TransactionValidationService>();
+            builder.Services.AddTransient<IValidator<CreateTransactionCommand>, CreateTransactionValidator>();
+
+            builder.Services.AddTransient<ITransactionLogicService,  TransactionLogicService>();
+            builder.Services.AddTransient<IValidator<GetTransactionQuery>, GetTransactionValidator>();
+
+
+            //Authentication
+
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<IAuthenticationValidationService, AuthenticationValidationService>();
+
+            builder.Services.AddTransient<IValidator<LoginCommand>, LoginValidator>();
+
+            builder.Services.AddTransient<IValidator<RegisterCommand>, RegisterValidator>();
+
+            builder.Services.AddTransient<IValidator<AddCardCommand>, CardValidator>();
+
 
 
             //Secure service
@@ -90,7 +130,8 @@ namespace ProjectBank.Presentation
 
             builder.Services.AddSingleton<ICVVGenerator, CVVGenerator>();
 
-            builder.Services.AddSingleton<IGetNewestCurrency, GetNewestCurrency>();
+            builder.Services.AddSingleton<ICurrencyHandler, CurrencyHandler>();
+
 
             //Sql and dbContext
             builder.Services.AddDbContext<DataContext>(options =>
@@ -151,6 +192,18 @@ namespace ProjectBank.Presentation
             //Building
             var app = builder.Build();
 
+            app.UseMiddleware<GlobalExceptionHandler>();
+
+            // Exception handling based on environment
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
+
 
             //Swagger
             if (app.Environment.IsDevelopment())
@@ -158,7 +211,7 @@ namespace ProjectBank.Presentation
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            
 
             //Cors
             app.UseCors("AllowAllOrigins");

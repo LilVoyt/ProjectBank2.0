@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ProjectBank.BusinessLogic.Features.Accounts.Commands;
 using ProjectBank.BusinessLogic.Features.Customers.Commands;
 using ProjectBank.BusinessLogic.Features.Transactions.Commands;
 using ProjectBank.BusinessLogic.Models;
@@ -32,7 +31,17 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Id, opt =>
                 opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.Date, opt =>
-                opt.MapFrom(src => DateTime.UtcNow));
+                opt.MapFrom(src => DateTime.UtcNow))
+                .ForMember(dest => dest.Sum, opt =>
+                opt.MapFrom(src => src.Sum))
+                 .ForMember(dest => dest.Sum, opt =>
+                opt.MapFrom(src => src.Sum))
+                .ForMember(dest => dest.CardSenderID, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (Guid)context.Items["CardSenderId"]))
+                .ForMember(dest => dest.CardReceiverID, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (Guid)context.Items["CardReceiverId"]))
+                .ForMember(dest => dest.CurrencyId, opt =>
+                opt.MapFrom((src, dest, destMember, context) => (Guid)context.Items["CurrencyId"]));
         }
 
     }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.DataAcces.Services.Accounts
 {
-    public class AccountService(DataContext context, IValidator<Account> validator) : IAccountService
+    public class AccountService(DataContext context) : IAccountService
     {
         public async Task<ActionResult<List<Account>>> Get(string? search, string? sortItem, string? sortOrder)
         {
@@ -67,7 +67,7 @@ namespace ProjectBank.DataAcces.Services.Accounts
         }
 
 
-        public async Task<Account?> GetByLoginAndPassword(string login)
+        public async Task<Account?> GetAsync(string login)
         {
             return await context.Account.SingleOrDefaultAsync(a => a.Login == login);
         }
@@ -87,12 +87,6 @@ namespace ProjectBank.DataAcces.Services.Accounts
         public async Task<Account> Update(Guid id, Account accoun)
         {
             var account = await context.Account.FindAsync(id) ?? throw new KeyNotFoundException($"Account with ID {id} not found.");
-            var validationResult = await validator.ValidateAsync(account);
-            if (!validationResult.IsValid)
-            {
-                var errorMessages = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-                throw new ValidationException(errorMessages);
-            }
             context.Account.Update(account);
             await context.SaveChangesAsync();
             return account;

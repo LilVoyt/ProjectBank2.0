@@ -11,46 +11,23 @@ namespace ProjectBank.Presentation.Controllers
         [HttpPost("/register")]
         public async Task<IActionResult> Post(RegisterCommand user)
         {
-
-            try
+            string Jwt = await mediator.Send(user);
+            return Ok(new
             {
-                var account = await mediator.Send(user);
-                return Ok(new
-                {
-                    Token = account.Token,
-                    Message = "Login success"
-                });
-            }
-            catch (KeyNotFoundException)
-            {
-                return Unauthorized(new { Message = "Invalid login or password." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "An error occurred.", Details = ex.Message });
-            }
+                Token = Jwt,
+                Message = "Login success"
+            });
         }
 
         [HttpPost("/login")]
         public async Task<IActionResult> Login(LoginCommand userLogin)
         {
-            try
+            var jwt = await mediator.Send(userLogin);
+            return Ok(new
             {
-                var account = await mediator.Send(userLogin);
-                return Ok(new
-                {
-                    Token = account.Token,
-                    Message = "Login success"
-                });
-            }
-            catch (KeyNotFoundException)
-            {
-                return Unauthorized(new { Message = "Invalid login or password." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "An error occurred.", Details = ex.Message });
-            }
+                Token = jwt,
+                Message = "Login success"
+            });
         }
 
     }
