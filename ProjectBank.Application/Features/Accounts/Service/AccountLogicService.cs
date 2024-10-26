@@ -17,7 +17,14 @@ namespace ProjectBank.BusinessLogic.Features.Accounts.Service
         public async Task<AccountDto> GetDto(GetByIdQuery request)
         {
             var account = await accountService.Get(request.Id) ?? throw new KeyNotFoundException("Account not found.");
-            var accountDto = mapper.Map<AccountDto>(account);
+            var accountDto = new AccountDto()
+            {
+                Id = account.Id,
+                Name = account.Name,
+                Role = account.Role,
+                Cards = new List<CardDto>(),
+                Customer = new CustomerDto()
+            };
 
             if (account.Customer != null)
             {

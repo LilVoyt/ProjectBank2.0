@@ -9,6 +9,6 @@
         public DateTime ExpirationDate { get; set; }
         public string CVV { get; set; }
         public decimal Balance { get; set; }
-        public string CurrencyCode { get; set; }
+        public string? CurrencyCode { get; set; }
     }
 }

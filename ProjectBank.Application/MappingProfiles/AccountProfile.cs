@@ -14,9 +14,9 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.Name, opt =>
                     opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Customer, opt =>
-                    opt.MapFrom(src => src.Customer))
+                    opt.MapFrom(src => new List<CustomerDto>()))
                 .ForMember(dest => dest.Cards, opt =>
-                    opt.MapFrom(src => src.Cards));
+                    opt.MapFrom(src => new CardDto()));
 
             CreateMap<Customer, CustomerDto>()
                 .ForMember(dest => dest.Id, opt =>
