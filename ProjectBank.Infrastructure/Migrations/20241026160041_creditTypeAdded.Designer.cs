@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectBank.DataAcces.Data;
 
@@ -11,9 +12,11 @@ using ProjectBank.DataAcces.Data;
 namespace ProjectBank.DataAcces.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241026160041_creditTypeAdded")]
+    partial class creditTypeAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,40 +185,37 @@ namespace ProjectBank.DataAcces.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("CreditType");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cee2b405-e8f5-4c7a-88dc-f2bb985d10e2"),
+                            Id = new Guid("6bc4ff03-bef1-4895-a8c9-f02ca12fff1e"),
                             Description = "Used for personal purchases, like electronics or vacations.",
                             InterestRateMultiplier = 1.0m,
                             Name = "Consumer Loan"
                         },
                         new
                         {
-                            Id = new Guid("7db9e3d2-9bdd-456c-bf7d-4d379e481615"),
+                            Id = new Guid("8724e9c8-036a-4579-9d81-056b9fd0c473"),
                             Description = "Used to buy real estate. Long-term with property as collateral.",
                             InterestRateMultiplier = 0.5m,
                             Name = "Mortgage Loan"
                         },
                         new
                         {
-                            Id = new Guid("f37194af-97c5-415c-95d8-3421a2131177"),
+                            Id = new Guid("c06b4e83-e575-42c6-8d49-0dd0948a2f33"),
                             Description = "Small, short-term loan, often with a high interest rate.",
                             InterestRateMultiplier = 1.5m,
                             Name = "Microloan"
                         },
                         new
                         {
-                            Id = new Guid("61a963f0-19c5-40fd-8747-350afbb258c5"),
+                            Id = new Guid("b847e2c2-f79f-4b00-8541-2fa15a403449"),
                             Description = "For business expenses like equipment or expansion.",
                             InterestRateMultiplier = 0.9m,
                             Name = "Business Loan"
@@ -250,21 +250,21 @@ namespace ProjectBank.DataAcces.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3d5feb75-64b8-4bb3-b9bc-60eafb168582"),
+                            Id = new Guid("d6e08512-3d1f-44ad-a260-ac789913e764"),
                             AnnualInterestRate = 1.5m,
                             CurrencyCode = "USD",
                             CurrencyName = "US Dollar"
                         },
                         new
                         {
-                            Id = new Guid("96745839-6c9d-4911-97ff-f626b9388a5b"),
+                            Id = new Guid("42414a2e-aa76-4dfb-a5ec-2f0d30736d6b"),
                             AnnualInterestRate = 1.2m,
                             CurrencyCode = "EUR",
                             CurrencyName = "Euro"
                         },
                         new
                         {
-                            Id = new Guid("d6bd7e66-13e1-4b5a-b2a6-c31515281a61"),
+                            Id = new Guid("d1f0e947-ac1e-4330-97df-75dea3187ea5"),
                             AnnualInterestRate = 2.0m,
                             CurrencyCode = "UAH",
                             CurrencyName = "Ukrainian Hryvnia"

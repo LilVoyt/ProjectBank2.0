@@ -15,6 +15,7 @@ namespace ProjectBank.DataAcces.Data
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<Currency> Currency { get; set; }
         public DbSet<Credit> Credit { get; set; }
+        public DbSet<CreditType> CreditType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,18 +87,27 @@ namespace ProjectBank.DataAcces.Data
             {
                 entity.HasKey(b => b.Id);
 
-                entity.Property(b => b.CardId).IsRequired();
-                entity.Property(b => b.CurrencyId).IsRequired();
+                entity.Property(b => b.CardId)
+                .IsRequired();
+                entity.Property(b => b.CurrencyId)
+                .IsRequired();
+                entity.Property(e => e.CreditTypeId)
+                .IsRequired();
 
                 entity.HasOne(c => c.Card)
                     .WithMany(c => c.Credits)
                     .HasForeignKey(c => c.CardId)
-                    .OnDelete(DeleteBehavior.Restrict); // Заборона видалення
+                    .OnDelete(DeleteBehavior.Restrict); 
 
                 entity.HasOne(c => c.Currency)
                     .WithMany(c => c.Credits)
                     .HasForeignKey(c => c.CurrencyId)
-                    .OnDelete(DeleteBehavior.Restrict); // Заборона видалення
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(c => c.CreditType)
+                .WithMany(c => c.Credits)
+                .HasForeignKey(c => c.CreditTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
                 entity.Property(b => b.Principal)
                     .HasPrecision(18, 2);
@@ -122,6 +132,48 @@ namespace ProjectBank.DataAcces.Data
                     new Currency { Id = Guid.NewGuid(), CurrencyCode = "EUR", CurrencyName = "Euro", AnnualInterestRate = 1.2m },
                     new Currency { Id = Guid.NewGuid(), CurrencyCode = "UAH", CurrencyName = "Ukrainian Hryvnia", AnnualInterestRate = 2.0m }
                 );
+            });
+
+            modelBuilder.Entity<CreditType>(entity =>
+            {
+                entity.HasKey(b => b.Id);
+
+                entity.HasIndex(b => b.Name)
+                .IsUnique();
+
+                entity.Property(b => b.InterestRateMultiplier)
+                .HasPrecision(5, 2);
+
+                entity.HasData(
+                    new CreditType 
+                    { 
+                        Id = Guid.NewGuid(), 
+                        Name = "Consumer Loan", 
+                        InterestRateMultiplier = 1.0m, 
+                        Description = "Used for personal purchases, like electronics or vacations." 
+                    },
+                    new CreditType
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Mortgage Loan",
+                        InterestRateMultiplier = 0.5m,
+                        Description = "Used to buy real estate. Long-term with property as collateral."
+                    },
+                    new CreditType
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Microloan",
+                        InterestRateMultiplier = 1.5m,
+                        Description = "Small, short-term loan, often with a high interest rate."
+                    },
+                    new CreditType
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Business Loan",
+                        InterestRateMultiplier = 0.9m,
+                        Description = "For business expenses like equipment or expansion."
+                    }
+                    );
             });
         }
     }

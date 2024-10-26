@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectBank.DataAcces.Data;
 
@@ -11,9 +12,11 @@ using ProjectBank.DataAcces.Data;
 namespace ProjectBank.DataAcces.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241026160458_creditTypeAddedFix")]
+    partial class creditTypeAddedFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,28 +197,28 @@ namespace ProjectBank.DataAcces.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cee2b405-e8f5-4c7a-88dc-f2bb985d10e2"),
+                            Id = new Guid("be9ab938-78ce-4882-9f64-eea50e579439"),
                             Description = "Used for personal purchases, like electronics or vacations.",
                             InterestRateMultiplier = 1.0m,
                             Name = "Consumer Loan"
                         },
                         new
                         {
-                            Id = new Guid("7db9e3d2-9bdd-456c-bf7d-4d379e481615"),
+                            Id = new Guid("3ceadc1e-00ec-4f5a-bee4-dec50623f1e5"),
                             Description = "Used to buy real estate. Long-term with property as collateral.",
                             InterestRateMultiplier = 0.5m,
                             Name = "Mortgage Loan"
                         },
                         new
                         {
-                            Id = new Guid("f37194af-97c5-415c-95d8-3421a2131177"),
+                            Id = new Guid("9c4865e3-d02b-419c-b455-30d621cc99cd"),
                             Description = "Small, short-term loan, often with a high interest rate.",
                             InterestRateMultiplier = 1.5m,
                             Name = "Microloan"
                         },
                         new
                         {
-                            Id = new Guid("61a963f0-19c5-40fd-8747-350afbb258c5"),
+                            Id = new Guid("8158edba-fe1e-4413-8dcb-5fd472ee3562"),
                             Description = "For business expenses like equipment or expansion.",
                             InterestRateMultiplier = 0.9m,
                             Name = "Business Loan"
@@ -250,21 +253,21 @@ namespace ProjectBank.DataAcces.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3d5feb75-64b8-4bb3-b9bc-60eafb168582"),
+                            Id = new Guid("e54dda7b-cef2-4b35-a8cf-9a98cb468523"),
                             AnnualInterestRate = 1.5m,
                             CurrencyCode = "USD",
                             CurrencyName = "US Dollar"
                         },
                         new
                         {
-                            Id = new Guid("96745839-6c9d-4911-97ff-f626b9388a5b"),
+                            Id = new Guid("baee4892-6983-4d61-9ccb-558bda33fe76"),
                             AnnualInterestRate = 1.2m,
                             CurrencyCode = "EUR",
                             CurrencyName = "Euro"
                         },
                         new
                         {
-                            Id = new Guid("d6bd7e66-13e1-4b5a-b2a6-c31515281a61"),
+                            Id = new Guid("16ca5e73-0070-4cbf-a20e-8eba8c49f791"),
                             AnnualInterestRate = 2.0m,
                             CurrencyCode = "UAH",
                             CurrencyName = "Ukrainian Hryvnia"

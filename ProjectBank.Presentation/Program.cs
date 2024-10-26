@@ -44,6 +44,8 @@ using ProjectBank.BusinessLogic.Features.Transactions.Service;
 using ProjectBank.BusinessLogic.Features.Transactions.Queries;
 using ProjectBank.BusinessLogic.Features.Transactions.Validator;
 using ProjectBank.DataAcces.Services.Currencies;
+using ProjectBank.DataAcces.Services.Credits;
+using ProjectBank.BusinessLogic.Features.Credits.Service;
 
 namespace ProjectBank.Presentation
 {
@@ -87,6 +89,11 @@ namespace ProjectBank.Presentation
 
             //Currency
             builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
+
+            //Credit
+            builder.Services.AddScoped<ICreditService, CreditService>();
+            builder.Services.AddScoped<ICreditLogicService, CreditLogicService>();
 
 
 

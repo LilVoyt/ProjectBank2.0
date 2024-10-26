@@ -17,7 +17,9 @@ namespace ProjectBank.DataAcces.Entities
         public DateTime EndDate { get; set; }  
         public Guid CurrencyId { get; set; }
         public bool IsPaidOff { get; set; }
+        public Guid CreditTypeId { get; set; }
         public virtual Currency Currency { get; set; }
         public virtual Card Card { get; set; }
+        public virtual CreditType CreditType { get; set; }
     }
 }
