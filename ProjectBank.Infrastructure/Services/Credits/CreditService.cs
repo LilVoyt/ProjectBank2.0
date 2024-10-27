@@ -17,6 +17,14 @@ namespace ProjectBank.DataAcces.Services.Credits
             return res;
         }
 
+        public async Task<List<Credit>> GetByAccount(Guid accountId, CancellationToken cancellationToken)
+        {
+            var credits = await context.Credit
+                    .Where(c => c.Card.AccountID == accountId)
+                    .ToListAsync(cancellationToken);
+            return credits;
+        }
+
         public async Task<CreditType> GetByName(string name)
         {
             var creditType = await context.CreditType.SingleOrDefaultAsync(c => c.Name == name);

@@ -21,9 +21,9 @@ namespace ProjectBank.Presentation.Controllers
         public async Task<IActionResult> Get(Guid cardId)
         {
             GetCreditsQuery query = new GetCreditsQuery() { cardId = cardId };
-            var res = mediator.Send(query);
+            var res = await mediator.Send(query);
 
-            return Ok(res.Result);
+            return Ok(res);
         }
     }
 }
