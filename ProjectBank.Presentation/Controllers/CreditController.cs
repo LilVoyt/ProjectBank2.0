@@ -23,7 +23,7 @@ namespace ProjectBank.Presentation.Controllers
             GetCreditsQuery query = new GetCreditsQuery() { cardId = cardId };
             var res = mediator.Send(query);
 
-            return Ok();
+            return Ok(res.Result);
         }
     }
 }

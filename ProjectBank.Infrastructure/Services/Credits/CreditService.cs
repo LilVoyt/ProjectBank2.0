@@ -11,10 +11,9 @@ namespace ProjectBank.DataAcces.Services.Credits
 {
     public class CreditService(DataContext context) : ICreditService
     {
-        public async Task<List<Credit>> Get(Guid cardId)
+        public async Task<List<Credit>> Get(Guid cardId, CancellationToken cancellationToken)
         {
-            var res1 = await context.Credit.SingleOrDefaultAsync(c => c.CardId == cardId);
-            var res = await context.Credit.Where(c => c.CardId == cardId).ToListAsync();
+            var res = await context.Credit.Where(c => c.CardId == cardId).ToListAsync(cancellationToken);
             return res;
         }
 

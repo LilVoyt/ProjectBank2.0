@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Credits.Queries
 {
-    public class GetCreditsQuery : IRequest<List<Credit>>
+    public class GetCreditsQuery : IRequest<List<CreditDto>>
     {
         public Guid cardId;
     }
