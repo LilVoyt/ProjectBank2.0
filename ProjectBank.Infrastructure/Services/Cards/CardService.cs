@@ -21,6 +21,14 @@ namespace ProjectBank.Infrastructure.Services.Cards
                 ?? throw new Exception();
             return card;
         }
+
+        public async Task<Card> GetById(Guid id)
+        {
+            Card card = await context.Card.SingleOrDefaultAsync(card => card.Id == id)
+                ?? throw new Exception();
+            return card;
+        }
+
         public async Task<ActionResult<List<Card>>> Get(string? search, string? sortItem, string? sortOrder)
         {
             IQueryable<Card> cards = context.Card;

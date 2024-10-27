@@ -45,7 +45,6 @@ using ProjectBank.BusinessLogic.Features.Transactions.Queries;
 using ProjectBank.BusinessLogic.Features.Transactions.Validator;
 using ProjectBank.DataAcces.Services.Currencies;
 using ProjectBank.DataAcces.Services.Credits;
-using ProjectBank.BusinessLogic.Features.Credits.Service;
 
 namespace ProjectBank.Presentation
 {
@@ -93,8 +92,6 @@ namespace ProjectBank.Presentation
 
             //Credit
             builder.Services.AddScoped<ICreditService, CreditService>();
-            builder.Services.AddScoped<ICreditLogicService, CreditLogicService>();
-
 
 
             //Customer
@@ -144,6 +141,7 @@ namespace ProjectBank.Presentation
             builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+
             });
 
             builder.Services

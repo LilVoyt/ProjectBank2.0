@@ -8,6 +8,7 @@ namespace ProjectBank.BusinessLogic.Models
 {
     public class CreditDto
     {
+        public string CardNumber { get; set; }
         public decimal Principal { get; set; }
         public decimal AnnualInterestRate { get; set; }
         public decimal? MonthlyPayment { get; set; }

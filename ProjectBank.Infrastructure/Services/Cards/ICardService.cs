@@ -6,6 +6,7 @@ namespace ProjectBank.DataAcces.Services.Cards
     public interface ICardService
     {
         Task<Card> GetByNumber(string cardNumber);
+        Task<Card> GetById(Guid id);
         Task<ActionResult<List<Card>>> Get(string? search, string? sortItem, string? sortOrder);
         Task<List<Card>> Get(Guid accountId);
         Task<Card> Post(Card card);

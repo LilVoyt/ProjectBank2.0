@@ -110,13 +110,13 @@ namespace ProjectBank.DataAcces.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
                 entity.Property(b => b.Principal)
-                    .HasPrecision(18, 2);
+                    .HasPrecision(12, 2);
 
                 entity.Property(b => b.MonthlyPayment)
-                    .HasPrecision(18, 2);
+                    .HasPrecision(12, 2);
 
                 entity.Property(b => b.AnnualInterestRate)
-                    .HasPrecision(5, 2);
+                    .HasPrecision(12, 2);
             });
 
             modelBuilder.Entity<Currency>(entity =>

@@ -13,14 +13,27 @@ namespace ProjectBank.DataAcces.Services.Credits
     {
         public async Task<List<Credit>> Get(Guid cardId)
         {
-            var credits = await context.Credit.Where(card => card.CardId == cardId).ToListAsync();
-            return credits;
+            var res1 = await context.Credit.SingleOrDefaultAsync(c => c.CardId == cardId);
+            var res = await context.Credit.Where(c => c.CardId == cardId).ToListAsync();
+            return res;
         }
 
         public async Task<CreditType> GetByName(string name)
         {
             var creditType = await context.CreditType.SingleOrDefaultAsync(c => c.Name == name);
             return creditType;
+        }
+
+        public async Task<CreditType> GetTypeById(Guid id)
+        {
+            var creditType = await context.CreditType.SingleOrDefaultAsync(c => c.Id == id);
+            return creditType;
+        }
+
+        public async Task<Credit> GetById(Guid id)
+        {
+            var credit = await context.Credit.SingleOrDefaultAsync(c => c.Id == id);
+            return credit;
         }
 
         public async Task<Credit> Post(Credit credit)
