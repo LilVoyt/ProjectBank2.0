@@ -12,8 +12,8 @@ using ProjectBank.DataAcces.Data;
 namespace ProjectBank.DataAcces.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241026160041_creditTypeAdded")]
-    partial class creditTypeAdded
+    [Migration("20241030183005_Innitial")]
+    partial class Innitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,9 +128,13 @@ namespace ProjectBank.DataAcces.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("AmountToRepay")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
+
                     b.Property<decimal>("AnnualInterestRate")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<Guid>("CardId")
                         .HasColumnType("uniqueidentifier");
@@ -147,13 +151,13 @@ namespace ProjectBank.DataAcces.Migrations
                     b.Property<bool>("IsPaidOff")
                         .HasColumnType("bit");
 
-                    b.Property<decimal?>("MonthlyPayment")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("MonthlyPayment")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<decimal>("Principal")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -185,37 +189,40 @@ namespace ProjectBank.DataAcces.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("CreditType");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6bc4ff03-bef1-4895-a8c9-f02ca12fff1e"),
+                            Id = new Guid("4acfbb47-d564-44b2-b3e0-d12b74d11317"),
                             Description = "Used for personal purchases, like electronics or vacations.",
                             InterestRateMultiplier = 1.0m,
                             Name = "Consumer Loan"
                         },
                         new
                         {
-                            Id = new Guid("8724e9c8-036a-4579-9d81-056b9fd0c473"),
+                            Id = new Guid("3dbd7fba-fe3a-475d-b971-ae2417f9b53f"),
                             Description = "Used to buy real estate. Long-term with property as collateral.",
                             InterestRateMultiplier = 0.5m,
                             Name = "Mortgage Loan"
                         },
                         new
                         {
-                            Id = new Guid("c06b4e83-e575-42c6-8d49-0dd0948a2f33"),
+                            Id = new Guid("b04c937a-25a6-4328-b172-d3226dc77b94"),
                             Description = "Small, short-term loan, often with a high interest rate.",
                             InterestRateMultiplier = 1.5m,
                             Name = "Microloan"
                         },
                         new
                         {
-                            Id = new Guid("b847e2c2-f79f-4b00-8541-2fa15a403449"),
+                            Id = new Guid("6be67f6e-54c0-4c36-b606-0dba734ffcdd"),
                             Description = "For business expenses like equipment or expansion.",
                             InterestRateMultiplier = 0.9m,
                             Name = "Business Loan"
@@ -250,21 +257,21 @@ namespace ProjectBank.DataAcces.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d6e08512-3d1f-44ad-a260-ac789913e764"),
+                            Id = new Guid("28d62178-c4e7-4b8a-9d87-dd83a78fcc02"),
                             AnnualInterestRate = 1.5m,
                             CurrencyCode = "USD",
                             CurrencyName = "US Dollar"
                         },
                         new
                         {
-                            Id = new Guid("42414a2e-aa76-4dfb-a5ec-2f0d30736d6b"),
+                            Id = new Guid("f1d7c6c9-9727-4979-afd4-ccd03d64ddfe"),
                             AnnualInterestRate = 1.2m,
                             CurrencyCode = "EUR",
                             CurrencyName = "Euro"
                         },
                         new
                         {
-                            Id = new Guid("d1f0e947-ac1e-4330-97df-75dea3187ea5"),
+                            Id = new Guid("ddc9084c-af72-4775-aebb-cb4f12c3c258"),
                             AnnualInterestRate = 2.0m,
                             CurrencyCode = "UAH",
                             CurrencyName = "Ukrainian Hryvnia"

@@ -10,6 +10,7 @@ namespace ProjectBank.BusinessLogic.Models
     {
         public string CardNumber { get; set; }
         public decimal Principal { get; set; }
+        public decimal AmountToRepay { get; set; }
         public decimal AnnualInterestRate { get; set; }
         public decimal MonthlyPayment { get; set; }
         public DateTime StartDate { get; set; }

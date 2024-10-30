@@ -8,11 +8,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectBank.DataAcces.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCannotToDelete : Migration
+    public partial class Innitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "CreditType",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    InterestRateMultiplier = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditType", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Currency",
                 columns: table => new
@@ -143,13 +157,15 @@ namespace ProjectBank.DataAcces.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Principal = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    AnnualInterestRate = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
-                    MonthlyPayment = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    Principal = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
+                    AmountToRepay = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
+                    AnnualInterestRate = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
+                    MonthlyPayment = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CurrencyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsPaidOff = table.Column<bool>(type: "bit", nullable: false)
+                    IsPaidOff = table.Column<bool>(type: "bit", nullable: false),
+                    CreditTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,6 +174,12 @@ namespace ProjectBank.DataAcces.Migrations
                         name: "FK_Credit_Card_CardId",
                         column: x => x.CardId,
                         principalTable: "Card",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Credit_CreditType_CreditTypeId",
+                        column: x => x.CreditTypeId,
+                        principalTable: "CreditType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -203,13 +225,24 @@ namespace ProjectBank.DataAcces.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "CreditType",
+                columns: new[] { "Id", "Description", "InterestRateMultiplier", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("3dbd7fba-fe3a-475d-b971-ae2417f9b53f"), "Used to buy real estate. Long-term with property as collateral.", 0.5m, "Mortgage Loan" },
+                    { new Guid("4acfbb47-d564-44b2-b3e0-d12b74d11317"), "Used for personal purchases, like electronics or vacations.", 1.0m, "Consumer Loan" },
+                    { new Guid("6be67f6e-54c0-4c36-b606-0dba734ffcdd"), "For business expenses like equipment or expansion.", 0.9m, "Business Loan" },
+                    { new Guid("b04c937a-25a6-4328-b172-d3226dc77b94"), "Small, short-term loan, often with a high interest rate.", 1.5m, "Microloan" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Currency",
                 columns: new[] { "Id", "AnnualInterestRate", "CurrencyCode", "CurrencyName" },
                 values: new object[,]
                 {
-                    { new Guid("36edbee9-69ca-438e-ac86-126f3f8229b6"), 1.2m, "EUR", "Euro" },
-                    { new Guid("5ea82a84-1cd2-4f30-b4d1-6166ac53c2bf"), 2.0m, "UAH", "Ukrainian Hryvnia" },
-                    { new Guid("feb2a842-00cf-486a-8e49-29100afaa4f8"), 1.5m, "USD", "US Dollar" }
+                    { new Guid("28d62178-c4e7-4b8a-9d87-dd83a78fcc02"), 1.5m, "USD", "US Dollar" },
+                    { new Guid("ddc9084c-af72-4775-aebb-cb4f12c3c258"), 2.0m, "UAH", "Ukrainian Hryvnia" },
+                    { new Guid("f1d7c6c9-9727-4979-afd4-ccd03d64ddfe"), 1.2m, "EUR", "Euro" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -245,9 +278,20 @@ namespace ProjectBank.DataAcces.Migrations
                 column: "CardId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Credit_CreditTypeId",
+                table: "Credit",
+                column: "CreditTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Credit_CurrencyId",
                 table: "Credit",
                 column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CreditType_Name",
+                table: "CreditType",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Currency_CurrencyCode",
@@ -285,6 +329,9 @@ namespace ProjectBank.DataAcces.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employee");
+
+            migrationBuilder.DropTable(
+                name: "CreditType");
 
             migrationBuilder.DropTable(
                 name: "Card");

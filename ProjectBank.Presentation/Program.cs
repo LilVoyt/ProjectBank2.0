@@ -138,7 +138,7 @@ namespace ProjectBank.Presentation
 
             //Business logic
             builder.Services.AddScoped<IMoneyTransferService, MoneyTransferService>();
-            builder.Services.AddScoped<ICreditСreationService, CreditСreationService>();
+            builder.Services.AddScoped<ICreditManagementService, CreditManagementService>();
 
             //Sql and dbContext
             builder.Services.AddDbContext<DataContext>(options =>

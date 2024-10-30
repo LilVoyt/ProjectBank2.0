@@ -125,6 +125,10 @@ namespace ProjectBank.DataAcces.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("AmountToRepay")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
+
                     b.Property<decimal>("AnnualInterestRate")
                         .HasPrecision(12, 2)
                         .HasColumnType("decimal(12,2)");
@@ -194,28 +198,28 @@ namespace ProjectBank.DataAcces.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6f64b368-b2b5-4bac-b5ba-0491a66c85eb"),
+                            Id = new Guid("4acfbb47-d564-44b2-b3e0-d12b74d11317"),
                             Description = "Used for personal purchases, like electronics or vacations.",
                             InterestRateMultiplier = 1.0m,
                             Name = "Consumer Loan"
                         },
                         new
                         {
-                            Id = new Guid("611592f4-679a-45e5-b182-02407c4611bf"),
+                            Id = new Guid("3dbd7fba-fe3a-475d-b971-ae2417f9b53f"),
                             Description = "Used to buy real estate. Long-term with property as collateral.",
                             InterestRateMultiplier = 0.5m,
                             Name = "Mortgage Loan"
                         },
                         new
                         {
-                            Id = new Guid("06aa989b-ca2e-4889-84f0-bea9c19346a7"),
+                            Id = new Guid("b04c937a-25a6-4328-b172-d3226dc77b94"),
                             Description = "Small, short-term loan, often with a high interest rate.",
                             InterestRateMultiplier = 1.5m,
                             Name = "Microloan"
                         },
                         new
                         {
-                            Id = new Guid("e5a1f202-66e8-4f85-9e4f-01a7f71e2164"),
+                            Id = new Guid("6be67f6e-54c0-4c36-b606-0dba734ffcdd"),
                             Description = "For business expenses like equipment or expansion.",
                             InterestRateMultiplier = 0.9m,
                             Name = "Business Loan"
@@ -250,21 +254,21 @@ namespace ProjectBank.DataAcces.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f273d9d0-be17-4dda-a7f4-940f526f7782"),
+                            Id = new Guid("28d62178-c4e7-4b8a-9d87-dd83a78fcc02"),
                             AnnualInterestRate = 1.5m,
                             CurrencyCode = "USD",
                             CurrencyName = "US Dollar"
                         },
                         new
                         {
-                            Id = new Guid("04c6127b-6a35-4a6f-9fe5-d27fdda3a389"),
+                            Id = new Guid("f1d7c6c9-9727-4979-afd4-ccd03d64ddfe"),
                             AnnualInterestRate = 1.2m,
                             CurrencyCode = "EUR",
                             CurrencyName = "Euro"
                         },
                         new
                         {
-                            Id = new Guid("93915b70-2560-46a6-a20f-0cfc15f0f8c0"),
+                            Id = new Guid("ddc9084c-af72-4775-aebb-cb4f12c3c258"),
                             AnnualInterestRate = 2.0m,
                             CurrencyCode = "UAH",
                             CurrencyName = "Ukrainian Hryvnia"
