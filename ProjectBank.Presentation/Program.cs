@@ -45,6 +45,7 @@ using ProjectBank.BusinessLogic.Features.Transactions.Validator;
 using ProjectBank.DataAcces.Services.Currencies;
 using ProjectBank.DataAcces.Services.Credits;
 using ProjectBank.BusinessLogic.Finance;
+using ProjectBank.BusinessLogic.ChainOfResponsibility;
 
 namespace ProjectBank.Presentation
 {
@@ -139,6 +140,8 @@ namespace ProjectBank.Presentation
             //Business logic
             builder.Services.AddScoped<IMoneyTransferService, MoneyTransferService>();
             builder.Services.AddScoped<ICreditManagementService, CreditManagementService>();
+
+            builder.Services.AddScoped<ActionQueue>();
 
             //Sql and dbContext
             builder.Services.AddDbContext<DataContext>(options =>

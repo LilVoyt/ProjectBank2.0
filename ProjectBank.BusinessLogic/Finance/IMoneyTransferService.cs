@@ -1,8 +1,10 @@
 ﻿
+using ProjectBank.BusinessLogic.ChainOfResponsibility;
+
 namespace ProjectBank.BusinessLogic.Finance
 {
     public interface IMoneyTransferService
     {
-        Task<Guid> CreateTransaction(string SenderNumber, string ReceiverNumber, decimal Sum, CancellationToken cancellationToken);
+        Task<ActionQueue> CreateTransaction(string SenderNumber, string ReceiverNumber, decimal Sum, CancellationToken cancellationToken);
     }
 }

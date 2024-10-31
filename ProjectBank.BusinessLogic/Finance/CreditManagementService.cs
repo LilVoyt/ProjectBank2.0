@@ -1,20 +1,14 @@
-﻿using Azure.Core;
-using MediatR;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectBank.DataAcces.Data;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Cards;
 using ProjectBank.DataAcces.Services.Credits;
 using ProjectBank.DataAcces.Services.Currencies;
-using ProjectBank.DataAcces.Services.Transactions;
-using ProjectBank.Infrastructure.Services.Cards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Finance
 {
-    public class CreditManagementService(ICardService cardService, ICurrencyService currencyService, ICreditService creditService, IMoneyTransferService moneyTransferService) : ICreditManagementService
+    public class CreditManagementService(ICardService cardService, ICurrencyService currencyService, 
+        ICreditService creditService, IMoneyTransferService moneyTransferService, DataContext context) : ICreditManagementService
     {
         public async Task<Credit> CreateCredit(string CardNumber, decimal Principal, DateTime StartDate, DateTime EndDate, string CreditTypeName, CancellationToken cancellationToken)
         {
@@ -44,17 +38,31 @@ namespace ProjectBank.BusinessLogic.Finance
 
             credit.MonthlyPayment = credit.AmountToRepay / months;
 
-            await creditService.Post(credit);
+            var chain = await moneyTransferService.CreateTransaction("4411385885164046", Card.NumberCard, credit.Principal, cancellationToken);
+
+            using var transaction = await context.Database.BeginTransactionAsync();
+            try
+            {
+                await chain.ExecuteAll();
+                await creditService.Post(credit);
+
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
 
             return credit;
         }
 
-        public async Task<Guid> CreditAnnualPayment(Guid CreditId, CancellationToken cancellationToken)
+        public async Task<Guid> CreditMonthlyPayment(Guid CreditId, CancellationToken cancellationToken)
         {
             Credit credit = await creditService.GetById(CreditId);
             Card card = await cardService.GetById(credit.CardId);
 
-            Guid transaction = await moneyTransferService.CreateTransaction(card.NumberCard, "4411385885164046", credit.MonthlyPayment, cancellationToken);
+            var chain = await moneyTransferService.CreateTransaction(card.NumberCard, "4411385885164046", credit.MonthlyPayment, cancellationToken);
 
             credit.AmountToRepay -= credit.MonthlyPayment;
 
@@ -63,14 +71,22 @@ namespace ProjectBank.BusinessLogic.Finance
                 credit.IsPaidOff = true;
             }
 
-            await creditService.Update(credit);
+            using var transaction = await context.Database.BeginTransactionAsync();
+            try
+            {
+                await chain.ExecuteAll();
+                await creditService.Update(credit);
 
-            Card GeneralCard = await cardService.GetByNumber("4411385885164046");
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
 
-            cardService.Update(GeneralCard);
-            cardService.Update(card);
 
-            return transaction;
+            return credit.Id;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ProjectBank.BusinessLogic.ChainOfResponsibility;
 using ProjectBank.BusinessLogic.Features.Currency;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Cards;
@@ -16,7 +17,7 @@ namespace ProjectBank.BusinessLogic.Finance
         ICurrencyService currencyService, IMapper mapper, ITransactionService transactionService)
         : IMoneyTransferService
     {
-        public async Task<Guid> CreateTransaction(string SenderNumber, string ReceiverNumber, decimal Sum, CancellationToken cancellationToken)
+        public async Task<ActionQueue> CreateTransaction(string SenderNumber, string ReceiverNumber, decimal Sum, CancellationToken cancellationToken)
         {
             var currency = currencyHandler.GetFromApi();
 
@@ -41,12 +42,14 @@ namespace ProjectBank.BusinessLogic.Finance
                 CardReceiverID = cardReceiver.Id
             };
 
-            await cardService.Update(cardReceiver);
-            await cardService.Update(cardSender);
+            var actionQueue = new ActionQueue();
 
-            await transactionService.Post(transaction);
+            actionQueue.AddAction(async () => await cardService.Update(cardReceiver));
+            actionQueue.AddAction(async () => await cardService.Update(cardSender));
 
-            return transaction.Id;
+            actionQueue.AddAction(async () => await transactionService.Post(transaction));
+
+            return actionQueue;
         }
     }
 }

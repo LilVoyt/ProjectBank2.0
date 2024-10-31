@@ -18,7 +18,7 @@ namespace ProjectBank.Application.Features.Credits.Handlers
     {
         public async Task<Guid> Handle(CreditMonthlyPaymentCommand request, CancellationToken cancellationToken)
         {
-            return await creditManagement.CreditAnnualPayment(request.CreditId, cancellationToken);
+            return await creditManagement.CreditMonthlyPayment(request.CreditId, cancellationToken);
         }
     }
 }
