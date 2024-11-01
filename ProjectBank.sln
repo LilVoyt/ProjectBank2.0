@@ -8,17 +8,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.Presentation", 
 		{213CDFE3-55B7-439B-AD02-F42E75011D9A} = {213CDFE3-55B7-439B-AD02-F42E75011D9A}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.BusinessLogic", "ProjectBank.Application\ProjectBank.BusinessLogic.csproj", "{213CDFE3-55B7-439B-AD02-F42E75011D9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.Application", "ProjectBank.Application\ProjectBank.Application.csproj", "{213CDFE3-55B7-439B-AD02-F42E75011D9A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E083EECC-B58D-421F-802B-5995209762A6} = {E083EECC-B58D-421F-802B-5995209762A6}
+		{F88996AE-B938-43C5-9CC0-FEC00E6EC78E} = {F88996AE-B938-43C5-9CC0-FEC00E6EC78E}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.DataAcces", "ProjectBank.Infrastructure\ProjectBank.DataAcces.csproj", "{E083EECC-B58D-421F-802B-5995209762A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectBank.Tests", "ProjectBank.Tests\ProjectBank.Tests.csproj", "{D46AB785-52A5-46C6-BD1A-C1630F956593}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBank.Tests", "ProjectBank.Tests\ProjectBank.Tests.csproj", "{D46AB785-52A5-46C6-BD1A-C1630F956593}"
 	ProjectSection(ProjectDependencies) = postProject
 		{213CDFE3-55B7-439B-AD02-F42E75011D9A} = {213CDFE3-55B7-439B-AD02-F42E75011D9A}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectBank.BusinessLogic", "ProjectBank.BusinessLogic\ProjectBank.BusinessLogic.csproj", "{F88996AE-B938-43C5-9CC0-FEC00E6EC78E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +45,10 @@ Global
 		{D46AB785-52A5-46C6-BD1A-C1630F956593}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D46AB785-52A5-46C6-BD1A-C1630F956593}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D46AB785-52A5-46C6-BD1A-C1630F956593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F88996AE-B938-43C5-9CC0-FEC00E6EC78E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F88996AE-B938-43C5-9CC0-FEC00E6EC78E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F88996AE-B938-43C5-9CC0-FEC00E6EC78E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F88996AE-B938-43C5-9CC0-FEC00E6EC78E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

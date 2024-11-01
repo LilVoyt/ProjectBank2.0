@@ -10,5 +10,6 @@ namespace ProjectBank.DataAcces.Services.Credits
         Task<Credit> GetById(Guid id);
         Task<CreditType> GetTypeById(Guid id);
         Task<Credit> Post(Credit credit);
+        Task<Credit> Update(Credit credit);
     }
 }

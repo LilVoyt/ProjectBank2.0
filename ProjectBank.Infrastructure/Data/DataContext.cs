@@ -112,6 +112,9 @@ namespace ProjectBank.DataAcces.Data
                 entity.Property(b => b.Principal)
                     .HasPrecision(12, 2);
 
+                entity.Property(b => b.AmountToRepay)
+                .HasPrecision(12, 2);
+
                 entity.Property(b => b.MonthlyPayment)
                     .HasPrecision(12, 2);
 

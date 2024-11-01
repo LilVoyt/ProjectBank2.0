@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -40,11 +40,12 @@ using ProjectBank.BusinessLogic.Features.Accounts.Service;
 using ProjectBank.BusinessLogic.Features.Cards.Commands;
 using ProjectBank.BusinessLogic.Features.Cards.Service;
 using ProjectBank.BusinessLogic.Features.Transactions.Commands;
-using ProjectBank.BusinessLogic.Features.Transactions.Service;
 using ProjectBank.BusinessLogic.Features.Transactions.Queries;
 using ProjectBank.BusinessLogic.Features.Transactions.Validator;
 using ProjectBank.DataAcces.Services.Currencies;
 using ProjectBank.DataAcces.Services.Credits;
+using ProjectBank.BusinessLogic.Finance;
+using ProjectBank.BusinessLogic.ChainOfResponsibility;
 
 namespace ProjectBank.Presentation
 {
@@ -108,7 +109,6 @@ namespace ProjectBank.Presentation
             builder.Services.AddScoped<ITransactionService, TransactionService>();
             builder.Services.AddTransient<IValidator<CreateTransactionCommand>, CreateTransactionValidator>();
 
-            builder.Services.AddTransient<ITransactionLogicService,  TransactionLogicService>();
             builder.Services.AddTransient<IValidator<GetTransactionQuery>, GetTransactionValidator>();
 
 
@@ -136,6 +136,12 @@ namespace ProjectBank.Presentation
 
             builder.Services.AddSingleton<ICurrencyHandler, CurrencyHandler>();
 
+
+            //Business logic
+            builder.Services.AddScoped<IMoneyTransferService, MoneyTransferService>();
+            builder.Services.AddScoped<ICreditManagementService, CreditManagementService>();
+
+            builder.Services.AddScoped<ActionQueue>();
 
             //Sql and dbContext
             builder.Services.AddDbContext<DataContext>(options =>

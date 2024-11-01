@@ -51,5 +51,12 @@ namespace ProjectBank.DataAcces.Services.Credits
 
             return credit;
         }
+
+        public async Task<Credit> Update(Credit credit)
+        {
+            context.Credit.Update(credit);
+            await context.SaveChangesAsync();
+            return credit;
+        }
     }
 }

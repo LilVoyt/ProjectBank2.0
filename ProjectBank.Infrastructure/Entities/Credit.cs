@@ -12,6 +12,7 @@ namespace ProjectBank.DataAcces.Entities
         public Guid Id { get; set; }
         public Guid CardId { get; set; } 
         public decimal Principal { get; set; } 
+        public decimal AmountToRepay { get; set; }
         public decimal AnnualInterestRate { get; set; } 
         public decimal MonthlyPayment { get; set; } 
         public DateTime StartDate { get; set; } 

@@ -26,7 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProjectBank.Application\ProjectBank.BusinessLogic.csproj" />
+    <ProjectReference Include="..\ProjectBank.Application\ProjectBank.Application.csproj" />
+    <ProjectReference Include="..\ProjectBank.BusinessLogic\ProjectBank.BusinessLogic.csproj" />
   </ItemGroup>
 
 </Project>

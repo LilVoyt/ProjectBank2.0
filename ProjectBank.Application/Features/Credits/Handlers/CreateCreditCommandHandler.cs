@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using ProjectBank.BusinessLogic.Features.Cards.Commands;
 using ProjectBank.BusinessLogic.Features.Credits.Commands;
+using ProjectBank.BusinessLogic.Finance;
 using ProjectBank.BusinessLogic.Models;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Cards;
@@ -15,41 +16,23 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
 {
-    internal class CreateCreditCommandHandler(ICurrencyService currencyService, ICreditService creditService, ICardService cardService) 
+    internal class CreateCreditCommandHandler(ICurrencyService currencyService, ICreditService creditService, 
+        ICardService cardService, IMoneyTransferService moneyTransferService, ICreditManagementService creditСreationService) 
         : IRequestHandler<CreateCreditCommand, CreditDto>
     {
         public async Task<CreditDto> Handle(CreateCreditCommand request, CancellationToken cancellationToken)
         {
-            Credit credit = new Credit()
-            {
-                Id = Guid.NewGuid(),
-                CardId = cardService.GetByNumber(request.CardNumber).Result.Id,
-                Principal = request.Principal,
-                AnnualInterestRate = currencyService.GetByCode(request.CurrencyCode).Result.AnnualInterestRate
-                * creditService.GetByName(request.CreditTypeName).Result.InterestRateMultiplier,
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
-                CurrencyId = currencyService.GetByCode(request.CurrencyCode).Result.Id,
-                IsPaidOff = false,
-                CreditTypeId = creditService.GetByName(request.CreditTypeName).Result.Id,
-            };
-            var startDate = credit.StartDate;
-            var endDate = credit.EndDate;
-
-            int months = (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month;
-            credit.MonthlyPayment = credit.Principal * credit.AnnualInterestRate / months;
-
-            await creditService.Post(credit);
-
-            CreditDto creditDto = new CreditDto()
+            Credit credit = await creditСreationService.CreateCredit(request.CardNumber, request.Principal, request.StartDate, request.EndDate, request.CreditTypeName, cancellationToken);
+            CreditDto creditDto = new CreditDto() 
             {
                 CardNumber = request.CardNumber,
                 Principal = credit.Principal,
+                AmountToRepay = credit.AmountToRepay,
                 AnnualInterestRate = credit.AnnualInterestRate,
                 MonthlyPayment = credit.MonthlyPayment,
                 StartDate = credit.StartDate,
                 EndDate = credit.EndDate,
-                CurrencyName = request.CurrencyCode,
+                CurrencyName = currencyService.GetById(credit.CurrencyId).Result.CurrencyName,
                 CreditTypeName = request.CreditTypeName,
             };
 
