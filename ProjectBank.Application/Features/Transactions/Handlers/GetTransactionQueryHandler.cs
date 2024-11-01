@@ -1,16 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using ProjectBank.BusinessLogic.Features.Customers.Queries;
 using ProjectBank.BusinessLogic.Features.Transactions.Queries;
 using ProjectBank.BusinessLogic.Models;
-using ProjectBank.DataAcces.Data;
-using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Transactions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Transactions.Handlers
 {

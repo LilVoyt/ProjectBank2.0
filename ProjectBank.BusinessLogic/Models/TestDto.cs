@@ -1,5 +1,4 @@
-﻿using ProjectBank.DataAcces.Data;
-using ProjectBank.DataAcces.Entities;
+﻿using ProjectBank.DataAcces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

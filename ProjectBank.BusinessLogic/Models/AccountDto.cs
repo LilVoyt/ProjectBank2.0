@@ -1,4 +1,4 @@
-﻿using ProjectBank.DataAcces.Data;
+﻿using ProjectBank.DataAcces.Entities;
 
 namespace ProjectBank.BusinessLogic.Models
 {

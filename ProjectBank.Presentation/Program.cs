@@ -3,49 +3,46 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using ProjectBank.BusinessLogic.Features.Customers.Commands;
+using ProjectBank.BusinessLogic.CardManagement;
+using ProjectBank.BusinessLogic.ChainOfResponsibility;
+using ProjectBank.BusinessLogic.Features.Accounts.Queries;
+using ProjectBank.BusinessLogic.Features.Accounts.Service;
+using ProjectBank.BusinessLogic.Features.Authentication.Commands;
+using ProjectBank.BusinessLogic.Features.Authentication.Handlers;
+using ProjectBank.BusinessLogic.Features.Authentication.Validator.Login;
+using ProjectBank.BusinessLogic.Features.Authentication.Validators;
+using ProjectBank.BusinessLogic.Features.Cards.Cards;
+using ProjectBank.BusinessLogic.Features.Cards.Commands;
+using ProjectBank.BusinessLogic.Features.Currency;
 using ProjectBank.BusinessLogic.Features.Customers.Customers;
+using ProjectBank.BusinessLogic.Features.Transactions.Commands;
+using ProjectBank.BusinessLogic.Features.Transactions.Queries;
 using ProjectBank.BusinessLogic.Features.Transactions.Transactions;
+using ProjectBank.BusinessLogic.Features.Transactions.Validator;
+using ProjectBank.BusinessLogic.Finance;
 using ProjectBank.BusinessLogic.MappingProfiles;
-using ProjectBank.BusinessLogic.Validators.Accounts;
+using ProjectBank.BusinessLogic.Models;
+using ProjectBank.BusinessLogic.Security.Card;
+using ProjectBank.BusinessLogic.Security.CVV;
+using ProjectBank.BusinessLogic.Security.Jwt;
+using ProjectBank.BusinessLogic.Security.Password;
+using ProjectBank.BusinessLogic.Security.Validation;
+using ProjectBank.BusinessLogic.Services;
 using ProjectBank.DataAcces.Data;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Accounts;
+using ProjectBank.DataAcces.Services.Cards;
+using ProjectBank.DataAcces.Services.Credits;
+using ProjectBank.DataAcces.Services.Currencies;
 using ProjectBank.DataAcces.Services.Customers;
 using ProjectBank.DataAcces.Services.Transactions;
+using ProjectBank.Infrastructure.Services.Cards;
 using ProjectBank.Infrastructure.Services.Transactions;
+using ProjectBank.Presentation.ExceptionHandling;
 using ProjectBank.Presentation.GraphQL.Models;
 using ProjectBank.Presentation.GraphQL.Mutations;
 using ProjectBank.Presentation.GraphQL.Queries;
 using System.Text;
-using System.Text.Json.Serialization;
-using ProjectBank.Infrastructure.Services.Cards;
-using ProjectBank.DataAcces.Services.Cards;
-using ProjectBank.BusinessLogic.Features.Cards.Cards;
-using ProjectBank.BusinessLogic.Security.Jwt;
-using ProjectBank.BusinessLogic.Security.Password;
-using ProjectBank.BusinessLogic.Security.Card;
-using ProjectBank.BusinessLogic.Security.CVV;
-using ProjectBank.BusinessLogic.Features.Currency;
-using ProjectBank.BusinessLogic.Features.Authentication.Commands;
-using ProjectBank.BusinessLogic.Features.Authentication.Handlers;
-using ProjectBank.BusinessLogic.Security.Validation;
-using ProjectBank.BusinessLogic.Services;
-using ProjectBank.BusinessLogic.Features.Authentication.Validator.Login;
-using ProjectBank.BusinessLogic.Features.Authentication.Validators;
-using ProjectBank.Presentation.ExceptionHandling;
-using ProjectBank.BusinessLogic.Features.Accounts.Queries;
-using ProjectBank.BusinessLogic.Models;
-using ProjectBank.BusinessLogic.Features.Accounts.Service;
-using ProjectBank.BusinessLogic.Features.Cards.Commands;
-using ProjectBank.BusinessLogic.Features.Cards.Service;
-using ProjectBank.BusinessLogic.Features.Transactions.Commands;
-using ProjectBank.BusinessLogic.Features.Transactions.Queries;
-using ProjectBank.BusinessLogic.Features.Transactions.Validator;
-using ProjectBank.DataAcces.Services.Currencies;
-using ProjectBank.DataAcces.Services.Credits;
-using ProjectBank.BusinessLogic.Finance;
-using ProjectBank.BusinessLogic.ChainOfResponsibility;
 
 namespace ProjectBank.Presentation
 {
@@ -81,19 +78,15 @@ namespace ProjectBank.Presentation
             //Automapper
             builder.Services.AddAutoMapper(typeof(AuthenticationProfile));
 
-
             //Services and validators for each entity
             //Card
             builder.Services.AddScoped<ICardService, CardService>();
-            builder.Services.AddTransient<ICardLogicService, CardLogicService>();
 
             //Currency
             builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
-
             //Credit
             builder.Services.AddScoped<ICreditService, CreditService>();
-
 
             //Customer
             builder.Services.AddScoped<ICustomerService, CustomerService>();
@@ -111,12 +104,12 @@ namespace ProjectBank.Presentation
 
             builder.Services.AddTransient<IValidator<GetTransactionQuery>, GetTransactionValidator>();
 
-
             //Authentication
 
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IAuthenticationValidationService, AuthenticationValidationService>();
 
+            //Validators
             builder.Services.AddTransient<IValidator<LoginCommand>, LoginValidator>();
 
             builder.Services.AddTransient<IValidator<RegisterCommand>, RegisterValidator>();
@@ -140,6 +133,7 @@ namespace ProjectBank.Presentation
             //Business logic
             builder.Services.AddScoped<IMoneyTransferService, MoneyTransferService>();
             builder.Services.AddScoped<ICreditManagementService, CreditManagementService>();
+            builder.Services.AddScoped<ICardManagementService, CardManagementService>();
 
             builder.Services.AddScoped<ActionQueue>();
 
@@ -149,6 +143,9 @@ namespace ProjectBank.Presentation
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             });
+
+            //UnitOfWork
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services
                 .AddGraphQLServer()

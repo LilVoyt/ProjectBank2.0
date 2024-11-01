@@ -2,28 +2,26 @@
 using ProjectBank.BusinessLogic.Features.Transactions.Commands;
 using ProjectBank.BusinessLogic.Finance;
 using ProjectBank.DataAcces.Data;
-using ProjectBank.DataAcces.Entities;
-using ProjectBank.DataAcces.Services.Credits;
 
 namespace ProjectBank.BusinessLogic.Features.Transactions.Handlers
 {
-    public class CreateTransactionCommandHandler(IMoneyTransferService moneyTansferService, DataContext context) 
+    public class CreateTransactionCommandHandler(IMoneyTransferService moneyTansferService, IUnitOfWork unitOfWork) 
         : IRequestHandler<CreateTransactionCommand, Guid>
     {
         public async Task<Guid> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
             var chain = await moneyTansferService.CreateTransaction(request.SenderNumber, request.ReceiverNumber, request.Sum, cancellationToken);
 
-            using var transaction = await context.Database.BeginTransactionAsync();
+            await unitOfWork.BeginTransactionAsync();
             try
             {
                 await chain.ExecuteAll();
 
-                await transaction.CommitAsync();
+                await unitOfWork.CommitAsync();
             }
             catch (Exception)
             {
-                await transaction.RollbackAsync();
+                await unitOfWork.RollbackAsync();
                 throw;
             }
 

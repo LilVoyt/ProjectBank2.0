@@ -8,7 +8,7 @@ using ProjectBank.DataAcces.Services.Currencies;
 namespace ProjectBank.BusinessLogic.Finance
 {
     public class CreditManagementService(ICardService cardService, ICurrencyService currencyService, 
-        ICreditService creditService, IMoneyTransferService moneyTransferService, DataContext context) : ICreditManagementService
+        ICreditService creditService, IMoneyTransferService moneyTransferService, IUnitOfWork unitOfWork) : ICreditManagementService
     {
         public async Task<Credit> CreateCredit(string CardNumber, decimal Principal, DateTime StartDate, DateTime EndDate, string CreditTypeName, CancellationToken cancellationToken)
         {
@@ -38,19 +38,18 @@ namespace ProjectBank.BusinessLogic.Finance
 
             credit.MonthlyPayment = credit.AmountToRepay / months;
 
-            var chain = await moneyTransferService.CreateTransaction("4411385885164046", Card.NumberCard, credit.Principal, cancellationToken);
+            var chain = await moneyTransferService.CreateTransaction("4411335694972212", Card.NumberCard, credit.Principal, cancellationToken);
 
-            using var transaction = await context.Database.BeginTransactionAsync();
+            await unitOfWork.BeginTransactionAsync();
             try
             {
                 await chain.ExecuteAll();
                 await creditService.Post(credit);
-
-                await transaction.CommitAsync();
+                await unitOfWork.CommitAsync();
             }
             catch (Exception)
             {
-                await transaction.RollbackAsync();
+                await unitOfWork.RollbackAsync();
                 throw;
             }
 
@@ -62,7 +61,7 @@ namespace ProjectBank.BusinessLogic.Finance
             Credit credit = await creditService.GetById(CreditId);
             Card card = await cardService.GetById(credit.CardId);
 
-            var chain = await moneyTransferService.CreateTransaction(card.NumberCard, "4411385885164046", credit.MonthlyPayment, cancellationToken);
+            var chain = await moneyTransferService.CreateTransaction(card.NumberCard, "4411335694972212", credit.MonthlyPayment, cancellationToken);
 
             credit.AmountToRepay -= credit.MonthlyPayment;
 
@@ -71,17 +70,17 @@ namespace ProjectBank.BusinessLogic.Finance
                 credit.IsPaidOff = true;
             }
 
-            using var transaction = await context.Database.BeginTransactionAsync();
+            await unitOfWork.BeginTransactionAsync();
             try
             {
                 await chain.ExecuteAll();
                 await creditService.Update(credit);
 
-                await transaction.CommitAsync();
+                await unitOfWork.CommitAsync();
             }
             catch (Exception)
             {
-                await transaction.RollbackAsync();
+                await unitOfWork.RollbackAsync();
                 throw;
             }
 
