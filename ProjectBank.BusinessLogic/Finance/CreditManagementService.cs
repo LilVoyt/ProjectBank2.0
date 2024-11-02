@@ -10,7 +10,7 @@ namespace ProjectBank.BusinessLogic.Finance
     public class CreditManagementService(ICardService cardService, ICurrencyService currencyService, 
         ICreditService creditService, IMoneyTransferService moneyTransferService, IUnitOfWork unitOfWork) : ICreditManagementService
     {
-        public async Task<Credit> CreateCredit(string CardNumber, decimal Principal, DateTime StartDate, DateTime EndDate, string CreditTypeName, CancellationToken cancellationToken)
+        public async Task<Credit> CreateCredit(string CardNumber, decimal Principal, int NumberOfMonth, string CreditTypeName, CancellationToken cancellationToken)
         {
             var Card = await cardService.GetByNumber(CardNumber);
             var currency = Card.CurrencyID;
@@ -23,20 +23,18 @@ namespace ProjectBank.BusinessLogic.Finance
                 CardId = cardService.GetByNumber(CardNumber).Result.Id,
                 Principal = Principal,
                 AnnualInterestRate = annualInterestRate,
-                StartDate = StartDate,
-                EndDate = EndDate,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMonths(NumberOfMonth),
                 CurrencyId = currency,
                 IsPaidOff = false,
                 CreditTypeId = creditService.GetByName(CreditTypeName).Result.Id,
             };
 
-            int months = (EndDate.Year - StartDate.Year) * 12 + EndDate.Month - StartDate.Month;
-
-            decimal interestForPeriod = credit.Principal * annualInterestRate * months / 12;
+            decimal interestForPeriod = credit.Principal * annualInterestRate * NumberOfMonth / 12;
 
             credit.AmountToRepay = Principal + interestForPeriod;
 
-            credit.MonthlyPayment = credit.AmountToRepay / months;
+            credit.MonthlyPayment = credit.AmountToRepay / NumberOfMonth;
 
             var chain = await moneyTransferService.CreateTransaction("4411335694972212", Card.NumberCard, credit.Principal, cancellationToken);
 

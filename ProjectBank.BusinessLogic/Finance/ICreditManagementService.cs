@@ -4,7 +4,7 @@ namespace ProjectBank.BusinessLogic.Finance
 {
     public interface ICreditManagementService
     {
-        Task<Credit> CreateCredit(string CardNumber, decimal Principal, DateTime StartDate, DateTime EndDate, string CreditTypeName, CancellationToken cancellationToken);
+        Task<Credit> CreateCredit(string CardNumber, decimal Principal, int NumberOfMonth, string CreditTypeName, CancellationToken cancellationToken);
         Task<Guid> CreditMonthlyPayment(Guid CreditId, CancellationToken cancellationToken);
     }
 }

@@ -13,8 +13,7 @@ namespace ProjectBank.BusinessLogic.Features.Credits.Commands
     {
         public string CardNumber { get; set; }
         public decimal Principal { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public int NumberOfMonth { get; set; }
         public string CreditTypeName { get; set; }
     }
 }

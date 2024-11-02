@@ -22,7 +22,7 @@ namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
     {
         public async Task<CreditDto> Handle(CreateCreditCommand request, CancellationToken cancellationToken)
         {
-            Credit credit = await creditСreationService.CreateCredit(request.CardNumber, request.Principal, request.StartDate, request.EndDate, request.CreditTypeName, cancellationToken);
+            Credit credit = await creditСreationService.CreateCredit(request.CardNumber, request.Principal, request.NumberOfMonth, request.CreditTypeName, cancellationToken);
             CreditDto creditDto = new CreditDto() 
             {
                 CardNumber = request.CardNumber,

@@ -27,9 +27,18 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpGet("/get-card-credits")] 
-        public async Task<IActionResult> Get(Guid cardId)
+        public async Task<IActionResult> GetByCard(Guid cardId)
         {
             GetCreditsQuery query = new GetCreditsQuery() { cardId = cardId };
+            var res = await mediator.Send(query);
+
+            return Ok(res);
+        }
+
+        [HttpGet("/get-account-credits")]
+        public async Task<IActionResult> GetByAccount(Guid accountId)
+        {
+            GetAccountCreditsQuery query = new GetAccountCreditsQuery() { AccountId = accountId };
             var res = await mediator.Send(query);
 
             return Ok(res);
