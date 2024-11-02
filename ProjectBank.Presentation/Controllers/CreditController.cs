@@ -20,9 +20,9 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpPost("/monthly-pay")]
-        public async Task<IActionResult> MonthlyPayment(CreditMonthlyPaymentCommand paymentCommand)
+        public async Task<IActionResult> MonthlyPayment(CreditMonthlyPaymentCommand command) 
         {
-            var res = await mediator.Send(paymentCommand);
+            var res = await mediator.Send(command);
             return Ok(res);
         }
 

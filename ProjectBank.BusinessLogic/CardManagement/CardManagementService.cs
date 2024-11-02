@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace ProjectBank.BusinessLogic.CardManagement
 {
     public class CardManagementService(ICreditCardGenerator creditCardGenerator, ICVVGenerator cvvGenerator, 
-        ICurrencyService currencyService, ICardService cardService, IMapper mapper) : ICardManagementService
+        ICurrencyService currencyService, ICardService cardService, IMapper mapper, ICardService cardjService) : ICardManagementService
     {
         public async Task<Guid> CreateCardAsync(string Pincode, string CardName, string CurrencyCode, Guid AccountID)
         {
@@ -38,6 +38,8 @@ namespace ProjectBank.BusinessLogic.CardManagement
                 CurrencyID = currencyId,
                 AccountID = AccountID
             };
+
+            await cardService.Post(card);
 
             return card.Id;
         }

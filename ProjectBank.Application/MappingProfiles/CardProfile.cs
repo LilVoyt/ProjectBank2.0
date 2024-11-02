@@ -48,7 +48,9 @@ namespace ProjectBank.BusinessLogic.MappingProfiles
                 .ForMember(dest => dest.CVV, opt =>
                     opt.MapFrom(src => src.CVV))
                 .ForMember(dest => dest.Balance, opt =>
-                    opt.MapFrom(src => src.Balance));
+                    opt.MapFrom(src => src.Balance))
+                .ForMember(dest => dest.CurrencyCode, opt =>
+                    opt.MapFrom(src => src.CurrencyID));
         }
     }
 }

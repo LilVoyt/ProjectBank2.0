@@ -27,9 +27,9 @@ namespace ProjectBank.BusinessLogic.Finance
             var cardReceiverCurrency = currency["data"][currencyService.GetById(cardReceiver.CurrencyID).Result.CurrencyCode]["value"].ToObject<decimal>();
             var cardSenderCurrency = currency["data"][currencyService.GetById(cardSender.CurrencyID).Result.CurrencyCode]["value"].ToObject<decimal>();
 
-            decimal convertedAmount = Sum * (cardSenderCurrency / cardReceiverCurrency);
+            decimal convertedAmount = Sum * (cardReceiverCurrency / cardSenderCurrency);
 
-            cardReceiver.Balance += convertedAmount;
+            cardReceiver.Balance = convertedAmount;
             cardSender.Balance -= Sum;
 
             Transaction transaction = new Transaction()

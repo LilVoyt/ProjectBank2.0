@@ -11,7 +11,7 @@ namespace ProjectBank.Presentation.Controllers
     {
         [HttpGet]
         //[Authorize(Policy = "UserPolicy")]
-        public async Task<IActionResult> GetByLogin(Guid Id)
+        public async Task<IActionResult> GetById(Guid Id)
         {
             GetByIdQuery loginQuery = new GetByIdQuery() { Id = Id };
             var result = await mediator.Send(loginQuery);

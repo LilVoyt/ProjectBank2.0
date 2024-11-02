@@ -25,6 +25,7 @@ namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
             Credit credit = await creditСreationService.CreateCredit(request.CardNumber, request.Principal, request.NumberOfMonth, request.CreditTypeName, cancellationToken);
             CreditDto creditDto = new CreditDto() 
             {
+                Id = credit.Id,
                 CardNumber = request.CardNumber,
                 Principal = credit.Principal,
                 AmountToRepay = credit.AmountToRepay,

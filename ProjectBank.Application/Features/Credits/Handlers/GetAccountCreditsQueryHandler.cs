@@ -28,6 +28,7 @@ namespace ProjectBank.Application.Features.Credits.Handlers
                 var creditType = creditService.GetTypeById(credit.CreditTypeId).Result.Name;
                 result.Add(new CreditDto()
                 {
+                    Id = credit.Id,
                     CardNumber = cardService.GetById(credit.CardId).Result.NumberCard,
                     Principal = credit.Principal,
                     AnnualInterestRate = credit.AnnualInterestRate,
