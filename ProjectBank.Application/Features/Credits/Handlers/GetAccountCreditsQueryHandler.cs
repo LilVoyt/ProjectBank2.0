@@ -35,7 +35,7 @@ namespace ProjectBank.Application.Features.Credits.Handlers
                     MonthlyPayment = credit.MonthlyPayment,
                     StartDate = credit.StartDate,
                     EndDate = credit.EndDate,
-                    CurrencyName = currencyService.GetById(credit.CurrencyId).Result.CurrencyName,
+                    CurrencyName = currencyService.GetByIdAsync(credit.CurrencyId).Result.CurrencyName,
                     CreditTypeName = creditType,
                 });
             }

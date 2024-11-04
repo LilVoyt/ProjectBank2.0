@@ -16,7 +16,7 @@ namespace ProjectBank.Application.Features.Credits.Handlers
         public async Task<PayingInfo> Handle(GetCreditInfoQuerry request, CancellationToken cancellationToken)
         {
             var credit = await creditService.GetById(request.CreditId);
-            var currency = await currencyService.GetById(credit.CurrencyId);
+            var currency = await currencyService.GetByIdAsync(credit.CurrencyId);
 
             PayingInfo payingInfo = new PayingInfo()
             {

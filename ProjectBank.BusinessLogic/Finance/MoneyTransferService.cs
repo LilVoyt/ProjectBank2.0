@@ -24,8 +24,8 @@ namespace ProjectBank.BusinessLogic.Finance
             Card cardReceiver = await cardService.GetByNumber(ReceiverNumber);
             Card cardSender = await cardService.GetByNumber(SenderNumber);
 
-            var cardReceiverCurrency = currency["data"][currencyService.GetById(cardReceiver.CurrencyID).Result.CurrencyCode]["value"].ToObject<decimal>();
-            var cardSenderCurrency = currency["data"][currencyService.GetById(cardSender.CurrencyID).Result.CurrencyCode]["value"].ToObject<decimal>();
+            var cardReceiverCurrency = currency["data"][currencyService.GetByIdAsync(cardReceiver.CurrencyID).Result.CurrencyCode]["value"].ToObject<decimal>();
+            var cardSenderCurrency = currency["data"][currencyService.GetByIdAsync(cardSender.CurrencyID).Result.CurrencyCode]["value"].ToObject<decimal>();
 
             decimal convertedAmount = Sum * (cardReceiverCurrency / cardSenderCurrency);
 

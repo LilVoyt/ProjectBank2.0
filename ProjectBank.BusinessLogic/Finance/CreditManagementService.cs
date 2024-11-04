@@ -15,7 +15,7 @@ namespace ProjectBank.BusinessLogic.Finance
             var Card = await cardService.GetByNumber(CardNumber);
             var currency = Card.CurrencyID;
 
-            var annualInterestRate = currencyService.GetById(currency).Result.AnnualInterestRate * creditService.GetByName(CreditTypeName).Result.InterestRateMultiplier;
+            var annualInterestRate = currencyService.GetByIdAsync(currency).Result.AnnualInterestRate * creditService.GetByName(CreditTypeName).Result.InterestRateMultiplier;
 
             Credit credit = new Credit()
             {

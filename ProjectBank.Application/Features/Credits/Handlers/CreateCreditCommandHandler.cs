@@ -16,13 +16,15 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
 {
-    internal class CreateCreditCommandHandler(ICurrencyService currencyService, ICreditService creditService, 
-        ICardService cardService, IMoneyTransferService moneyTransferService, ICreditManagementService creditСreationService) 
+    internal class CreateCreditCommandHandler(ICurrencyService currencyService, ICreditManagementService creditСreationService) 
         : IRequestHandler<CreateCreditCommand, CreditDto>
     {
         public async Task<CreditDto> Handle(CreateCreditCommand request, CancellationToken cancellationToken)
         {
             Credit credit = await creditСreationService.CreateCredit(request.CardNumber, request.Principal, request.NumberOfMonth, request.CreditTypeName, cancellationToken);
+
+            var currencyName = await currencyService.GetByIdAsync(credit.CurrencyId);
+
             CreditDto creditDto = new CreditDto() 
             {
                 Id = credit.Id,
@@ -33,7 +35,7 @@ namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
                 MonthlyPayment = credit.MonthlyPayment,
                 StartDate = credit.StartDate,
                 EndDate = credit.EndDate,
-                CurrencyName = currencyService.GetById(credit.CurrencyId).Result.CurrencyName,
+                CurrencyName = currencyName.CurrencyCode,
                 CreditTypeName = request.CreditTypeName,
             };
 

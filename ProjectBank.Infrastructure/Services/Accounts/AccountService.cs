@@ -67,12 +67,12 @@ namespace ProjectBank.DataAcces.Services.Accounts
         }
 
 
-        public async Task<Account?> GetAsync(string login)
+        public async Task<Account?> GetByLoginAsync(string login)
         {
             return await context.Account.SingleOrDefaultAsync(a => a.Login == login);
         }
 
-        public async Task<Account?> GetById(Guid Id)
+        public async Task<Account?> GetByIdAcync(Guid Id)
         {
             return await context.Account.SingleOrDefaultAsync(a => a.Id == Id);
         }

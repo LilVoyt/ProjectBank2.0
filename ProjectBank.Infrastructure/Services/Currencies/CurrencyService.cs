@@ -16,9 +16,15 @@ namespace ProjectBank.DataAcces.Services.Currencies
             return await dataContext.Currency.SingleOrDefaultAsync(c => c.CurrencyCode == code);
         }
 
-        public async Task<Currency?> GetById(Guid Id)
+        public async Task<Currency?> GetByIdAsync(Guid Id)
         {
-            return await dataContext.Currency.SingleOrDefaultAsync(c => c.Id == Id);
+            Currency currency = await dataContext.Currency.SingleAsync(c => c.Id == Id);
+
+            if(currency == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return currency;
         }
     }
 }

@@ -3,10 +3,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProjectBank.BusinessLogic.Features.Accounts.Queries;
-using ProjectBank.BusinessLogic.Features.Accounts.Service;
 using ProjectBank.BusinessLogic.Models;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Accounts;
+using ProjectBank.DataAcces.Services.Currencies;
 using ProjectBank.DataAcces.Services.Customers;
 using System;
 using System.Collections.Generic;
@@ -16,12 +16,46 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Accounts.Handlers
 {
-    public class GetByIdQueryHandler(IAccountLogicService accountLogicService) 
+    public class GetByIdQueryHandler(ICurrencyService currencyService, IAccountService accountService, IMapper mapper) 
         : IRequestHandler<GetByIdQuery, AccountDto>
     {
         public async Task<AccountDto> Handle([FromBody]GetByIdQuery request, CancellationToken cancellationToken)
         {
-            var accountDto = await accountLogicService.GetDto(request);
+            var account = await accountService.Get(request.Id) ?? throw new KeyNotFoundException("Account not found.");
+            var accountDto = new AccountDto()
+            {
+                Id = account.Id,
+                Name = account.Name,
+                Role = account.Role,
+                Cards = new List<CardDto>(),
+                Customer = new CustomerDto()
+            };
+
+            if (account.Customer != null)
+            {
+                accountDto.Customer = mapper.Map<CustomerDto>(account.Customer);
+            }
+            if (account.Cards != null && account.Cards.Any())
+            {
+                accountDto.Cards = new List<CardDto>();
+                foreach (var card in account.Cards)
+                {
+                    var currencyName = await currencyService.GetByIdAsync(card.CurrencyID) ?? throw new KeyNotFoundException();
+
+                    accountDto.Cards.Add(new CardDto()
+                    {
+                        Id = card.Id,
+                        NumberCard = card.NumberCard,
+                        CardName = card.CardName,
+                        Pincode = card.Pincode,
+                        ExpirationDate = card.ExpirationDate,
+                        CVV = card.CVV,
+                        Balance = card.Balance,
+                        CurrencyCode = currencyName.CurrencyCode
+                    });
+                }
+
+            }
 
             return accountDto;
         }

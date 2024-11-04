@@ -47,11 +47,24 @@ namespace ProjectBank.BusinessLogic.CardManagement
         public async Task<List<CardDto>> GetCardInfo(Guid AccountId)
         {
             List<Card> cards = await cardService.Get(AccountId);
-            List<CardDto> cardsDto = cards.Select(card =>
-            mapper.Map<CardDto>(card, opt =>
+
+            List<CardDto> cardsDto = new List<CardDto>();
+            foreach (var card in cards)
             {
-                opt.Items["currencyCode"] =  currencyService.GetById(card.CurrencyID).Result.CurrencyCode;
-            })).ToList();
+                var currencyName = await currencyService.GetByIdAsync(card.CurrencyID) ?? throw new KeyNotFoundException();
+
+                cardsDto.Add(new CardDto()
+                {
+                    Id = card.Id,
+                    NumberCard = card.NumberCard,
+                    CardName = card.CardName,
+                    Pincode = card.Pincode,
+                    ExpirationDate = card.ExpirationDate,
+                    CVV = card.CVV,
+                    Balance = card.Balance,
+                    CurrencyCode = currencyName.CurrencyCode,
+                });
+            }
             return cardsDto;
         }
     }

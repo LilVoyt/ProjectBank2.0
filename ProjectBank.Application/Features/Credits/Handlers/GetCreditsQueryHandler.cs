@@ -22,11 +22,14 @@ namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
             var credits = await creditService.Get(request.cardId, cancellationToken);
 
 
+
+
             List<CreditDto> result = new List<CreditDto>();
 
             foreach (var credit in credits)
             {
                 var creditType = creditService.GetTypeById(credit.CreditTypeId).Result.Name;
+                var currencyName = await currencyService.GetByIdAsync(credit.CurrencyId) ?? throw new KeyNotFoundException();
                 result.Add(new CreditDto()
                 {
                     Id = credit.Id,
@@ -36,7 +39,7 @@ namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
                     MonthlyPayment = credit.MonthlyPayment,
                     StartDate = credit.StartDate,
                     EndDate = credit.EndDate,
-                    CurrencyName = currencyService.GetById(credit.CurrencyId).Result.CurrencyName,
+                    CurrencyName = currencyName.CurrencyCode,
                     CreditTypeName = creditType,
                 });
             }

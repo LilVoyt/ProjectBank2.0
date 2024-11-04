@@ -6,7 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 using ProjectBank.BusinessLogic.CardManagement;
 using ProjectBank.BusinessLogic.ChainOfResponsibility;
 using ProjectBank.BusinessLogic.Features.Accounts.Queries;
-using ProjectBank.BusinessLogic.Features.Accounts.Service;
 using ProjectBank.BusinessLogic.Features.Authentication.Commands;
 using ProjectBank.BusinessLogic.Features.Authentication.Handlers;
 using ProjectBank.BusinessLogic.Features.Authentication.Validator.Login;
@@ -27,7 +26,6 @@ using ProjectBank.BusinessLogic.Security.CVV;
 using ProjectBank.BusinessLogic.Security.Jwt;
 using ProjectBank.BusinessLogic.Security.Password;
 using ProjectBank.BusinessLogic.Security.Validation;
-using ProjectBank.BusinessLogic.Services;
 using ProjectBank.DataAcces.Data;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Accounts;
@@ -96,7 +94,6 @@ namespace ProjectBank.Presentation
 
             //Account
             builder.Services.AddScoped<IAccountService, AccountService>();
-            builder.Services.AddTransient<IAccountLogicService, AccountLogicService>();
 
             //Transaction
             builder.Services.AddScoped<ITransactionService, TransactionService>();
@@ -106,7 +103,6 @@ namespace ProjectBank.Presentation
 
             //Authentication
 
-            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IAuthenticationValidationService, AuthenticationValidationService>();
 
             //Validators
