@@ -147,34 +147,41 @@ namespace ProjectBank.DataAcces.Data
                 entity.Property(b => b.InterestRateMultiplier)
                 .HasPrecision(5, 2);
 
+                entity.Property(b => b.MaxCreditLimit)
+                .HasPrecision(12, 2);
+
                 entity.HasData(
                     new CreditType 
                     { 
                         Id = Guid.NewGuid(), 
                         Name = "Consumer Loan", 
                         InterestRateMultiplier = 1.0m, 
-                        Description = "Used for personal purchases, like electronics or vacations." 
+                        Description = "Used for personal purchases, like electronics or vacations.",
+                        MaxCreditLimit = 100000.0m
                     },
                     new CreditType
                     {
                         Id = Guid.NewGuid(),
                         Name = "Mortgage Loan",
                         InterestRateMultiplier = 0.5m,
-                        Description = "Used to buy real estate. Long-term with property as collateral."
+                        Description = "Used to buy real estate. Long-term with property as collateral.",
+                        MaxCreditLimit = 1000000.0m
                     },
                     new CreditType
                     {
                         Id = Guid.NewGuid(),
                         Name = "Microloan",
                         InterestRateMultiplier = 1.5m,
-                        Description = "Small, short-term loan, often with a high interest rate."
+                        Description = "Small, short-term loan, often with a high interest rate.",
+                        MaxCreditLimit = 1000.0m
                     },
                     new CreditType
                     {
                         Id = Guid.NewGuid(),
                         Name = "Business Loan",
                         InterestRateMultiplier = 0.9m,
-                        Description = "For business expenses like equipment or expansion."
+                        Description = "For business expenses like equipment or expansion.",
+                        MaxCreditLimit = 500000.0m
                     }
                     );
             });

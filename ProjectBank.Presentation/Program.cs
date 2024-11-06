@@ -130,6 +130,7 @@ namespace ProjectBank.Presentation
             builder.Services.AddScoped<IMoneyTransferService, MoneyTransferService>();
             builder.Services.AddScoped<ICreditManagementService, CreditManagementService>();
             builder.Services.AddScoped<ICardManagementService, CardManagementService>();
+            builder.Services.AddScoped<ICreditApproval, CreditApproval>();
 
             builder.Services.AddScoped<ActionQueue>();
 

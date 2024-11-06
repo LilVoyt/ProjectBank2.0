@@ -18,7 +18,7 @@ namespace ProjectBank.Infrastructure.Services.Cards
         public async Task<Card> GetByNumber(string cardNumber)
         {
             Card card = await context.Card.SingleOrDefaultAsync(card => card.NumberCard == cardNumber) 
-                ?? throw new Exception();
+                ?? throw new ArgumentNullException();
             return card;
         }
 

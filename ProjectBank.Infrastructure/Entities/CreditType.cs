@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjectBank.DataAcces.Entities
+﻿namespace ProjectBank.DataAcces.Entities
 {
     public class CreditType
     {
@@ -12,6 +6,7 @@ namespace ProjectBank.DataAcces.Entities
         public string Name { get; set; }
         public decimal InterestRateMultiplier { get; set; }
         public string Description { get; set; }
+        public decimal MaxCreditLimit { get; set; }
         public virtual ICollection<Credit> Credits { get; set; }
     }
 }

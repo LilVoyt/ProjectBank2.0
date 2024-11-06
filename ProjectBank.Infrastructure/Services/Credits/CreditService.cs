@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc.Async;
 
 namespace ProjectBank.DataAcces.Services.Credits
 {
@@ -31,9 +32,15 @@ namespace ProjectBank.DataAcces.Services.Credits
             return creditType;
         }
 
+        public async Task<decimal> GetLimitByCurrencyCode(string name)
+        {
+            var creditType = await context.CreditType.SingleAsync(c => c.Name == name);
+            return creditType.MaxCreditLimit;
+        }
+
         public async Task<CreditType> GetTypeById(Guid id)
         {
-            var creditType = await context.CreditType.SingleOrDefaultAsync(c => c.Id == id);
+            var creditType = await context.CreditType.SingleOrDefaultAsync(c => c.Id == id) ?? throw new ArgumentNullException();
             return creditType;
         }
 

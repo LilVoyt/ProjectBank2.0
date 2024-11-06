@@ -8,7 +8,7 @@ using ProjectBank.DataAcces.Services.Currencies;
 namespace ProjectBank.BusinessLogic.Finance
 {
     public class CreditManagementService(ICardService cardService, ICurrencyService currencyService, 
-        ICreditService creditService, IMoneyTransferService moneyTransferService, IUnitOfWork unitOfWork) : ICreditManagementService
+        ICreditService creditService, IMoneyTransferService moneyTransferService, IUnitOfWork unitOfWork, ICreditApproval creditApproval) : ICreditManagementService
     {
         public async Task<Credit> CreateCredit(string CardNumber, decimal Principal, int NumberOfMonth, string CreditTypeName, CancellationToken cancellationToken)
         {
@@ -36,7 +36,9 @@ namespace ProjectBank.BusinessLogic.Finance
 
             credit.MonthlyPayment = credit.AmountToRepay / NumberOfMonth;
 
-            var chain = await moneyTransferService.CreateTransaction("4411335694972212", Card.NumberCard, credit.Principal, cancellationToken);
+            var res = await creditApproval.CreditApprovalCheck(CardNumber, Principal, NumberOfMonth, CreditTypeName, cancellationToken);
+
+            var chain = await moneyTransferService.CreateTransaction("4411542399821780", Card.NumberCard, credit.Principal, cancellationToken);
 
             await unitOfWork.BeginTransactionAsync();
             try
@@ -59,7 +61,7 @@ namespace ProjectBank.BusinessLogic.Finance
             Credit credit = await creditService.GetById(CreditId);
             Card card = await cardService.GetById(credit.CardId);
 
-            var chain = await moneyTransferService.CreateTransaction(card.NumberCard, "4411335694972212", credit.MonthlyPayment, cancellationToken);
+            var chain = await moneyTransferService.CreateTransaction(card.NumberCard, "4411542399821780", credit.MonthlyPayment, cancellationToken);
 
             credit.AmountToRepay -= credit.MonthlyPayment;
 

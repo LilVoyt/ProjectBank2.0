@@ -33,7 +33,7 @@ namespace ProjectBank.DataAcces.Data
             {
                 await _transaction.RollbackAsync();
                 await _transaction.DisposeAsync();
-                _transaction = null;
+                _transaction = null; 
             }
         }
 

@@ -25,7 +25,8 @@ namespace ProjectBank.Application.Features.Credits.Handlers
 
             foreach (var credit in credits)
             {
-                var creditType = creditService.GetTypeById(credit.CreditTypeId).Result.Name;
+                var creditTypeObject = await creditService.GetTypeById(credit.CreditTypeId);
+                var creditType = creditTypeObject.Name;
                 result.Add(new CreditDto()
                 {
                     Id = credit.Id,
