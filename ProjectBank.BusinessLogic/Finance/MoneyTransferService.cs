@@ -29,7 +29,7 @@ namespace ProjectBank.BusinessLogic.Finance
 
             decimal convertedAmount = Sum * (cardReceiverCurrency / cardSenderCurrency);
 
-            cardReceiver.Balance = convertedAmount;
+            cardReceiver.Balance += convertedAmount;
             cardSender.Balance -= Sum;
 
             Transaction transaction = new Transaction()

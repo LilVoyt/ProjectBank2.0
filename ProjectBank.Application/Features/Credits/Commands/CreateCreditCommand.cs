@@ -2,10 +2,6 @@
 using ProjectBank.BusinessLogic.Models;
 using ProjectBank.DataAcces.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Credits.Commands
 {
@@ -14,6 +10,8 @@ namespace ProjectBank.BusinessLogic.Features.Credits.Commands
         public string CardNumber { get; set; }
         public decimal Principal { get; set; }
         public int NumberOfMonth { get; set; }
+        public DateTime Birthday { get; set; }
+        public decimal MonthlyIncome { get; set; }
         public string CreditTypeName { get; set; }
     }
 }

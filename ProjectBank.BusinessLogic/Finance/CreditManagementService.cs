@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using ProjectBank.DataAcces.Data;
 using ProjectBank.DataAcces.Entities;
 using ProjectBank.DataAcces.Services.Cards;
@@ -10,7 +11,7 @@ namespace ProjectBank.BusinessLogic.Finance
     public class CreditManagementService(ICardService cardService, ICurrencyService currencyService, 
         ICreditService creditService, IMoneyTransferService moneyTransferService, IUnitOfWork unitOfWork, ICreditApproval creditApproval) : ICreditManagementService
     {
-        public async Task<Credit> CreateCredit(string CardNumber, decimal Principal, int NumberOfMonth, string CreditTypeName, CancellationToken cancellationToken)
+        public async Task<Credit> CreateCredit(string CardNumber, decimal Principal, int NumberOfMonth, DateTime Birthday, decimal MonthlyIncome, string CreditTypeName, CancellationToken cancellationToken)
         {
             var Card = await cardService.GetByNumber(CardNumber);
             var currency = Card.CurrencyID;
@@ -36,9 +37,9 @@ namespace ProjectBank.BusinessLogic.Finance
 
             credit.MonthlyPayment = credit.AmountToRepay / NumberOfMonth;
 
-            var res = await creditApproval.CreditApprovalCheck(CardNumber, Principal, NumberOfMonth, CreditTypeName, cancellationToken);
+            var res = await creditApproval.CreditApprovalCheck(CardNumber, Principal, NumberOfMonth, Birthday, MonthlyIncome, CreditTypeName, cancellationToken);
 
-            var chain = await moneyTransferService.CreateTransaction("4411542399821780", Card.NumberCard, credit.Principal, cancellationToken);
+            var chain = await moneyTransferService.CreateTransaction("4411622681943623", Card.NumberCard, credit.Principal, cancellationToken);
 
             await unitOfWork.BeginTransactionAsync();
             try
@@ -61,7 +62,7 @@ namespace ProjectBank.BusinessLogic.Finance
             Credit credit = await creditService.GetById(CreditId);
             Card card = await cardService.GetById(credit.CardId);
 
-            var chain = await moneyTransferService.CreateTransaction(card.NumberCard, "4411542399821780", credit.MonthlyPayment, cancellationToken);
+            var chain = await moneyTransferService.CreateTransaction(card.NumberCard, "4411622681943623", credit.MonthlyPayment, cancellationToken);
 
             credit.AmountToRepay -= credit.MonthlyPayment;
 

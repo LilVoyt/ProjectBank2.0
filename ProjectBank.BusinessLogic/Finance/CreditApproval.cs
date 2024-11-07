@@ -14,11 +14,8 @@ namespace ProjectBank.BusinessLogic.Finance
 {
     public class CreditApproval(ICreditService creditService, ICardService cardService, ICurrencyHandler currencyHandler) : ICreditApproval
     {
-        public async Task<CreditApprovalResult> CreditApprovalCheck(string CardNumber, decimal Principal, int NumberOfMonth, string CreditTypeName, CancellationToken cancellationToken)
+        public async Task<CreditApprovalResult> CreditApprovalCheck(string CardNumber, decimal Principal, int NumberOfMonth, DateTime Birthday, decimal MonthlyIncome, string CreditTypeName, CancellationToken cancellationToken)
         {
-            //Temp variables
-            var MonthlyIncome = new decimal(10000);
-
             var creditTypeLimit = await creditService.GetLimitByCurrencyCode(CreditTypeName);
             var card = await cardService.GetByNumber(CardNumber);
 
@@ -56,18 +53,43 @@ namespace ProjectBank.BusinessLogic.Finance
             }
 
 
-            //var currentCredits = credits.Where(c => !c.IsPaidOff && c.EndDate > DateTime.Now);
+            var currentCredits = credits.Where(c => !c.IsPaidOff && c.EndDate > DateTime.Now);
 
-            //var creditSum = new decimal();
+            var creditSum = new decimal();
 
-            //foreach (var credit in currentCredits)
-            //{
-            //    creditSum += credit.AmountToRepay * currency["data"][credit.Currency.CurrencyCode]["value"].ToObject<decimal>();
-            //}
+            foreach (var credit in currentCredits)
+            {
+                creditSum += credit.AmountToRepay / currency["data"][credit.Currency.CurrencyCode]["value"].ToObject<decimal>() * Currency;
+            }
 
-            //var creditApproveIndex = (creditSum + Principal) / 
+            var creditApproveIndex = (creditSum + Principal) / MonthlyIncome;
 
-            return new CreditApprovalResult();
+            if (creditApproveIndex > 0.3m)
+            {
+                return new CreditApprovalResult()
+                {
+                    Status = CreditApprovalStatus.NotApproved.ToString(),
+                    Reason = $"You cannot take a credit cause of low monthly income!"
+                };
+            }
+
+
+            int age = (int)((DateTime.Now - Birthday).TotalDays / 365.25);
+
+            if (age < 18)
+            {
+                return new CreditApprovalResult()
+                {
+                    Status = CreditApprovalStatus.NotApproved.ToString(),
+                    Reason = $"You are too young, credit can be possible in 18 years"
+                };
+            }
+
+            return new CreditApprovalResult()
+            {
+                Status = CreditApprovalStatus.Approved.ToString(),
+                Reason = "200"
+            };
 
         }
     }
