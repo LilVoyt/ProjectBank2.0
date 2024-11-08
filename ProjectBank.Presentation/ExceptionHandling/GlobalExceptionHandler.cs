@@ -62,6 +62,13 @@ namespace ProjectBank.Presentation.ExceptionHandling
                 problemDetails.Title = "Not Found.";
                 problemDetails.Detail = "The requested resource was not found.";
             }
+            else if (exception is InvalidOperationException)
+            {
+                response.StatusCode = (int)HttpStatusCode.Conflict;
+                problemDetails.Status = response.StatusCode;
+                problemDetails.Title = "Invalid Operation.";
+                problemDetails.Detail = exception.Message;
+            }
             else
             {
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;

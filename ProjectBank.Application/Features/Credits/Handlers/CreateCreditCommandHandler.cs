@@ -17,29 +17,15 @@ using System.Threading.Tasks;
 namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
 {
     internal class CreateCreditCommandHandler(ICurrencyService currencyService, ICreditManagementService creditСreationService) 
-        : IRequestHandler<CreateCreditCommand, CreditDto>
+        : IRequestHandler<CreateCreditCommand, CreditApprovalResult>
     {
-        public async Task<CreditDto> Handle(CreateCreditCommand request, CancellationToken cancellationToken)
+        public async Task<CreditApprovalResult> Handle(CreateCreditCommand request, CancellationToken cancellationToken)
         {
-            Credit credit = await creditСreationService.CreateCredit(request.CardNumber, request.Principal, request.NumberOfMonth, request.Birthday, request.MonthlyIncome, request.CreditTypeName, cancellationToken);
+            CreditApprovalResult result = await creditСreationService.CreateCredit(request.CardNumber, request.Principal, request.NumberOfMonth, request.Birthday, request.MonthlyIncome, request.CreditTypeName, cancellationToken);
 
-            var currencyName = await currencyService.GetByIdAsync(credit.CurrencyId);
 
-            CreditDto creditDto = new CreditDto() 
-            {
-                Id = credit.Id,
-                CardNumber = request.CardNumber,
-                Principal = credit.Principal,
-                AmountToRepay = credit.AmountToRepay,
-                AnnualInterestRate = credit.AnnualInterestRate,
-                MonthlyPayment = credit.MonthlyPayment,
-                StartDate = credit.StartDate,
-                EndDate = credit.EndDate,
-                CurrencyName = currencyName.CurrencyCode,
-                CreditTypeName = request.CreditTypeName,
-            };
 
-            return creditDto;
+            return result;
         }
     }
 }

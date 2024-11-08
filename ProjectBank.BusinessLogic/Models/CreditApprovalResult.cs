@@ -10,5 +10,16 @@ namespace ProjectBank.BusinessLogic.Models
     {
         public string Status { get; set; }
         public string Reason { get; set; } = string.Empty;
+
+        public CreditApprovalResult()
+        {
+            Status = string.Empty;
+            Reason = string.Empty;
+        }
+        public CreditApprovalResult(CreditApprovalStatus approvalStatus, string reason)
+        {
+            Status = approvalStatus.ToString(); 
+            Reason = reason;
+        }
     }
 }

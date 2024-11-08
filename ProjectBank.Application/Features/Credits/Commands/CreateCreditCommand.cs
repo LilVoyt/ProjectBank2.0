@@ -5,7 +5,7 @@ using System;
 
 namespace ProjectBank.BusinessLogic.Features.Credits.Commands
 {
-    public class CreateCreditCommand : IRequest<CreditDto>
+    public class CreateCreditCommand : IRequest<CreditApprovalResult>
     {
         public string CardNumber { get; set; }
         public decimal Principal { get; set; }
