@@ -11,18 +11,11 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.DataAcces.Services.Customers
 {
-    public class CustomerService : ICustomerService
+    public class CustomerService(IDataContext context) : ICustomerService
     {
-        private readonly DataContext _context;
-
-        public CustomerService(DataContext context)
-        {
-            _context = context;
-        }
-
         public async Task<List<Customer>> Get(string? search, string? sortItem, string? sortOrder)
         {
-            IQueryable<Customer> customers = _context.Customer;
+            IQueryable<Customer> customers = context.Customer;
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -50,14 +43,14 @@ namespace ProjectBank.DataAcces.Services.Customers
 
         public async Task<Customer> Post(Customer customer)
         {
-            await _context.Customer.AddAsync(customer);
-            await _context.SaveChangesAsync();
+            await context.Customer.AddAsync(customer);
+            await context.SaveChangesAsync();
             return customer;
         }
 
         public async Task<Customer> Update(Guid id, Customer requestModel)
         {
-            var account = await _context.Customer.FindAsync(id);
+            var account = await context.Customer.FindAsync(id);
             if (account == null)
             {
                 throw new KeyNotFoundException($"Account with ID {id} not found.");
@@ -77,14 +70,14 @@ namespace ProjectBank.DataAcces.Services.Customers
 
         public async Task<Customer> Delete(Guid id)
         {
-            var account = await _context.Customer.FindAsync(id);
+            var account = await context.Customer.FindAsync(id);
             if (account == null)
             {
                 throw new KeyNotFoundException($"Account with ID {id} not found.");
             }
 
-            _context.Customer.Remove(account);
-            await _context.SaveChangesAsync();
+            context.Customer.Remove(account);
+            await context.SaveChangesAsync();
 
             return account;
         }

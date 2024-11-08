@@ -13,18 +13,11 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.Infrastructure.Services.Transactions
 {
-    public class TransactionService : ITransactionService
+    public class TransactionService(IDataContext context) : ITransactionService
     {
-        private readonly DataContext _context;
-
-        public TransactionService(DataContext context)
-        {
-            _context = context;
-        }
-
         public async Task<List<Transaction>> Get(Guid? sender, Guid? receiver, string? sortItem, string? sortOrder)
         {
-            IQueryable<Transaction> transactions = _context.Transaction;
+            IQueryable<Transaction> transactions = context.Transaction;
 
             if (sender.HasValue && receiver.HasValue)
             {
@@ -46,8 +39,8 @@ namespace ProjectBank.Infrastructure.Services.Transactions
 
             foreach (var transaction in transactionsList)
             {
-                transaction.CardSender = await _context.Card.SingleAsync(card => card.Id == transaction.CardSenderID);
-                transaction.CardReceiver = await _context.Card.SingleAsync(card => card.Id == transaction.CardReceiverID);
+                transaction.CardSender = await context.Card.SingleAsync(card => card.Id == transaction.CardSenderID);
+                transaction.CardReceiver = await context.Card.SingleAsync(card => card.Id == transaction.CardReceiverID);
             }
 
             return transactionsList;
@@ -55,8 +48,8 @@ namespace ProjectBank.Infrastructure.Services.Transactions
 
         public async Task<Transaction> Post(Transaction transaction)
         {
-            await _context.Transaction.AddAsync(transaction);
-            await _context.SaveChangesAsync();
+            await context.Transaction.AddAsync(transaction);
+            await context.SaveChangesAsync();
 
             return transaction;
         }
@@ -83,7 +76,7 @@ namespace ProjectBank.Infrastructure.Services.Transactions
 
         public async Task<Transaction> Delete(Guid id)
         {
-            var transaction = await _context.Transaction.FindAsync(id);
+            var transaction = await context.Transaction.FindAsync(id);
             if (transaction == null)
             {
                 throw new KeyNotFoundException($"Account with ID {id} not found.");
@@ -91,8 +84,8 @@ namespace ProjectBank.Infrastructure.Services.Transactions
 
             transaction.CardSenderID = Guid.Empty;
             transaction.CardReceiverID = Guid.Empty;
-            _context.Transaction.Remove(transaction);
-            await _context.SaveChangesAsync();
+            context.Transaction.Remove(transaction);
+            await context.SaveChangesAsync();
 
             return transaction;
         }

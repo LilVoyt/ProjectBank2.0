@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.DataAcces.Services.Accounts
 {
-    public class AccountService(DataContext context) : IAccountService
+    public class AccountService(IDataContext context) : IAccountService
     {
         public async Task<ActionResult<List<Account>>> Get(string? search, string? sortItem, string? sortOrder)
         {

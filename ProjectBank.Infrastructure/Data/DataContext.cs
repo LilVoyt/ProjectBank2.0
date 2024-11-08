@@ -4,7 +4,7 @@ using System;
 
 namespace ProjectBank.DataAcces.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : DbContext, IDataContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
@@ -16,6 +16,11 @@ namespace ProjectBank.DataAcces.Data
         public DbSet<Currency> Currency { get; set; }
         public DbSet<Credit> Credit { get; set; }
         public DbSet<CreditType> CreditType { get; set; }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

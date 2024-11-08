@@ -143,7 +143,9 @@ namespace ProjectBank.Presentation
             builder.Services.AddScoped<ActionQueue>();
 
             //Sql and dbContext
-            builder.Services.AddDbContext<DataContext>(options =>
+            builder.Services.AddScoped<IDataContext, DataContext>();
+
+            builder.Services.AddDbContext<IDataContext, DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 

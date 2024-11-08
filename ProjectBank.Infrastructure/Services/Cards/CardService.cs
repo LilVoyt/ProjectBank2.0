@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.Infrastructure.Services.Cards
 {
-    public class CardService(DataContext context) : ICardService
+    public class CardService(IDataContext context) : ICardService
     {
         public async Task<Card> GetByNumber(string cardNumber)
         {

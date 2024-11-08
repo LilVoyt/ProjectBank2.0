@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.DataAcces.Services.Currencies
 {
-    public class CurrencyService(DataContext dataContext) : ICurrencyService
+    public class CurrencyService(IDataContext dataContext) : ICurrencyService
     {
         public async Task<Currency?> GetByCode(string code)
         {

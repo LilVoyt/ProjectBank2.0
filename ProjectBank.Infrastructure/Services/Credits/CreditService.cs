@@ -10,7 +10,7 @@ using System.Web.Mvc.Async;
 
 namespace ProjectBank.DataAcces.Services.Credits
 {
-    public class CreditService(DataContext context) : ICreditService
+    public class CreditService(IDataContext context) : ICreditService
     {
         public async Task<List<Credit>> Get(Guid cardId, CancellationToken cancellationToken)
         {
