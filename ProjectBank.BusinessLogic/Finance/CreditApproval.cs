@@ -20,7 +20,7 @@ namespace ProjectBank.BusinessLogic.Finance
             var card = await cardService.GetByNumber(CardNumber);
 
             var currency = currencyHandler.GetFromApi();
-            var Currency = currency["data"][card.Currency.CurrencyCode]["value"].ToObject<decimal>(); //тут треба за авейтити
+            var Currency = currency["data"][card.Currency.CurrencyCode]["value"].ToObject<decimal>();
             var customCreditLimit = Currency * creditTypeLimit;
 
             if (Principal > customCreditLimit)

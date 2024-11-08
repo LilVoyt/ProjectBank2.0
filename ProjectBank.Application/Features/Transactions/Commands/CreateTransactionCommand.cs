@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Transactions.Commands
 {
-    public class CreateTransactionCommand : IRequest<Guid>
+    public class CreateTransactionCommand : IRequest<Unit>
     {
         public string SenderNumber { get; set; } = string.Empty;
         public string ReceiverNumber { get; set; } = string.Empty;

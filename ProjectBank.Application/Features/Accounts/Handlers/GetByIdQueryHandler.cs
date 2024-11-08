@@ -40,21 +40,13 @@ namespace ProjectBank.BusinessLogic.Features.Accounts.Handlers
                 accountDto.Cards = new List<CardDto>();
                 foreach (var card in account.Cards)
                 {
-                    var currencyName = await currencyService.GetByIdAsync(card.CurrencyID) ?? throw new KeyNotFoundException();
+                    var currency = await currencyService.GetByIdAsync(card.CurrencyID) ?? throw new KeyNotFoundException();
 
-                    accountDto.Cards.Add(new CardDto()
+                    accountDto.Cards.Add(mapper.Map<CardDto>(card, opt =>
                     {
-                        Id = card.Id,
-                        NumberCard = card.NumberCard,
-                        CardName = card.CardName,
-                        Pincode = card.Pincode,
-                        ExpirationDate = card.ExpirationDate,
-                        CVV = card.CVV,
-                        Balance = card.Balance,
-                        CurrencyCode = currencyName.CurrencyCode
-                    });
+                        opt.Items["CurrencyCode"] = currency.CurrencyCode;
+                    }));
                 }
-
             }
 
             return accountDto;

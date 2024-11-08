@@ -23,8 +23,6 @@ namespace ProjectBank.BusinessLogic.Features.Credits.Handlers
         {
             CreditApprovalResult result = await creditСreationService.CreateCredit(request.CardNumber, request.Principal, request.NumberOfMonth, request.Birthday, request.MonthlyIncome, request.CreditTypeName, cancellationToken);
 
-
-
             return result;
         }
     }

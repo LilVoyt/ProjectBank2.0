@@ -22,5 +22,19 @@ namespace ProjectBank.BusinessLogic.Features.Currency
             Console.WriteLine(response.Content);
             return jsonResponse;
         }
+
+        public decimal getCurrecnyByCode(string Code)
+        {
+            var client = new RestClient("https://api.currencyapi.com/v3/latest");
+
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("apikey", "cur_live_fC3YUWtrfS6J60HWoPMxOfliB5RFfglFc0gxEznJ");
+            IRestResponse response = client.Execute(request);
+            JObject jsonResponse = JObject.Parse(response.Content);
+            
+            decimal newCode = jsonResponse["data"][Code]["value"].ToObject<decimal>();
+            return newCode;   
+        }
     }
 }

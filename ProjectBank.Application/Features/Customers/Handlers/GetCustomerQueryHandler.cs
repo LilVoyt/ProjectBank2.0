@@ -11,18 +11,11 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.Features.Customers.Handlers
 {
-    public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, List<Customer>>
+    public class GetCustomerQueryHandler(ICustomerService customerService) : IRequestHandler<GetCustomerQuery, List<Customer>>
     {
-        private readonly ICustomerService _customerService;
-
-        public GetCustomerQueryHandler(ICustomerService customerService)
-        {
-            _customerService = customerService;
-        }
-
         public Task<List<Customer>> Handle(GetCustomerQuery request, CancellationToken cancellationToken)
         {
-            var res = _customerService.Get(request.Search, request.SortItem, request.SortOrder);
+            var res = customerService.Get(request.Search, request.SortItem, request.SortOrder);
             return res;
         }
     }

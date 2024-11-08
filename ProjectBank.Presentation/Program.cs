@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using ProjectBank.Application.Features.Credits.Commands;
+using ProjectBank.Application.Features.Credits.Validator;
 using ProjectBank.BusinessLogic.CardManagement;
 using ProjectBank.BusinessLogic.ChainOfResponsibility;
 using ProjectBank.BusinessLogic.Features.Accounts.Queries;
@@ -12,7 +14,9 @@ using ProjectBank.BusinessLogic.Features.Authentication.Validator.Login;
 using ProjectBank.BusinessLogic.Features.Authentication.Validators;
 using ProjectBank.BusinessLogic.Features.Cards.Cards;
 using ProjectBank.BusinessLogic.Features.Cards.Commands;
+using ProjectBank.BusinessLogic.Features.Credits.Commands;
 using ProjectBank.BusinessLogic.Features.Currency;
+using ProjectBank.BusinessLogic.Features.Customers.Commands;
 using ProjectBank.BusinessLogic.Features.Customers.Customers;
 using ProjectBank.BusinessLogic.Features.Transactions.Commands;
 using ProjectBank.BusinessLogic.Features.Transactions.Queries;
@@ -44,7 +48,7 @@ using System.Text;
 
 namespace ProjectBank.Presentation
 {
-    internal class Program
+    public class Program
     {
         private static void Main(string[] args)
         {
@@ -71,6 +75,8 @@ namespace ProjectBank.Presentation
             builder.Services.AddTransient<IPipelineBehavior<RegisterCommand, string>, ValidationBehavior<RegisterCommand, string>>();
             builder.Services.AddTransient<IPipelineBehavior<GetByIdQuery, AccountDto>,  ValidationBehavior<GetByIdQuery, AccountDto>>();
             builder.Services.AddTransient<IPipelineBehavior<CreateTransactionCommand, Guid>, ValidationBehavior<CreateTransactionCommand, Guid>>();
+            builder.Services.AddTransient<IPipelineBehavior<CreateCreditCommand, CreditApprovalResult>, ValidationBehavior<CreateCreditCommand, CreditApprovalResult>>();
+            builder.Services.AddTransient<IPipelineBehavior<CreditMonthlyPaymentCommand, Guid>, ValidationBehavior<CreditMonthlyPaymentCommand, Guid>>();
 
 
             //Automapper
@@ -88,21 +94,14 @@ namespace ProjectBank.Presentation
 
             //Customer
             builder.Services.AddScoped<ICustomerService, CustomerService>();
-            builder.Services.AddTransient<IValidator<Customer>, CustomerValidator>();
-            builder.Services.AddScoped<AbstractValidator<Customer>, CustomerValidator>();
-            builder.Services.AddScoped<ICustomerValidationService, CustomerValidationService>();
 
             //Account
             builder.Services.AddScoped<IAccountService, AccountService>();
 
             //Transaction
             builder.Services.AddScoped<ITransactionService, TransactionService>();
-            builder.Services.AddTransient<IValidator<CreateTransactionCommand>, CreateTransactionValidator>();
-
-            builder.Services.AddTransient<IValidator<GetTransactionQuery>, GetTransactionValidator>();
 
             //Authentication
-
             builder.Services.AddScoped<IAuthenticationValidationService, AuthenticationValidationService>();
 
             //Validators
@@ -111,6 +110,15 @@ namespace ProjectBank.Presentation
             builder.Services.AddTransient<IValidator<RegisterCommand>, RegisterValidator>();
 
             builder.Services.AddTransient<IValidator<AddCardCommand>, CardValidator>();
+
+            builder.Services.AddTransient<IValidator<CreateCreditCommand>, CreateCreditCommandValidator>();
+
+            builder.Services.AddTransient<IValidator<CreditMonthlyPaymentCommand>, CreditMonthlyPaymentCommandValidator>();
+
+            builder.Services.AddTransient<IValidator<CreateCustomerCommand>, CreateCustomerCommandValidator>();
+
+            builder.Services.AddTransient<IValidator<CreateTransactionCommand>, CreateTransactionValidator>();
+            builder.Services.AddTransient<IValidator<GetTransactionQuery>, GetTransactionValidator>();
 
 
 

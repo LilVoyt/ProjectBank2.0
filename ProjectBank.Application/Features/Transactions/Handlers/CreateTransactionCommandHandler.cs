@@ -6,9 +6,9 @@ using ProjectBank.DataAcces.Data;
 namespace ProjectBank.BusinessLogic.Features.Transactions.Handlers
 {
     public class CreateTransactionCommandHandler(IMoneyTransferService moneyTansferService, IUnitOfWork unitOfWork) 
-        : IRequestHandler<CreateTransactionCommand, Guid>
+        : IRequestHandler<CreateTransactionCommand, Unit>
     {
-        public async Task<Guid> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
             var chain = await moneyTansferService.CreateTransaction(request.SenderNumber, request.ReceiverNumber, request.Sum, cancellationToken);
 
@@ -25,7 +25,7 @@ namespace ProjectBank.BusinessLogic.Features.Transactions.Handlers
                 throw;
             }
 
-            return Guid.NewGuid();
+            return Unit.Value;
         }
     }
 }
