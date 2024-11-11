@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectBank.Application.Features.Credits.Commands;
 using ProjectBank.Application.Features.Credits.Queries;
@@ -13,6 +14,7 @@ namespace ProjectBank.Presentation.Controllers
     public class CreditController(IMediator mediator) : ControllerBase
     {
         [HttpPost("/create")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> Post(CreateCreditCommand credit)
         {
             var res = await mediator.Send(credit);
@@ -20,13 +22,15 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpPost("/monthly-pay")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> MonthlyPayment(CreditMonthlyPaymentCommand command) 
         {
             var res = await mediator.Send(command);
             return Ok(res);
         }
 
-        [HttpGet("/get-card-credits")] 
+        [HttpGet("/get-card-credits")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> GetByCard(Guid cardId)
         {
             GetCreditsQuery query = new GetCreditsQuery() { cardId = cardId };
@@ -36,6 +40,7 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpGet("/get-account-credits")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> GetByAccount(Guid accountId)
         {
             GetAccountCreditsQuery query = new GetAccountCreditsQuery() { AccountId = accountId };
@@ -45,6 +50,7 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpGet("/get-credit-info")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> GetInfo(Guid creditId)
         {
             GetCreditInfoQuerry creditInfoQuerry = new GetCreditInfoQuerry() { CreditId = creditId };

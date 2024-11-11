@@ -11,7 +11,7 @@ namespace ProjectBank.Presentation.Controllers
     public class TrasnsactionController(IMediator mediator) : ControllerBase
     {
         [HttpGet]
-        //[Authorize(Policy = "UserPolicy")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> Get(Guid? sender, Guid? receiver, string? sortItem, string? sortOrder)
         {
 
@@ -22,7 +22,7 @@ namespace ProjectBank.Presentation.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = "UserPolicy")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> Post(CreateTransactionCommand transactionCommand)
         {
             var result = await mediator.Send(transactionCommand);

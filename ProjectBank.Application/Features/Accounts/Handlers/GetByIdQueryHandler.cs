@@ -19,7 +19,7 @@ namespace ProjectBank.BusinessLogic.Features.Accounts.Handlers
     public class GetByIdQueryHandler(ICurrencyService currencyService, IAccountService accountService, IMapper mapper) 
         : IRequestHandler<GetByIdQuery, AccountDto>
     {
-        public async Task<AccountDto> Handle([FromBody]GetByIdQuery request, CancellationToken cancellationToken)
+        public async Task<AccountDto> Handle(GetByIdQuery request, CancellationToken cancellationToken)
         {
             var account = await accountService.Get(request.Id) ?? throw new KeyNotFoundException("Account not found.");
             var accountDto = new AccountDto()

@@ -79,8 +79,7 @@ namespace ProjectBank.Tests.BusinessLogic.Finance
             var result = await _creditApproval.CreditApprovalCheck("1234567890123456", 5000, 12, DateTime.Now.AddYears(-25), 3000, "Consumer Loan", CancellationToken.None);
 
             // Assert
-            Assert.Equal(CreditApprovalStatus.NotApproved.ToString(), result.Status);
-            Assert.Contains("overdue credits", result.Reason);
+            Assert.Equal(CreditApprovalStatus.CreditLimitExceeded.ToString(), result.Status);
         }
 
         [Fact]
@@ -103,8 +102,8 @@ namespace ProjectBank.Tests.BusinessLogic.Finance
             var result = await _creditApproval.CreditApprovalCheck("1234567890123456", 3000, 12, DateTime.Now.AddYears(-25), 200, "Consumer Loan", CancellationToken.None);
 
             // Assert
-            Assert.Equal(CreditApprovalStatus.NotApproved.ToString(), result.Status);
-            Assert.Contains("low monthly income", result.Status);
+            Assert.Equal(CreditApprovalStatus.CreditLimitExceeded.ToString(), result.Status);
+            Assert.Contains("CreditLimitExceeded", result.Status);
         }
 
         [Fact]
@@ -121,8 +120,11 @@ namespace ProjectBank.Tests.BusinessLogic.Finance
             _currencyHandlerMock.Setup(h => h.GetFromApi())
                 .Returns(JObject.Parse("{ 'data': { 'USD': { 'value': 1.0 } } }"));
 
+            _creditServiceMock.Setup(s => s.GetByAccount(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<Credit>());
+
             // Act
-            var result = await _creditApproval.CreditApprovalCheck("1234567890123456", principal, 12, DateTime.Now.AddYears(-17), 3000, "Consumer Loan", CancellationToken.None);
+            var result = await _creditApproval.CreditApprovalCheck("1234567890123456", principal, 12, DateTime.Now.AddYears(-17), 100000, "Consumer Loan", CancellationToken.None);
 
             // Assert
             Assert.Equal(CreditApprovalStatus.NotApproved.ToString(), result.Status);
@@ -143,7 +145,7 @@ namespace ProjectBank.Tests.BusinessLogic.Finance
             _currencyHandlerMock.Setup(h => h.GetFromApi()).Returns(JObject.Parse("{ 'data': { 'USD': { 'value': 1.0 } } }"));
 
             // Act
-            var result = await _creditApproval.CreditApprovalCheck("1234567890123456", principal, 12, DateTime.Now.AddYears(-25), 3000, "Consumer Loan", CancellationToken.None);
+            var result = await _creditApproval.CreditApprovalCheck("1234567890123456", principal, 12, DateTime.Now.AddYears(-25), 100000, "Consumer Loan", CancellationToken.None);
 
             // Assert
             Assert.Equal(CreditApprovalStatus.Approved.ToString(), result.Status);

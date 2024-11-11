@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjectBank.BusinessLogic.MappingProfiles
 {
-    public class CardProfile : Profile
+    internal class CardProfile : Profile
     {
         public CardProfile()
         {

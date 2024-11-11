@@ -73,7 +73,7 @@ namespace ProjectBank.Presentation
 
             builder.Services.AddTransient<IPipelineBehavior<LoginCommand, string>, ValidationBehavior<LoginCommand, string>>();
             builder.Services.AddTransient<IPipelineBehavior<RegisterCommand, string>, ValidationBehavior<RegisterCommand, string>>();
-            builder.Services.AddTransient<IPipelineBehavior<GetByIdQuery, AccountDto>,  ValidationBehavior<GetByIdQuery, AccountDto>>();
+            //builder.Services.AddTransient<IPipelineBehavior<GetByIdQuery, AccountDto>,  ValidationBehavior<GetByIdQuery, AccountDto>>();
             builder.Services.AddTransient<IPipelineBehavior<CreateTransactionCommand, Guid>, ValidationBehavior<CreateTransactionCommand, Guid>>();
             builder.Services.AddTransient<IPipelineBehavior<CreateCreditCommand, CreditApprovalResult>, ValidationBehavior<CreateCreditCommand, CreditApprovalResult>>();
             builder.Services.AddTransient<IPipelineBehavior<CreditMonthlyPaymentCommand, Guid>, ValidationBehavior<CreditMonthlyPaymentCommand, Guid>>();
@@ -201,7 +201,10 @@ namespace ProjectBank.Presentation
             //Authorization and policy
             builder.Services.AddAuthorizationBuilder()
                 .AddPolicy("AdminPolicy", policy => policy.RequireRole(UserRole.Admin.ToString()))
-                .AddPolicy("UserPolicy", policy => policy.RequireRole(UserRole.User.ToString()));
+                .AddPolicy("UserPolicy", policy => {
+                    policy.RequireRole(UserRole.User.ToString(), UserRole.Admin.ToString());
+                    }
+                );
 
 
             //Building
